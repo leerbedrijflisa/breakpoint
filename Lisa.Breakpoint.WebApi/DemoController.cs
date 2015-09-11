@@ -1,10 +1,14 @@
-﻿namespace Lisa.Breakpoint.WebApi
+﻿using Microsoft.AspNet.Mvc;
+
+namespace Lisa.Breakpoint.WebApi
 {
-    public class DemoController
+    [Route("api/[controller]")]
+    public class DemoController : Controller
     {
-        public string[] Index()
+        [Route("")]
+        public string[] GetAll()
         {
-            string[] days = { "Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"};
+            string[] days = { "Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat" };
 
             return days;
         }
