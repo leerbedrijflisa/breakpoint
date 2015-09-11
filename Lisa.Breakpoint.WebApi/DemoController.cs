@@ -2,9 +2,11 @@
 {
     public class DemoController
     {
-        public string Index()
+        public string[] Index()
         {
-            return "Breakpoint";
+            string[] days = { "Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"};
+
+            return days;
         }
     }
 }
