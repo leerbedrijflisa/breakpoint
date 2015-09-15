@@ -1,8 +1,8 @@
 Breakpoint
-----------
+==========
 
 Prerequisites
-=============
+-------------
 
 ### ASP.NET 5 beta 7
 Breakpoint uses ASP.NET 5 beta 7. If you haven't already, you need to [download](http://www.microsoft.com/en-us/download/details.aspx?id=48738) and install the upgrade.
