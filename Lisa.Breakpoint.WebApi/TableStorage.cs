@@ -1,4 +1,4 @@
-﻿/*using Microsoft.WindowsAzure.Storage;
+﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Lisa.Breakpoint.WebApi
@@ -32,4 +32,4 @@ namespace Lisa.Breakpoint.WebApi
         public string PhoneNumber { get; set; }
     }
 
-}*/
+}
