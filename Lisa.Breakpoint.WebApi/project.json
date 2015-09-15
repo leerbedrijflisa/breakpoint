@@ -14,7 +14,11 @@
   },
 
   "frameworks": {
-    "dnx451": { },
+    "dnx451": {
+      "dependencies": {
+        "Microsoft.AspNet.Mvc.Abstractions": "6.0.0-beta7"
+      }
+    },
     "dnxcore50": { }
   },
 
