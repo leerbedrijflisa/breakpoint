@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
@@ -10,7 +11,14 @@ namespace Lisa.Breakpoint.WebApi
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat" };
+            try
+            {
+                return new string[] { "Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat" };
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         // GET api/values/5
