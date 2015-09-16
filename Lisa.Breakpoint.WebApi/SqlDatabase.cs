@@ -7,13 +7,6 @@ namespace Lisa.Breakpoint.WebApi
 {
     public class SqlDatabase
     {
-        private SqlConnection _conn;
-
-        private const string ConnString = "Data Source=(localdb)\\ProjectsV12;Initial Catalog=BreakPoint;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-        private readonly string _selectSql = "SELECT * FROM dbo.bugs;";
-
-
         public IList<Bug> GetAllBugs()
         {
             var bugs = new List<Bug>();
@@ -181,5 +174,10 @@ namespace Lisa.Breakpoint.WebApi
                 throw new Exception("Entity has not been deleted!");
             }
         }
+
+
+        private SqlConnection _conn;
+        private const string ConnString = "Data Source=(localdb)\\ProjectsV12;Initial Catalog=BreakPoint;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly string _selectSql = "SELECT * FROM dbo.bugs;";
     }
 }
