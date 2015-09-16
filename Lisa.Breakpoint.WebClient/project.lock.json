@@ -6,6 +6,7 @@
       "Lisa.Breakpoint.WebApi/1.0.0": {
         "type": "project",
         "dependencies": {
+          "Microsoft.AspNet.Cors": "1.0.0-beta7",
           "Microsoft.AspNet.Mvc": "6.0.0-beta7",
           "Microsoft.AspNet.Server.IIS": "1.0.0-beta7",
           "Microsoft.AspNet.Server.WebListener": "1.0.0-beta7",
@@ -41,6 +42,21 @@
         },
         "runtime": {
           "lib/dnxcore50/Microsoft.AspNet.Authorization.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Cors/1.0.0-beta7": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.Cors.Core": "1.0.0-beta7",
+          "Microsoft.AspNet.Http.Extensions": "1.0.0-beta7",
+          "Microsoft.AspNet.WebUtilities": "1.0.0-beta7",
+          "System.Runtime": "4.0.21-beta-23225"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.AspNet.Cors.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.AspNet.Cors.dll": {}
         }
       },
       "Microsoft.AspNet.Cors.Core/1.0.0-beta7": {
@@ -2428,6 +2444,21 @@
         "Microsoft.AspNet.Authorization.1.0.0-beta7.nupkg",
         "Microsoft.AspNet.Authorization.1.0.0-beta7.nupkg.sha512",
         "Microsoft.AspNet.Authorization.nuspec",
+        "repo.json"
+      ]
+    },
+    "Microsoft.AspNet.Cors/1.0.0-beta7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "CTdMyFkH1D1+8fuUo2BY3F/+WlOtOd+oVhSt2yLDZ2JCUozykPEWbHqFJmQhdeUrPVxJOgRWoxq4aID8SqARog==",
+      "files": [
+        "lib/dnx451/Microsoft.AspNet.Cors.dll",
+        "lib/dnx451/Microsoft.AspNet.Cors.xml",
+        "lib/dnxcore50/Microsoft.AspNet.Cors.dll",
+        "lib/dnxcore50/Microsoft.AspNet.Cors.xml",
+        "Microsoft.AspNet.Cors.1.0.0-beta7.nupkg",
+        "Microsoft.AspNet.Cors.1.0.0-beta7.nupkg.sha512",
+        "Microsoft.AspNet.Cors.nuspec",
         "repo.json"
       ]
     },
