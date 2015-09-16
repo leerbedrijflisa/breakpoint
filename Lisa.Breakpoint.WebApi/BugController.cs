@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
+    [Route("bugs")]
     public class BugController
     {
         static SqlDatabase _db = new SqlDatabase();
 
         [HttpGet]
-        [Route("bugs")]
         public object Get()
         {
             try
@@ -24,7 +24,7 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet]
-        [Route("bugs/{id}")]
+        [Route("{id}")]
         public object getBug(string id)
         {
             try
@@ -40,7 +40,7 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet]
-        [Route("bugs/insert")]
+        [Route("insert")]
         public void insert(string id)
         {
             try
@@ -61,7 +61,7 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet]
-        [Route("bugs/update/{id}")]
+        [Route("update/{id}")]
         public void update(string id)
         {
             try
@@ -82,7 +82,7 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet]
-        [Route("bugs/delete/{id}")]
+        [Route("delete/{id}")]
         public void delete(string id)
         {
             try
