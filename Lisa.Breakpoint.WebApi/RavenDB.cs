@@ -27,7 +27,6 @@ namespace Lisa.Breakpoint.WebApi
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Query<Report>()
-                    .Where(x => x.Title != "")
                     .ToList<Report>();
             }
         }

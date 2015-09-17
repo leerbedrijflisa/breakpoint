@@ -1,6 +1,6 @@
-﻿namespace Unknown
+﻿namespace Lisa.Breakpoint.WebApi
 {
-    public class Class
+    public class User
     {
         public string Username { get; set; }
         public string FullName { get; set; }
