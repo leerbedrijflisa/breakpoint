@@ -1,35 +1,90 @@
 ﻿using Raven.Client;
 using Raven.Client.Document;
+using Raven.Client.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lisa.Breakpoint.WebApi
 {
     public class RavenDB
     {
-
-        public RavenDB()
+        public IDocumentStore createDocumentStore()
         {
-            using (IDocumentStore store = new DocumentStore
+            IDocumentStore store = new DocumentStore
             {
                 Url = "http://localhost:8080/",
                 DefaultDatabase = "breakpoint"
-            }.Initialize())
+            };
+            
+            return store;
+        }
+
+        public IList<Report> getAll()
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                using (IDocumentSession session = store.OpenSession())
+                return session.Query<Report>()
+                    .Where(x => x.Title != "")
+                    .ToList<Report>();
+            }
+        }
+
+        public Report get(int id)
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                return session.Load<Report>(id);
+            }
+        }
+
+        public Report insert()
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                Report report = new Report
                 {
-                    Bug bug = new Bug
-                    {
-                        Title = "een bug",
-                        Description = "fix de bug",
-                        Status = "Fixed"
-                    };
+                    Title = "een nieuw report",
+                    Description = "fix de bug",
+                    Status = "Fixed"
+                };
 
-                    session.Store(bug);
-                    int bugId = bug.Id;
+                session.Store(report);
+                int reportId = report.Id;
 
-                    session.SaveChanges();
+                session.SaveChanges();
 
-                    Bug loadedBug = session.Load<Bug>(bugId);
-                }
+                return session.Load<Report>(reportId);
+            }
+        }
+
+        public Report update(int id)
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                Report report = session.Load<Report>(id);
+
+                report.Title = "Updated report";
+                report.Description = "The bug is almost fixed";
+                report.Status = "In progress";
+
+                session.SaveChanges();
+
+                return report;
+            }
+        }
+
+        public void delete(int id)
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                Report report = session.Load<Report>(id);
+                session.Delete(report);
+                session.SaveChanges();
             }
         }
     }
