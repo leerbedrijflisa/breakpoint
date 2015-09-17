@@ -1,6 +1,8 @@
 ﻿using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Linq;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,18 +41,11 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Report insert()
+        public Report insert(Report report)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                Report report = new Report
-                {
-                    Title = "een nieuw report",
-                    Description = "fix de bug",
-                    Status = "Fixed"
-                };
-
                 session.Store(report);
                 int reportId = report.Id;
 
@@ -67,8 +62,8 @@ namespace Lisa.Breakpoint.WebApi
             {
                 Report report = session.Load<Report>(id);
 
-                report.Title = "Updated report";
-                report.Description = "The bug is almost fixed";
+                //report.Title = "Updated report";
+                //report.Description = "The bug is almost fixed";
                 report.Status = "In progress";
 
                 session.SaveChanges();

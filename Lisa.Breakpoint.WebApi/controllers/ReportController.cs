@@ -25,7 +25,22 @@ namespace Lisa.Breakpoint.WebApi
         [Route("insert")]
         public Report insert(int id)
         {
-            return _db.insert();
+            Report report = new Report
+            {
+                Number = 1,
+                Project = "fix de bug",
+                StepByStep = "Fixed",
+                Expectaton = "Fixed",
+                WhatHappend = "Fixed",
+                Reporter = "Fixed",
+                Reported = "Fixed",
+                Status = "Fixed",
+                Priority = "Fixed",
+                AssignedTo = "Fixed",
+                Comments = "Fixed"
+            };
+
+            return _db.insert(report);
         }
 
         [HttpGet]
