@@ -1,6 +1,6 @@
 ﻿namespace Lisa.Breakpoint.WebApi
 {
-    public class Bug
+    public class Report
     {
         public int      Id { get; set; }
         public string   Title { get; set; }
