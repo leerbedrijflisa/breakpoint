@@ -1,10 +1,10 @@
-﻿using Raven.Client;
+﻿using Raven.Abstractions.Data;
+using Raven.Client;
 using Raven.Client.Document;
-using Raven.Client.Linq;
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -26,9 +26,7 @@ namespace Lisa.Breakpoint.WebApi
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                return session.Query<Report>()
-                    .Where(x => x.Title != "")
-                    .ToList<Report>();
+                return session.Query<Report>().ToList<Report>();
             }
         }
 
@@ -55,18 +53,31 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Report update(int id)
+        public Report update(int id, Report updatedReport)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 Report report = session.Load<Report>(id);
 
-                //report.Title = "Updated report";
-                //report.Description = "The bug is almost fixed";
-                report.Status = "In progress";
+                foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
+                {
+                    var newVal = updatedReport.GetType().GetProperty(propertyInfo.Name).GetValue(updatedReport, null);
 
-                session.SaveChanges();
+                    if (newVal != null)
+                    {
+                        var patchRequest = new PatchRequest()
+                        {
+                            Name = propertyInfo.Name,
+                            Type = PatchCommandType.Set,
+                            Value = newVal.ToString()
+                        };
+                        //Debug.WriteLine("updating field: ");
+                        store.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+                    }
+                    //Debug.WriteLine(propertyInfo.Name + ": " + propertyInfo.GetValue(report, null));
+                    //Debug.WriteLine(propertyInfo.Name + ": " + newVal);
+                }
 
                 return report;
             }
