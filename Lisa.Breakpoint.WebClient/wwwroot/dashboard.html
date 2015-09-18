@@ -1,17 +1,57 @@
 ﻿<template>
-    <h1>Dashboard</h1>
-    <table border="1">
-        <tr>
-            <th>Header 1</th>
-            <th>Header 2</th>
-        </tr>
-        <tr>
-            <td>Cell A1</td>
-            <td>Cell B1</td>
-        </tr>
-        <tr>
-            <td>Cell A2</td>
-            <td>Cell B2</td>
-        </tr>
-    </table>
+    <style>
+      p {
+          margin: 0px;
+      }
+
+      .li-item {
+          background-color: #D8D8D8;
+          margin-bottom: 20px;
+          padding: 10px;
+      }
+
+      .list {
+          background-color: white;
+          margin-left: 20px;
+      }
+
+      .label {
+          font-weight: bold;
+      }
+    </style>
+    <h2>List of reports: </h2>
+    <br />
+    <ul>
+        <li repeat.for="report of reports" class="li-item">
+            <p><span class="label">id:</span> ${report.id}</p>
+            <p><span class="label">number:</span> ${report.number}</p>
+            <p>
+                <span class="label">project: </span>
+            <p repeat.for="project of report.project" class="list">
+                <span>${project.slug} - ${project.name}</span>
+            </p>
+            </p>
+            <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
+            <p><span class="label">expectation:</span> ${report.expectation}</p>
+            <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
+            <p><span class="label">reporter:</span> ${report.reporter}</p>
+            <p><span class="label">reported:</span> ${report.reported}</p>
+            <p><span class="label">status:</span> ${report.status}</p>
+            <p><span class="label">priority:</span> ${report.priority}</p>
+            <p>
+                <span class="label">assignedTo: </span>
+            <p repeat.for="assignedTo of report.assignedTo" class="list">
+                <span>${assignedTo.userName} - ${assignedTo.fullName}</span>
+            </p>
+            </p>
+            <p>
+                <span class="label">comments: </span>
+            <p repeat.for="comment of report.comments" class="list">
+                <span>${comment.text}</span>
+                <span>${comment.Author}</span>
+                <span>${comment.Posted}</span>
+            </p>
+            </p>
+        </li>
+    </ul>
 </template>

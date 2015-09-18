@@ -1,8 +1,11 @@
-﻿using Raven.Client;
+﻿using Raven.Abstractions.Data;
+using Raven.Client;
 using Raven.Client.Document;
-using Raven.Client.Linq;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -19,14 +22,26 @@ namespace Lisa.Breakpoint.WebApi
             return store;
         }
 
+        internal User insert(User user)
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                session.Store(user);
+                int userId = user.Id;
+
+                session.SaveChanges();
+
+                return session.Load<User>(userId);
+            }
+        }
+
         public IList<Report> getAll()
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                return session.Query<Report>()
-                    .Where(x => x.Title != "")
-                    .ToList<Report>();
+                return session.Query<Report>().ToList<Report>();
             }
         }
 
@@ -39,20 +54,13 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Report insert()
+        public Report insert(Report report)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                Report report = new Report
-                {
-                    Title = "een nieuw report",
-                    Description = "fix de bug",
-                    Status = "Fixed"
-                };
-
                 session.Store(report);
-                int reportId = report.Id;
+                string reportId = report.Id;
 
                 session.SaveChanges();
 
@@ -60,20 +68,37 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Report update(int id)
+        public Report patch(int id, Report patchedReport)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 Report report = session.Load<Report>(id);
 
-                report.Title = "Updated report";
-                report.Description = "The bug is almost fixed";
-                report.Status = "In progress";
+                try
+                {
+                    foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
+                    {
+                        var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
 
-                session.SaveChanges();
+                        if (newVal != null)
+                        {
+                            var patchRequest = new PatchRequest()
+                            {
+                                Name = propertyInfo.Name,
+                                Type = PatchCommandType.Set,
+                                Value = newVal.ToString()
+                            };
+                            store.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+                        }
+                    }
 
-                return report;
+                    return report;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    [Route("api/[controller]")]
+    [Route("")]
     public class DemoController : Controller
     {
         [Route("")]
