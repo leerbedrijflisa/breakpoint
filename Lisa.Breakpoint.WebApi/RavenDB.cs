@@ -21,6 +21,20 @@ namespace Lisa.Breakpoint.WebApi
             return store;
         }
 
+        internal User insert(User user)
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                session.Store(user);
+                int userId = user.Id;
+
+                session.SaveChanges();
+
+                return session.Load<User>(userId);
+            }
+        }
+
         public IList<Report> getAll()
         {
             IDocumentStore store = createDocumentStore();
