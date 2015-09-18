@@ -11,11 +11,11 @@ namespace Lisa.Breakpoint.WebApi
         public string   StepByStep { get; set; }
         public string   Expectation { get; set; }
         public string   WhatHappend { get; set; }
-        public IList<UserRef> Reporters { get; set; }
+        public IList<Reporter> Reporters { get; set; }
         public string   Reported { get; set; }
         public string   Status { get; set; }
         public string   Priority { get; set; }
-        public IList<UserRef> AssignedTo { get; set; }
+        public IList<Reporter> AssignedTo { get; set; }
         public IList<Comment> Comments { get; set; }
     }
 
@@ -26,7 +26,7 @@ namespace Lisa.Breakpoint.WebApi
         public string Text { get; set; }
     }
 
-    public class UserRef
+    public class Reporter
     {
         public string UserName { get; set; }
         public string FullName { get; set; }

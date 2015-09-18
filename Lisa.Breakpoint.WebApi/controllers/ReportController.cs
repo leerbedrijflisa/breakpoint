@@ -32,19 +32,19 @@ namespace Lisa.Breakpoint.WebApi
                 Name = "Leerbedrijf Lisa"
             };
 
-            UserRef reporter1 = new UserRef
+            Reporter reporter1 = new Reporter
             {
                 UserName = "blablaname",
                 FullName = "Bas Eenhoorn"
             };
 
-            UserRef reporter2 = new UserRef
+            Reporter reporter2 = new Reporter
             {
                 UserName = "otheruser",
                 FullName = "Sab Tweehoorn"
             };
 
-            UserRef assignedTo = new UserRef
+            Reporter assignedTo = new Reporter
             {
                 UserName = "otheruser",
                 FullName = "Sab Tweehoorn"
@@ -77,11 +77,11 @@ namespace Lisa.Breakpoint.WebApi
                 StepByStep = "step by step",
                 Expectation = "it works",
                 WhatHappend = "it did not work",
-                Reporters = new List<UserRef> { reporter1, reporter2 },
+                Reporters = new List<Reporter> { reporter1, reporter2 },
                 Reported = "yesterday",
                 Status = "not fixed",
                 Priority = "High",
-                AssignedTo = new List<UserRef> { assignedTo },
+                AssignedTo = new List<Reporter> { assignedTo },
                 Comments = new List<Comment> { comment1, comment2, comment3 }
             };
 
