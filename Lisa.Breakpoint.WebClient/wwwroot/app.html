@@ -1,20 +1,54 @@
 ﻿<template>
+    <style>
+        p {
+            margin: 0px;
+        }
+        .li-item {
+            background-color: gray;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        .list {
+            background-color: burlywood;
+            margin-left: 20px;
+        }
+        .label {
+            font-weight: bold;
+        }
+    </style>
     <h2>List of reports: </h2>
     <br />
     <ul>
-        <li repeat.for="report of reports">
-            <p>id: ${report.id}</p>
-            <p>number: ${report.number}</p>
-            <p>project: ${report.project}</p>
-            <p>stepByStep: ${report.stepByStep}</p>
-            <p>expectation: ${report.expectation}</p>
-            <p>whatHappened: ${report.whatHappened}</p>
-            <p>reporter: ${report.reporter}</p>
-            <p>reported: ${report.reported}</p>
-            <p>status: ${report.status}</p>
-            <p>priority: ${report.priority}</p>
-            <p>assignedTo: ${report.assignedTo}</p>
-            <p>comments: ${report.comments}</p>
+        <li repeat.for="report of reports" class="li-item">
+            <p><span class="label">id:</span> ${report.id}</p>
+            <p><span class="label">number:</span> ${report.number}</p>
+            <p>
+                <span class="label">project: </span>
+                <p repeat.for="project of report.project" class="list">
+                    <span>${project.slug} - ${project.name}</span>
+                </p>
+            </p>
+            <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
+            <p><span class="label">expectation:</span> ${report.expectation}</p>
+            <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
+            <p><span class="label">reporter:</span> ${report.reporter}</p>
+            <p><span class="label">reported:</span> ${report.reported}</p>
+            <p><span class="label">status:</span> ${report.status}</p>
+            <p><span class="label">priority:</span> ${report.priority}</p>
+            <p>
+                <span class="label">assignedTo: </span>
+                <p repeat.for="assignedTo of report.assignedTo" class="list">
+                    <span>${assignedTo.userName} - ${assignedTo.fullName}</span>
+                </p>
+            </p>
+            <p>
+                <span class="label">comments: </span>
+                <p repeat.for="comment of report.comments" class="list">
+                    <span>${comment.text}</span>
+                    <span>${comment.Author}</span>
+                    <span>${comment.Posted}</span>
+                </p>
+            </p>
         </li>
     </ul>
 </template>

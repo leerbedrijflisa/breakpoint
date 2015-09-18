@@ -68,7 +68,7 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Report update(int id, Report updatedReport)
+        public Report patch(int id, Report patchedReport)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
@@ -79,7 +79,7 @@ namespace Lisa.Breakpoint.WebApi
                 {
                     foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
                     {
-                        var newVal = updatedReport.GetType().GetProperty(propertyInfo.Name).GetValue(updatedReport, null);
+                        var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
 
                         if (newVal != null)
                         {

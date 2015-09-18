@@ -89,17 +89,17 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet]
-        [Route("update/{id}")]
-        public Report update(int id)
+        [Route("patch/{id}")]
+        public Report Patch(int id)
         {
-            Report updatedReport = new Report
+            Report patchedReport = new Report
             {
                 Expectation = "it should work again",
                 WhatHappend = "it did not work again",
                 Reported = "3 days ago",
             };
 
-            return _db.update(id, updatedReport);
+            return _db.patch(id, patchedReport);
         }
 
         [HttpGet]
