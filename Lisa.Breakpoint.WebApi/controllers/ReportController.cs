@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
@@ -27,17 +28,16 @@ namespace Lisa.Breakpoint.WebApi
         {
             Report report = new Report
             {
-                Number = 1,
-                Project = "fix de bug",
-                StepByStep = "Fixed",
-                Expectaton = "Fixed",
-                WhatHappend = "Fixed",
-                Reporter = "Fixed",
-                Reported = "Fixed",
-                Status = "Fixed",
-                Priority = "Fixed",
-                AssignedTo = "Fixed",
-                Comments = "Fixed"
+                Project = "projectnaam",
+                StepByStep = "step by step",
+                Expectation = "it works",
+                WhatHappend = "it did not work",
+                Reporter = "bas",
+                Reported = "yesterday",
+                Status = "not fixed",
+                Priority = "High",
+                AssignedTo = "bas2",
+                Comments = "-"
             };
 
             return _db.insert(report);
@@ -47,7 +47,14 @@ namespace Lisa.Breakpoint.WebApi
         [Route("update/{id}")]
         public Report update(int id)
         {
-            return _db.update(id);
+            Report updatedReport = new Report
+            {
+                Expectation = "it should work again",
+                WhatHappend = "it did not work again",
+                Reported = "3 days ago",
+            };
+
+            return _db.update(id, updatedReport);
         }
 
         [HttpGet]
