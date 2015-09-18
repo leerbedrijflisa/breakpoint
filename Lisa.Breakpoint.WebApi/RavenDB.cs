@@ -26,7 +26,12 @@ namespace Lisa.Breakpoint.WebApi
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
+<<<<<<< HEAD
                 return session.Query<Report>().ToList<Report>();
+=======
+                return session.Query<Report>()
+                    .ToList<Report>();
+>>>>>>> 8ffd6a9523627e99188b84c861c50dffe9da2a9d
             }
         }
 
