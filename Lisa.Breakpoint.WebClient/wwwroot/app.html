@@ -1,4 +1,13 @@
 ﻿<template>
-  <p>${data}</p>
-  <p>${code}</p>
+    <h2>List of reports: </h2>
+    <br />
+    <ul>
+        <li repeat.for="report of reports">
+            <p>${report}</p>
+            <p>${report.project}</p>
+            <p>${report.reporter}</p>
+            <p>${report.expectation}</p>
+            <p>${report.whatHappend}</p>
+        </li>
+    </ul>
 </template>

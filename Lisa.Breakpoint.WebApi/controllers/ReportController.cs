@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNet.Mvc;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi

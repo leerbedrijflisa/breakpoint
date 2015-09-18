@@ -5,15 +5,15 @@ import {HttpClient} from 'aurelia-http-client';
 export class App {
     constructor() {
         this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/api');      
+            x.withBaseUrl('http://localhost:10791/');      
             x.withHeader('Content-Type', 'application/json')});
     }
 
     activate() {
         this.loading = true;
-        return this.http.get("./Demo").then( response => {
-            this.data = response.content;
-            this.code = response.statusCode;
+        return this.http.get("reports").then( response => {
+            this.reports = response.content;
+            console.log(response.content);
             this.loading = false;
         });
     }
