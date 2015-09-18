@@ -27,16 +27,12 @@ namespace Lisa.Breakpoint.WebApi
         {
             Report report = new Report
             {
-                Project = "projectnaam",
                 StepByStep = "step by step",
                 Expectation = "it works",
                 WhatHappend = "it did not work",
-                Reporter = "bas",
                 Reported = "yesterday",
                 Status = "not fixed",
-                Priority = "High",
-                AssignedTo = "bas2",
-                Comments = "-"
+                Priority = "High"
             };
 
             return _db.insert(report);

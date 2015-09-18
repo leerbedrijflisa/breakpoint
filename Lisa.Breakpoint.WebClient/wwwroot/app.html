@@ -3,11 +3,18 @@
     <br />
     <ul>
         <li repeat.for="report of reports">
-            <p>${report}</p>
-            <p>${report.project}</p>
-            <p>${report.reporter}</p>
-            <p>${report.expectation}</p>
-            <p>${report.whatHappend}</p>
+            <p>id: ${report.id}</p>
+            <p>number: ${report.number}</p>
+            <p>project: ${report.project}</p>
+            <p>stepByStep: ${report.stepByStep}</p>
+            <p>expectation: ${report.expectation}</p>
+            <p>whatHappened: ${report.whatHappened}</p>
+            <p>reporter: ${report.reporter}</p>
+            <p>reported: ${report.reported}</p>
+            <p>status: ${report.status}</p>
+            <p>priority: ${report.priority}</p>
+            <p>assignedTo: ${report.assignedTo}</p>
+            <p>comments: ${report.comments}</p>
         </li>
     </ul>
 </template>

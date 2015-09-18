@@ -40,7 +40,7 @@ namespace Lisa.Breakpoint.WebApi
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                return session.Query<Report>().ToList<Report>();
+                return session.Query<Report>().ToList();
             }
         }
 
@@ -59,7 +59,7 @@ namespace Lisa.Breakpoint.WebApi
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(report);
-                int reportId = report.Id;
+                string reportId = report.Id;
 
                 session.SaveChanges();
 
