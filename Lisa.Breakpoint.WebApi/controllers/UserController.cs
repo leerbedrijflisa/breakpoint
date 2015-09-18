@@ -5,16 +5,20 @@ namespace Lisa.Breakpoint.WebApi.controllers
     [Route("users")]
     public class UserController
     {
-        static User _user = new User();
+        static RavenDB _db = new RavenDB();
 
-        public User inser()
+        [HttpGet]
+        [Route("insert")]
+        public User insert()
         {
             User user = new User
             {
                 Username = "Henk1",
                 FullName = "HenkHenksen",
                 Role = "User"
-            }
+            };
+
+            return _db.insert(user);
         }
     }
 }
