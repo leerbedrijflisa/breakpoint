@@ -5,7 +5,7 @@ namespace Lisa.Breakpoint.WebApi
 {
     public class Report
     {
-        public string      Id { get; set; }
+        public int   Id { get; set; }
         public int      Number { get; set; }
         public IEnumerable<Project> Project { get; set; }
         public string   StepByStep { get; set; }

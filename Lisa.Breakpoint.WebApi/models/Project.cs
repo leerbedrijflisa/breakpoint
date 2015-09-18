@@ -4,7 +4,7 @@ namespace Lisa.Breakpoint.WebApi.Models
 {
     public class Project
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Slug { get; set; }
         public string Name { get; set; }
         public IEnumerable<Members> Members{ get; set; }
