@@ -15,6 +15,13 @@
         .label {
             font-weight: bold;
         }
+        .label-in {
+            font-weight: normal;
+            width: 100px;
+        }
+        .comment {
+            margin-bottom: 10px;
+        }
     </style>
     <h2>List of reports: </h2>
     <br />
@@ -25,7 +32,8 @@
             <p>
                 <span class="label">project: </span>
                 <p repeat.for="project of report.project" class="list">
-                    <span>${project.slug} - ${project.name}</span>
+                    <span><span class="label-in">slug: </span>${project.slug}</span> <br />
+                    <span><span class="label-in">name: </span>${project.name}</span>
                 </p>
             </p>
             <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
@@ -38,15 +46,16 @@
             <p>
                 <span class="label">assignedTo: </span>
                 <p repeat.for="assignedTo of report.assignedTo" class="list">
-                    <span>${assignedTo.userName} - ${assignedTo.fullName}</span>
+                    <span><span class="label-in">userName: </span>${assignedTo.userName}</span> <br />
+                    <span><span class="label-in">fullName: </span>${assignedTo.fullName}</span>
                 </p>
             </p>
             <p>
                 <span class="label">comments: </span>
-                <p repeat.for="comment of report.comments" class="list">
-                    <span>${comment.text}</span>
-                    <span>${comment.Author}</span>
-                    <span>${comment.Posted}</span>
+                <p repeat.for="comment of report.comments" class="list comment">
+                    <span><span class="label-in">text: </span>${comment.text}</span> <br />
+                    <span><span class="label-in">Author: </span>${comment.Author}</span> <br />
+                    <span><span class="label-in">Posted: </span>${comment.Posted}</span>
                 </p>
             </p>
         </li>
