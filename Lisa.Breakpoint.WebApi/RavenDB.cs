@@ -1,6 +1,7 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace Lisa.Breakpoint.WebApi
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                return session.Query<Report>().ToList();
+                return session.Query<Report>().ToList<Report>();
             }
         }
 
@@ -74,26 +75,30 @@ namespace Lisa.Breakpoint.WebApi
             {
                 Report report = session.Load<Report>(id);
 
-                foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
+                try
                 {
-                    var newVal = updatedReport.GetType().GetProperty(propertyInfo.Name).GetValue(updatedReport, null);
-
-                    if (newVal != null)
+                    foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
                     {
-                        var patchRequest = new PatchRequest()
-                        {
-                            Name = propertyInfo.Name,
-                            Type = PatchCommandType.Set,
-                            Value = newVal.ToString()
-                        };
-                        //Debug.WriteLine("updating field: ");
-                        store.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
-                    }
-                    //Debug.WriteLine(propertyInfo.Name + ": " + propertyInfo.GetValue(report, null));
-                    //Debug.WriteLine(propertyInfo.Name + ": " + newVal);
-                }
+                        var newVal = updatedReport.GetType().GetProperty(propertyInfo.Name).GetValue(updatedReport, null);
 
-                return report;
+                        if (newVal != null)
+                        {
+                            var patchRequest = new PatchRequest()
+                            {
+                                Name = propertyInfo.Name,
+                                Type = PatchCommandType.Set,
+                                Value = newVal.ToString()
+                            };
+                            store.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+                        }
+                    }
+
+                    return report;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
 
