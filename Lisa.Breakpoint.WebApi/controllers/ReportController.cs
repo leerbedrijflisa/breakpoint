@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Mvc;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -22,68 +22,10 @@ namespace Lisa.Breakpoint.WebApi
             return _db.getReport(id);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("insert")]
-        public Report insert(int id)
+        public Report insert([FromBody]Report report)
         {
-            Project project = new Project
-            {
-                Slug = "lisa",
-                Name = "Leerbedrijf Lisa"
-            };
-
-            Reporter reporter1 = new Reporter
-            {
-                UserName = "blablaname",
-                FullName = "Bas Eenhoorn"
-            };
-
-            Reporter reporter2 = new Reporter
-            {
-                UserName = "otheruser",
-                FullName = "Sab Tweehoorn"
-            };
-
-            Reporter assignedTo = new Reporter
-            {
-                UserName = "otheruser",
-                FullName = "Sab Tweehoorn"
-            };
-
-            Comment comment1 = new Comment
-            {
-                Posted = new DateTime(2013, 6, 1, 12, 32, 30),
-                Author = "Bas eenhoorn",
-                Text = "This is a comment with some text.."
-            };
-
-            Comment comment2 = new Comment
-            {
-                Posted = new DateTime(2014, 5, 1, 12, 32, 30),
-                Author = "Cas Tweehoorn",
-                Text = "This is another comment with more text.."
-            };
-
-            Comment comment3 = new Comment
-            {
-                Posted = new DateTime(2015, 6, 1, 12, 32, 30),
-                Author = "Sab driehoorn",
-                Text = "This is a comment with less text.. well.. now its more..."
-            };
-
-            Report report = new Report
-            {   
-                Project = new List<Project> { project },
-                StepByStep = "step by step",
-                Expectation = "it works",
-                WhatHappend = "it did not work",
-                Reporters = new List<Reporter> { reporter1, reporter2 },
-                Reported = "yesterday",
-                Status = "not fixed",
-                Priority = "High",
-                AssignedTo = new List<Reporter> { assignedTo },
-                Comments = new List<Comment> { comment1, comment2, comment3 }
-            };
 
             return _db.insertReport(report);
         }

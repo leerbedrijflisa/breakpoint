@@ -1,7 +1,6 @@
 ﻿using Lisa.Breakpoint.WebApi.models;
 using Raven.Abstractions.Data;
 using Raven.Client;
-using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
 using System.Linq;

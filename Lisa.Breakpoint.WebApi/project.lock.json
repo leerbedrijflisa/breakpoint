@@ -4615,6 +4615,7 @@
       "Microsoft.AspNet.Mvc >= 6.0.0-beta7",
       "Microsoft.AspNet.Server.IIS >= 1.0.0-beta7",
       "Microsoft.AspNet.Server.WebListener >= 1.0.0-beta7",
+      "Microsoft.Net.Http.Server >= 1.0.0-beta7",
       "RavenDB.Client >= 3.0.3785",
       "RavenDB.Server >= 3.0.3785"
     ],
