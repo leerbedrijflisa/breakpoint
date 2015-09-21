@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lisa.Breakpoint.WebApi.Models;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -36,5 +37,7 @@ namespace Lisa.Breakpoint.WebApi
     {
         public string Slug { get; set; }
         public string Name { get; set; }
+        public List<Member> Member { get; internal set; }
+        public int Id { get; internal set; }
     }
 }

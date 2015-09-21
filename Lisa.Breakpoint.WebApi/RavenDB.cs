@@ -22,6 +22,20 @@ namespace Lisa.Breakpoint.WebApi
             return store;
         }
 
+        internal Project insert(Project project)
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                session.Store(project);
+                int projectId = project.Id;
+
+                session.SaveChanges();
+
+                return session.Load<Project>(projectId);
+            }
+        }
+
         internal User insert(User user)
         {
             IDocumentStore store = createDocumentStore();
