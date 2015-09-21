@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    [Route("reports")]
+    [Route("bug-reports")]
     public class ReportController
     {
         static RavenDB _db = new RavenDB();
@@ -22,7 +22,6 @@ namespace Lisa.Breakpoint.WebApi
             return _db.get(id);
         }
 
-        [HttpGet]
         [Route("insert")]
         public Report insert(int id)
         {
@@ -88,7 +87,6 @@ namespace Lisa.Breakpoint.WebApi
             return _db.insert(report);
         }
 
-        [HttpGet]
         [Route("patch/{id}")]
         public Report Patch(int id)
         {
@@ -102,7 +100,6 @@ namespace Lisa.Breakpoint.WebApi
             return _db.patch(id, patchedReport);
         }
 
-        [HttpGet]
         [Route("delete/{id}")]
         public void delete(int id)
         {
