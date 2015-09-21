@@ -1,85 +1,60 @@
-﻿using Raven.Abstractions.Data;
+﻿using Lisa.Breakpoint.WebApi.models;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    public class RavenDB
+    public partial class RavenDB
     {
-        public IDocumentStore createDocumentStore()
-        {
-            IDocumentStore store = new DocumentStore
-            {
-                Url = "http://localhost:8080/",
-                DefaultDatabase = "breakpoint"
-            };
-            
-            return store;
-        }
-
-        internal User insert(User user)
+        public IList<Project> getAllProjects()
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                session.Store(user);
-                int userId = user.Id;
+                return session.Query<Project>().ToList();
+            }
+        }
+
+        public Project getProject(int id)
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                return session.Load<Project>(id);
+            }
+        }
+
+        public Project insertProject(Project project)
+        {
+            IDocumentStore store = createDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                session.Store(project);
+                string projectId = project.Id;
 
                 session.SaveChanges();
 
-                return session.Load<User>(userId);
+                return session.Load<Project>(projectId);
             }
         }
 
-        public IList<Report> getAll()
+        public Project patchProject(int id, Project patchedProject)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                return session.Query<Report>().ToList<Report>();
-            }
-        }
-
-        public Report get(int id)
-        {
-            IDocumentStore store = createDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
-            {
-                return session.Load<Report>(id);
-            }
-        }
-
-        public Report insert(Report report)
-        {
-            IDocumentStore store = createDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
-            {
-                session.Store(report);
-                string reportId = report.Id;
-
-                session.SaveChanges();
-
-                return session.Load<Report>(reportId);
-            }
-        }
-
-        public Report patch(int id, Report patchedReport)
-        {
-            IDocumentStore store = createDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
-            {
-                Report report = session.Load<Report>(id);
+                Project project = session.Load<Project>(id);
 
                 try
                 {
-                    foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
+                    foreach (PropertyInfo propertyInfo in project.GetType().GetProperties())
                     {
-                        var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
+                        var newVal = patchedProject.GetType().GetProperty(propertyInfo.Name).GetValue(patchedProject, null);
 
                         if (newVal != null)
                         {
@@ -89,11 +64,11 @@ namespace Lisa.Breakpoint.WebApi
                                 Type = PatchCommandType.Set,
                                 Value = newVal.ToString()
                             };
-                            store.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+                            store.DatabaseCommands.Patch("Projects/" + id, new[] { patchRequest });
                         }
                     }
 
-                    return report;
+                    return project;
                 }
                 catch (Exception)
                 {
@@ -102,13 +77,13 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public void delete(int id)
+        public void deleteProject(int id)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                Report report = session.Load<Report>(id);
-                session.Delete(report);
+                Project organization = session.Load<Project>(id);
+                session.Delete(organization);
                 session.SaveChanges();
             }
         }

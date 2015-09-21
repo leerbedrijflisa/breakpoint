@@ -12,14 +12,14 @@ namespace Lisa.Breakpoint.WebApi
         [HttpGet]
         public IList<Report> Get()
         {
-            return _db.getAll();
+            return _db.getAllReports();
         }
 
         [HttpGet]
         [Route("{id}")]
         public Report get(int id)
         {
-            return _db.get(id);
+            return _db.getReport(id);
         }
 
         [HttpGet]
@@ -85,7 +85,7 @@ namespace Lisa.Breakpoint.WebApi
                 Comments = new List<Comment> { comment1, comment2, comment3 }
             };
 
-            return _db.insert(report);
+            return _db.insertReport(report);
         }
 
         [HttpGet]
@@ -99,14 +99,14 @@ namespace Lisa.Breakpoint.WebApi
                 Reported = "3 days ago",
             };
 
-            return _db.patch(id, patchedReport);
+            return _db.patchReport(id, patchedReport);
         }
 
         [HttpGet]
         [Route("delete/{id}")]
         public void delete(int id)
         {
-            _db.delete(id);
+            _db.deleteReport(id);
         }
     }
 }
