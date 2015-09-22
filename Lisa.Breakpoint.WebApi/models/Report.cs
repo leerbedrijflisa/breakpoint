@@ -35,10 +35,10 @@ namespace Lisa.Breakpoint.WebApi
 
     public class Project
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Slug { get; set; }
         public string Name { get; set; }
         public List<Member> Member { get; internal set; }
-        public int Id { get; internal set; }
+        //public int Id { get; internal set; }
     }
 }
