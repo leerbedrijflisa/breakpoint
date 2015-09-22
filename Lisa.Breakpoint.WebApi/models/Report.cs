@@ -11,7 +11,7 @@ namespace Lisa.Breakpoint.WebApi
         public IList<Project> Project { get; set; }
         public string   StepByStep { get; set; }
         public string   Expectation { get; set; }
-        public string   WhatHappend { get; set; }
+        public string   WhatHappened { get; set; }
         public IList<Reporter> Reporters { get; set; }
         public string   Reported { get; set; }
         public string   Status { get; set; }
@@ -35,6 +35,7 @@ namespace Lisa.Breakpoint.WebApi
 
     public class Project
     {
+        public string Id { get; set; }
         public string Slug { get; set; }
         public string Name { get; set; }
         public List<Member> Member { get; internal set; }

@@ -3,13 +3,12 @@ using Raven.Client;
 using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    public class RavenDB
+    public partial class RavenDB
     {
         public IDocumentStore createDocumentStore()
         {
@@ -36,30 +35,16 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        internal User insert(User user)
+        public IList<Report> getAllReports()
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                session.Store(user);
-                int userId = user.Id;
-
-                session.SaveChanges();
-
-                return session.Load<User>(userId);
+                return session.Query<Report>().ToList();
             }
         }
 
-        public IList<Report> getAll()
-        {
-            IDocumentStore store = createDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
-            {
-                return session.Query<Report>().ToList<Report>();
-            }
-        }
-
-        public Report get(int id)
+        public Report getReport(int id)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
@@ -68,7 +53,7 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Report insert(Report report)
+        public Report insertReport(Report report)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
@@ -82,7 +67,7 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Report patch(int id, Report patchedReport)
+        public Report patchReport(int id, Report patchedReport)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
@@ -116,7 +101,7 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public void delete(int id)
+        public void deleteReport(int id)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
