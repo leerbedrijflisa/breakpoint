@@ -19,10 +19,12 @@
           font-weight: bold;
       }
     </style>
+    <a href="/#/insert">new report</a>
     <h2>List of reports: </h2>
     <br />
     <ul>
         <li repeat.for="report of reports" class="li-item">
+            <p><a href="/#/edit?id=609">Edit report</a></p>
             <p><span class="label">id:</span> ${report.id}</p>
             <p><span class="label">number:</span> ${report.number}</p>
             <p>

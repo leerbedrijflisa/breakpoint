@@ -6,8 +6,10 @@ export class App {
     configureRouter(config, router){
         config.title = 'Aurelia';
         config.map([
-          { route: ['','report'], name: 'report', moduleId: 'report', nav: true, title:'report' },
-          { route: 'dashboard', name: 'dashboard', moduleId: 'dashboard', nav: true, title:'dashboard' },
+          { route: ['','report'], name: 'report', moduleId: 'report', nav: true, title:'Report' },
+          { route: 'dashboard', name: 'dashboard', moduleId: 'dashboard', nav: true, title:'Dashboard' },
+          { route: 'insert', name: 'insert', moduleId: 'insert', nav: true, title:'New Report' },
+          { route: 'edit', name: 'edit', moduleId: 'edit', nav: true, title:'Edit Report' },
         ]);
 
         this.router = router;

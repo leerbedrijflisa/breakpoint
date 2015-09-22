@@ -26,7 +26,6 @@ namespace Lisa.Breakpoint.WebApi
         [Route("insert")]
         public void insert([FromBody]Report report)
         {
-            Debug.WriteLine(report);
             _db.insertReport(report);
         }
 
