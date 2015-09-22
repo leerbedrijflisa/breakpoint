@@ -24,24 +24,24 @@ namespace Lisa.Breakpoint.WebApi
 
         [HttpPost]
         [Route("insert")]
-        public Report insert([FromBody]Report report)
+        public void insert([FromBody]Report report)
         {
-
-            return _db.insertReport(report);
+            Debug.WriteLine(report);
+            _db.insertReport(report);
         }
 
         [HttpGet]
         [Route("patch/{id}")]
-        public Report Patch(int id)
+        public void Patch(int id)
         {
             Report patchedReport = new Report
             {
                 Expectation = "it should work again",
-                WhatHappend = "it did not work again",
+                WhatHappened = "it did not work again",
                 Reported = "3 days ago",
             };
 
-            return _db.patchReport(id, patchedReport);
+            _db.patchReport(id, patchedReport);
         }
 
         [HttpGet]

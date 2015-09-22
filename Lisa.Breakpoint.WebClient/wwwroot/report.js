@@ -10,27 +10,42 @@ export class report {
     }
 
     report() {
-        var report = {
-            Project: {
-                Slug: this.project,
-                Name: this.project
-            },
+        var data = {
+            Project: [
+                {
+                    Id: this.project,
+                    Slug: this.project,
+                    Name: this.project
+                }
+            ],
             StepByStep: this.stepbystep,
             Expectation: this.expectation,
             WhatHappened: this.whathappened,
-            Reporters: this.reporters,
+            Reporters: [
+                {
+                    userName: this.reporters,
+                    FullName: this.reporters
+                }
+            ],
             Reported: this.reported,
             Status: this.status,
             Priority: this.priority,
-            AssignedTo: this.assignedto,
-            Comment: {
-                comments: this.comments
-            }
+            AssignedTo: [
+                {
+                    userName: this.assignedto,
+                    FullName: this.assignedto
+                }
+            ],
+            Comments: [
+                {
+                    Posted: "2013-06-01T12:32:30.0000000",
+                    Author: "Bas eenhoorn",
+                    Text: this.comment
+                }
+            ]
         }
 
-        console.log(report);
-
-        this.http.post('reports/insert', report).then( response => {
+        this.http.post('reports/insert', data).then( response => {
             this.reports = response.content;
             console.log(response.content);
             console.log(response.statusCode); // Might come in handy
