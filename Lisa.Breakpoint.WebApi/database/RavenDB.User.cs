@@ -9,27 +9,27 @@ namespace Lisa.Breakpoint.WebApi
 {
     public partial class RavenDB
     {
-        public IList<User> getAllUsers()
+        public IList<User> GetAllUsers()
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Query<User>().ToList();
             }
         }
 
-        public User getUser(int id)
+        public User GetUser(int id)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Load<User>(id);
             }
         }
 
-        public User insertUser(User user)
+        public User PostUser(User user)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(user);
@@ -41,9 +41,9 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public User patchUser(int id, User patchedUser)
+        public User PatchUser(int id, User patchedUser)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 User user = session.Load<User>(id);
@@ -75,9 +75,9 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public void deleteUser(int id)
+        public void DeleteUser(int id)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 User organization = session.Load<User>(id);

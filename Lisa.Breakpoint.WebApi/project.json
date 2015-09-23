@@ -3,6 +3,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
+    "EntityFramework.Relational": "7.0.0-beta7",
     "Microsoft.AspNet.Cors": "1.0.0-beta7",
     "Microsoft.AspNet.Http.Abstractions": "1.0.0-beta7",
     "Microsoft.AspNet.Mvc": "6.0.0-beta7",

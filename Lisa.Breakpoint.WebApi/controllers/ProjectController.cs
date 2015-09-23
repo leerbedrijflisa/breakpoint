@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    [Route("project")]
+    [Route("projects")]
     public class ProjectController
     {
         static RavenDB _db = new RavenDB();
@@ -12,53 +12,40 @@ namespace Lisa.Breakpoint.WebApi
         [HttpGet]
         public IList<Project> Get()
         {
-            return _db.getAllProjects();
+            return _db.GetAllProjects();
         }
 
         [HttpGet]
         [Route("{id}")]
-        public Project get(int id)
+        public Project Get(int id)
         {
-            return _db.getProject(id);
+            return _db.GetProject(id);
         }
 
-        [HttpGet]
-        [Route("insert")]
-        public Project insert(int id)
+        [HttpPost]
+        [Route("post")]
+        public void Post([FromBody]Project project)
         {
-            Member member = new Member
-            {
-                Role     = "admin",
-                UserName = "blablaname",
-                FullName = "Bas Eenhoorn"
-            };
-
-            Project project = new Project
-            {   
-                Slug = "eerste-project",
-                Name = "Eerste project",
-            };
-
-            return _db.insertProject(project);
+            _db.PostProject(project);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("patch/{id}")]
-        public Project Patch(int id)
+        public void Patch(int id)
         {
             Project patchedProject = new Project
             {
                 Slug = "patched-slug"
             };
 
-            return _db.patchProject(id, patchedProject);
+            _db.PatchProject(id, patchedProject);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("delete/{id}")]
-        public void delete(int id)
+        public void Delete(int id)
         {
-            _db.deleteProject(id);
+            _db.DeleteProject(id);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿<template>
     <h3>Report a bug:</h3>
-    <form submit.delegate="report()">
+    <form submit.delegate="submit()">
         <label for="project">Project: </label>
         <select value.bind="project" name="project" type="text">
             <option value="">-</option>
@@ -17,18 +17,12 @@
         <label for="whathappened">What happened: </label>
         <input value.bind="whathappened" name="whathappened" type="text" />
         <br />
-        <label for="reporters">Reporters: </label>
-        <select value.bind="reporters" name="reporters" type="text">
+        <label for="reporter">Reporter: </label>
+        <select value.bind="reporter" name="reporter" type="text">
             <option value="">-</option>
             <option value="bas eenhoorn">Bas Eenhoorn</option>
             <option value="sab tweehoorn">Sab Tweehoorn</option>
         </select>
-        <br />
-        <label for="reported">Reported: </label>
-        <input value.bind="reported" name="reported" type="text" />
-        <br />
-        <label for="status">Status: </label>
-        <input value.bind="status" name="status" type="text" />
         <br />
         <label for="priority">Priority: </label>
         <select value.bind="priority" name="priority" type="text">
@@ -41,9 +35,6 @@
         <br />
         <label for="assignedto">Assigned to: </label>
         <input value.bind="assignedto" name="assignedto" type="text" />
-        <br />
-        <label for="comment">Comments: </label>
-        <input value.bind="comment" name="comment" type="text" />
         <br />
         <button type="submit" name="submit">Report bug</button>
     </form>

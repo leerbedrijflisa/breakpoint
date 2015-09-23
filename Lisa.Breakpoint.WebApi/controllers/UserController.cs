@@ -18,7 +18,7 @@ namespace Lisa.Breakpoint.WebApi.controllers
                 Role = "User"
             };
 
-            return _db.insertUser(user);
+            return _db.PostUser(user);
         }
     }
 }

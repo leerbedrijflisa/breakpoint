@@ -1,6 +1,6 @@
 ﻿<template>
     <h3>Edit a bug:</h3>
-    <form submit.delegate="save()">
+    <form submit.delegate="submit()">
         <label for="project">Project: </label>
         <select value.bind="project" value="" name="project" type="text">
             <option value="">-</option>
@@ -17,15 +17,12 @@
         <label for="whathappened">What happened: </label>
         <input value.bind="whathappened" value="${report.whatHappened}" name="whathappened" type="text" />
         <br />
-        <label for="reporters">Reporters: </label>
-        <select value.bind="reporters" value="${report.reporters}" name="reporters" type="text">
+        <label for="reporters">Reporter: </label>
+        <select value.bind="reporter" value="${report.reporter}" name="reporter" type="text">
             <option value="">-</option>
             <option value="bas eenhoorn">Bas Eenhoorn</option>
             <option value="sab tweehoorn">Sab Tweehoorn</option>
         </select>
-        <br />
-        <label for="reported">Reported: </label>
-        <input value.bind="reported" value="${report.reported}" name="reported" type="text" />
         <br />
         <label for="status">Status: </label>
         <input value.bind="status" value="${report.status}" name="status" type="text" />
@@ -40,16 +37,8 @@
         </select>
         <br />
         <label for="assignedto">Assigned to: </label>
-        <p repeat.for="assignedTo of report.assignedTo" class="list">
-            <label for="userName">
-                username:
-                <input value.bind="assignedto.userName" value="${assignedTo.userName}" name="userName" type="text" />
-            </label>
-            <label for="fullName">
-                fullname:
-                <input value.bind="assignedto.fullName" value="${assignedTo.fullName}" name="fullName" type="text" />
-            </label>
-        </p>
+        <label for="userName">username: <input value.bind="assignedto.userName" value="${assignedTo.userName}" name="userName" type="text" />
+        </label>
         <br />
         <button type="submit" name="submit">Report bug</button>
     </form>

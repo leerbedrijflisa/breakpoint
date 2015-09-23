@@ -10,27 +10,27 @@ namespace Lisa.Breakpoint.WebApi
 {
     public partial class RavenDB
     {
-        public IList<Organization> getAllOrganizations()
+        public IList<Organization> GetAllOrganizations()
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Query<Organization>().ToList();
             }
         }
 
-        public Organization getOrganization(int id)
+        public Organization GetOrganization(int id)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Load<Organization>(id);
             }
         }
 
-        public Organization insertOrganization(Organization organization)
+        public Organization InsertOrganization(Organization organization)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(organization);
@@ -42,9 +42,9 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Organization patchOrganization(int id, Organization patchedOrganization)
+        public Organization PatchOrganization(int id, Organization patchedOrganization)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 Organization Organization = session.Load<Organization>(id);
@@ -76,9 +76,9 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public void deleteOrganization(int id)
+        public void DeleteOrganization(int id)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 Organization organization = session.Load<Organization>(id);

@@ -19,7 +19,7 @@ export class report {
         });
     }
 
-    save() {
+    submit() {
         var data = {
             Project: [
                 {
@@ -34,23 +34,14 @@ export class report {
             Reporters: [
                 {
                     userName: this.reporters,
-                    FullName: this.reporters
                 }
             ],
-            Reported: this.reported,
             Status: this.status,
             Priority: this.priority,
             AssignedTo: [
                 {
                     userName: this.assignedto,
                     FullName: this.assignedto
-                }
-            ],
-            Comments: [
-                {
-                    Posted: "2013-06-01T12:32:30.0000000",
-                    Author: "Bas eenhoorn",
-                    Text: this.comment
                 }
             ]
         }

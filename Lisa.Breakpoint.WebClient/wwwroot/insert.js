@@ -9,7 +9,7 @@ export class report {
         });
     }
 
-    report() {
+    submit() {
         var data = {
             Project: [
                 {
@@ -27,25 +27,18 @@ export class report {
                     FullName: this.reporters
                 }
             ],
-            Reported: this.reported,
-            Status: this.status,
+            Status: "Open",
             Priority: this.priority,
             AssignedTo: [
                 {
                     userName: this.assignedto,
-                    FullName: this.assignedto
-                }
-            ],
-            Comments: [
-                {
-                    Posted: "2013-06-01T12:32:30.0000000",
-                    Author: "Bas eenhoorn",
-                    Text: this.comment
                 }
             ]
-        }
+        };
 
-        this.http.post('reports/insert', data).then( response => {
+        console.log(data);
+
+        this.http.post('reports/post', data).then( response => {
             window.location.replace("http://localhost:10874/#/dashboard");
             this.loading = false;
         });

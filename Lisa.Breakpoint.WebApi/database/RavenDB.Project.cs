@@ -9,27 +9,27 @@ namespace Lisa.Breakpoint.WebApi
 {
     public partial class RavenDB
     {
-        public IList<Project> getAllProjects()
+        public IList<Project> GetAllProjects()
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Query<Project>().ToList();
             }
         }
 
-        public Project getProject(int id)
+        public Project GetProject(int id)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Load<Project>(id);
             }
         }
 
-        public Project insertProject(Project project)
+        public Project PostProject(Project project)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(project);
@@ -41,9 +41,9 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Project patchProject(int id, Project patchedProject)
+        public Project PatchProject(int id, Project patchedProject)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 Project project = session.Load<Project>(id);
@@ -75,9 +75,9 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public void deleteProject(int id)
+        public void DeleteProject(int id)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 Project organization = session.Load<Project>(id);
