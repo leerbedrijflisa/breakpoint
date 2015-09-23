@@ -19,7 +19,21 @@
           font-weight: bold;
       }
     </style>
-    <h2>List of reports: </h2>
+
+    <label for="userSelect">Select User:</label>
+    <select id="userSelect" ref="userSelect">
+        <option value="Sab Tweehoorn">Sab Tweehoorn</option>
+        <option value="Bas Tweehoorn">Bas Tweehoorn</option>
+    </select>
+
+    <label for="projectSelect">Select Project:</label>
+    <select id="projectSelect" ref="projectSelect">
+        <option value="lisa">Lisa</option>
+        <option value="microfox">Microfox International</option>
+    </select>
+
+
+    <h2>Result: </h2>
     <br />
     <ul>
         <li repeat.for="report of reports" class="li-item">
@@ -29,7 +43,6 @@
                 <span class="label">project: </span>
             <p repeat.for="project of report.project" class="list">
                 <span>${project.slug} - ${project.name}</span>
-            </p>
             </p>
             <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
             <p><span class="label">expectation:</span> ${report.expectation}</p>
@@ -42,15 +55,6 @@
                 <span class="label">assignedTo: </span>
             <p repeat.for="assignedTo of report.assignedTo" class="list">
                 <span>${assignedTo.userName} - ${assignedTo.fullName}</span>
-            </p>
-            </p>
-            <p>
-                <span class="label">comments: </span>
-            <p repeat.for="comment of report.comments" class="list">
-                <span>${comment.text}</span>
-                <span>${comment.Author}</span>
-                <span>${comment.Posted}</span>
-            </p>
             </p>
         </li>
     </ul>

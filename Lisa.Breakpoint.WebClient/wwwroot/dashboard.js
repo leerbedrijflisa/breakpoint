@@ -11,10 +11,8 @@ export class dashboard {
 
     activate() {
         this.loading = true;
-        return this.http.get("reports").then( response => {
+        this.http.get("reports").then( response => {
             this.reports = response.content;
-            console.log(response.content);
-            console.log(response.statusCode); // Might come in handy
             this.loading = false;
         });
     }
