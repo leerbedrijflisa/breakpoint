@@ -1,6 +1,4 @@
-﻿﻿import {inject} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
-import {HttpClient} from 'aurelia-http-client';
+﻿import {HttpClient} from 'aurelia-http-client';
 
 export class project {
     constructor() {
@@ -13,6 +11,7 @@ export class project {
         this.loading = true;
         return this.http.get("projects").then( response => {
             this.projects = response.content;
+            console.log(this.projects);
             console.log(response.content);
             console.log(response.statusCode); // Might come in handy
             this.loading = false;

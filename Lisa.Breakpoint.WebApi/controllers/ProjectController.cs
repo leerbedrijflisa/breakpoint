@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    [Route("project")]
+    [Route("projects")]
     public class ProjectController
     {
         static RavenDB _db = new RavenDB();
