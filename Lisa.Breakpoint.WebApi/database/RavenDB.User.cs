@@ -9,7 +9,7 @@ namespace Lisa.Breakpoint.WebApi
 {
     public partial class RavenDB
     {
-        public IList<User> getAllUsers()
+        public IList<User> GetAllUsers()
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
@@ -18,7 +18,7 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public User getUser(int id)
+        public User GetUser(int id)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
@@ -27,7 +27,7 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public User insertUser(User user)
+        public User InsertUser(User user)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
@@ -75,7 +75,7 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public void deleteUser(int id)
+        public void DeleteUser(int id)
         {
             IDocumentStore store = createDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())

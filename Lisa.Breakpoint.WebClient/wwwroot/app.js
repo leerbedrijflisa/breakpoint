@@ -8,6 +8,7 @@ export class App {
         config.map([
           { route: ['','report'], name: 'report', moduleId: 'report', nav: true, title:'report' },
           { route: 'dashboard', name: 'dashboard', moduleId: 'dashboard', nav: true, title:'dashboard' },
+          { route: ['', 'user'], name: 'user', moduleId: 'user', nav: true, title:'User' },
         ]);
 
         this.router = router;

@@ -1,24 +1,32 @@
 ﻿using Microsoft.AspNet.Mvc;
+using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi.controllers
 {
-    [Route("user")]
+    [Route("users")]
     public class UserController
     {
         static RavenDB _db = new RavenDB();
 
-        [HttpGet]
+        [HttpPost]
         [Route("insert")]
-        public User insert()
+        public User Insert([FromBody] User user)
         {
-            User user = new User
-            {
-                Username = "Henk1",
-                FullName = "HenkHenksen",
-                Role = "User"
-            };
+            return _db.InsertUser(user);
+        }
 
-            return _db.insertUser(user);
+        [HttpGet]
+        [Route("get")]
+        public IList<User> Get()
+        {
+            return _db.GetAllUsers();
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public User Get(int id)
+        {
+            return _db.GetUser(id);
         }
     }
 }

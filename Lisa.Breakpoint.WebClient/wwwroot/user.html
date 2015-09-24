@@ -1,0 +1,15 @@
+﻿<template>
+    <h3>Register</h3>
+    <form submit.delegate="Post()">
+        <label for="userName">Username: </label>
+        <input value.bind="userName" name="userName" type="text" />
+        <br />
+        <label for="fullName">Fullname: </label>
+        <input value.bind="fullName" name="fullname" type="text" />
+        <br />
+        <label for="Role">Role: </label>
+        <input value.bind="role" name="role" type="text" />
+        <br />
+        <button type="submit" name="submit">Sign up!</button>
+    </form>
+</template>
