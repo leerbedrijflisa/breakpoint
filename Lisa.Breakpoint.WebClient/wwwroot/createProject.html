@@ -1,0 +1,12 @@
+﻿<template>
+    <form submit.delegate="create()" <!--action="#/project"-->>
+        <label>Project name: </label>
+        <input value.bind="projectName" name="projectName" type="text" required />
+        <!--<br />
+        <label>Slug: </label>
+        <input value.bind="projectName" name="slug" type="text" />-->
+        <br />
+        <br />
+        <input type="submit" value="Submit" />
+    </form>
+</template>

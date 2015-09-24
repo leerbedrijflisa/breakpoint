@@ -1,6 +1,7 @@
 ﻿using Lisa.Breakpoint.WebApi.models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -20,21 +21,22 @@ namespace Lisa.Breakpoint.WebApi
             return _db.getProject(id);
         }
 
+        [HttpPost]
         [Route("insert")]
-        public Project insert(int id)
+        public Project insert([FromBody]Project project)
         {
-            Member member = new Member
-            {
-                Role     = "admin",
-                UserName = "blablaname",
-                FullName = "Bas Eenhoorn"
-            };
+            //Member member = new Member
+            //{
+            //    Role = "admin",
+            //    UserName = "blablaname",
+            //    FullName = "Bas Eenhoorn"
+            //};
 
-            Project project = new Project
-            {   
-                Slug = "eerste-project",
-                Name = "Eerste project",
-            };
+            //Project project = new Project
+            //{
+            //    Slug = "eerste-project",
+            //    Name = "Eerste project",
+            //};
 
             return _db.insertProject(project);
         }
