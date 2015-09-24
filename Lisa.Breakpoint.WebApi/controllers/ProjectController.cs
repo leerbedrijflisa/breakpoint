@@ -1,48 +1,46 @@
 ﻿using Lisa.Breakpoint.WebApi.models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    [Route("project")]
+    [Route("projects")]
     public class ProjectController
     {
         static RavenDB _db = new RavenDB();
 
-        [HttpGet]
         public IList<Project> Get()
         {
             return _db.getAllProjects();
         }
 
-        [HttpGet]
         [Route("{id}")]
         public Project get(int id)
         {
             return _db.getProject(id);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("insert")]
-        public Project insert(int id)
+        public Project insert([FromBody]Project project)
         {
-            Member member = new Member
-            {
-                Role     = "admin",
-                UserName = "blablaname",
-                FullName = "Bas Eenhoorn"
-            };
+            //Member member = new Member
+            //{
+            //    Role = "admin",
+            //    UserName = "blablaname",
+            //    FullName = "Bas Eenhoorn"
+            //};
 
-            Project project = new Project
-            {   
-                Slug = "eerste-project",
-                Name = "Eerste project",
-            };
+            //Project project = new Project
+            //{
+            //    Slug = "eerste-project",
+            //    Name = "Eerste project",
+            //};
 
             return _db.insertProject(project);
         }
 
-        [HttpGet]
         [Route("patch/{id}")]
         public Project Patch(int id)
         {
@@ -54,7 +52,6 @@ namespace Lisa.Breakpoint.WebApi
             return _db.patchProject(id, patchedProject);
         }
 
-        [HttpGet]
         [Route("delete/{id}")]
         public void delete(int id)
         {

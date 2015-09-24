@@ -33,7 +33,7 @@ namespace Lisa.Breakpoint.WebApi
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(project);
-                string projectId = project.Id;
+                int projectId = project.Id;
 
                 session.SaveChanges();
 

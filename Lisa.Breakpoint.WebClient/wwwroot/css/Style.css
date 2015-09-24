@@ -1,2 +1,15 @@
 ﻿body {
+    font-family: 'Comic Sans MS';
+    width: 1000px;
+    margin: 20px auto 0 auto;
+}
+
+table {
+    padding: 10px;
+    width: 500px;
+    text-align: left;
+}
+
+th, td {
+    width: auto;
 }
