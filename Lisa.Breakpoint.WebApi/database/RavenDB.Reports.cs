@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Data.Entity;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -43,13 +42,13 @@ namespace Lisa.Breakpoint.WebApi
 
         public void PostReport(Report report)
         {
-            //int number = GenerateAvailableNumber(report.Project[0].Name);
+            int number = GenerateAvailableNumber(report.Project[0].Name);
 
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
 
-                //report.Number = number;
+                report.Number = number;
                 report.Reported = DateTime.Now;
 
                 session.Store(report);
@@ -105,23 +104,27 @@ namespace Lisa.Breakpoint.WebApi
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                //var proj = session.Load<Report>("davinci");
+                //kan per project reports verkrijgen, nu nog een id toevoegen
+                var reports = session.Query<Report>()
+                    .Where(r => r.Project.Any(project => project.Name == projectName)).ToList();
 
-                //var reports = session.Query<Report>()
-                    //.Select(report => report.Project[0])
-                    //.Where(project => project.Name == projectName)
-                    //.ToList();
-
-                //var reports2 = session.Query<Report>()
-                    //.ToList();
+                // foreach report
+                // get alle 'report.Number'
+                // sorteer
+                // verkrijg hoogste
+                // return hoogste + 1
 
 
-                //var report  = session.Include<Report>(x => x.Id).Load("orders/1234");
-                //var project = session.Load<Project>(report.Id);
+                IList<int> numberList = new List<int> { };
 
-                Debug.WriteLine(reports);
+                foreach (Report report in reports)
+                {
+                    numberList.Add(report.Number);
+                }
 
-                return 0;
+                var sortedList = numberList.OrderByDescending(i => i).ToList();
+                int number = sortedList[0] + 1;
+                return number;
             }
         }
     }
