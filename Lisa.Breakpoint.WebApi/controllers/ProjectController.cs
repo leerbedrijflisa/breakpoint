@@ -4,25 +4,22 @@ using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    [Route("project")]
+    [Route("projects")]
     public class ProjectController
     {
         static RavenDB _db = new RavenDB();
 
-        [HttpGet]
         public IList<Project> Get()
         {
             return _db.getAllProjects();
         }
 
-        [HttpGet]
         [Route("{id}")]
         public Project get(int id)
         {
             return _db.getProject(id);
         }
 
-        [HttpGet]
         [Route("insert")]
         public Project insert(int id)
         {
@@ -42,7 +39,6 @@ namespace Lisa.Breakpoint.WebApi
             return _db.insertProject(project);
         }
 
-        [HttpGet]
         [Route("patch/{id}")]
         public Project Patch(int id)
         {
@@ -54,7 +50,6 @@ namespace Lisa.Breakpoint.WebApi
             return _db.patchProject(id, patchedProject);
         }
 
-        [HttpGet]
         [Route("delete/{id}")]
         public void delete(int id)
         {
