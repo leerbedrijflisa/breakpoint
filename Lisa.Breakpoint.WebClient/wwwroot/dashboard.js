@@ -13,6 +13,10 @@ export class dashboard {
         this.loading = true;
         return this.http.get("reports").then( response => {
             this.reports = response.content;
+
+            // this.reports.idNumber = this.reports.Id.split("/")[1];
+
+
             console.log(response.content);
             console.log(response.statusCode); // Might come in handy
             this.loading = false;

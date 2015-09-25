@@ -12,60 +12,40 @@ namespace Lisa.Breakpoint.WebApi
         [HttpGet]
         public IList<Organization> Get()
         {
-            return _db.getAllOrganizations();
+            return _db.GetAllOrganizations();
         }
 
         [HttpGet]
         [Route("{id}")]
-        public Organization get(int id)
+        public Organization Get(int id)
         {
-            return _db.getOrganization(id);
+            return _db.GetOrganization(id);
         }
 
-        [HttpGet]
-        [Route("insert")]
-        public Organization insert(int id)
+        [HttpPost]
+        [Route("post")]
+        public void Post([FromBody]Organization organization)
         {
-            Project project = new Project
-            {
-                Slug = "eerste-project",
-                Name = "Eerste Project"
-            };
-
-            Member user = new Member
-            {
-                Role     = "admin",
-                UserName = "blablaname",
-                FullName = "Bas Eenhoorn"
-            };
-
-            Organization organization = new Organization
-            {   
-                Slug = "OrganizationSlug",
-                Member = new List<Member> { user },
-                Project = new List<Project> { project }
-            };
-
-            return _db.insertOrganization(organization);
+            _db.InsertOrganization(organization);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("patch/{id}")]
-        public Organization Patch(int id)
+        public void Patch(int id)
         {
             Organization patchedOrganization = new Organization
             {
                 Slug = "patched-slug"
             };
 
-            return _db.patchOrganization(id, patchedOrganization);
+            _db.PatchOrganization(id, patchedOrganization);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("delete/{id}")]
-        public void delete(int id)
+        public void Delete(int id)
         {
-            _db.deleteOrganization(id);
+            _db.DeleteOrganization(id);
         }
     }
 }

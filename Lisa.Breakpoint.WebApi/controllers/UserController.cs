@@ -12,7 +12,7 @@ namespace Lisa.Breakpoint.WebApi.controllers
         [Route("insert")]
         public User Insert([FromBody] User user)
         {
-            return _db.InsertUser(user);
+            return _db.PostUser(user);
         }
 
         [HttpGet]
@@ -22,11 +22,15 @@ namespace Lisa.Breakpoint.WebApi.controllers
             return _db.GetAllUsers();
         }
 
+
         [HttpGet]
         [Route("{id}")]
         public User Get(int id)
         {
             return _db.GetUser(id);
+
+            //return _db.PostUser(user);
+
         }
     }
 }

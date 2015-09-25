@@ -12,43 +12,40 @@ namespace Lisa.Breakpoint.WebApi
         [HttpGet]
         public IList<Report> Get()
         {
-            return _db.getAllReports();
+            return _db.GetAllReports();
         }
 
         [HttpGet]
         [Route("{id}")]
-        public Report get(int id)
+        public Report Get(int id)
         {
-            return _db.getReport(id);
+            return _db.GetReport(id);
         }
 
         [HttpPost]
-        [Route("insert")]
-        public void insert([FromBody]Report report)
+        [Route("post")]
+        public void Post([FromBody]Report report)
         {
-            Debug.WriteLine(report);
-            _db.insertReport(report);
+            _db.PostReport(report);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("patch/{id}")]
         public void Patch(int id)
         {
             Report patchedReport = new Report
             {
                 Expectation = "it should work again",
-                WhatHappened = "it did not work again",
-                Reported = "3 days ago",
             };
 
-            _db.patchReport(id, patchedReport);
+            _db.PatchReport(id, patchedReport);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("delete/{id}")]
-        public void delete(int id)
+        public void Delete(int id)
         {
-            _db.deleteReport(id);
+            _db.DeleteReport(id);
         }
     }
 }

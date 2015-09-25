@@ -1,0 +1,47 @@
+﻿<template>
+    <h3>Edit a bug:</h3>
+    <form submit.delegate="submit()">
+        <label for="project">Project: </label>
+        <select value.bind="project" value="" name="project" type="text">
+            <option value="">-</option>
+            <option value="lisa">Lisa</option>
+            <option value="davinci">Da Vinci</option>
+        </select>
+        <br />
+        <label for="stepbystep">Step By Step: </label>
+        <input value.bind="stepbystep" value="${report.stepByStep}" name="stepbystep" type="text" />
+        <br />
+        <label for="expectation">Expectation: </label>
+        <input value.bind="expectation" value="${report.expectation}" name="expectation" type="text" />
+        <br />
+        <label for="whathappened">What happened: </label>
+        <input value.bind="whathappened" value="${report.whatHappened}" name="whathappened" type="text" />
+        <br />
+        <label for="reporters">Reporter: </label>
+        <select value.bind="reporter" value="${report.reporter}" name="reporter" type="text">
+            <option value="">-</option>
+            <option value="bas eenhoorn">Bas Eenhoorn</option>
+            <option value="sab tweehoorn">Sab Tweehoorn</option>
+        </select>
+        <br />
+        <label for="status">Status: </label>
+        <input value.bind="status" value="${report.status}" name="status" type="text" />
+        <br />
+        <label for="priority">Priority: </label>
+        <select value.bind="priority" value="${report.priority}" name="priority" type="text">
+            <option value="">-</option>
+            <option value="Fix whenever">Fix whenever</option>
+            <option value="Fix before release">Fix before release</option>
+            <option value="Fix for next release">Fix for next release</option>
+            <option value="Fix immediately">Fix immediately</option>
+        </select>
+        <br />
+        <label for="assignedto">Assigned to: </label>
+        <label for="userName">username: <input value.bind="assignedto.userName" value="${assignedTo.userName}" name="userName" type="text" />
+        </label>
+        <br />
+        <button type="submit" name="submit">Report bug</button>
+    </form>
+
+    <a href="/#/dashboard">dashboard</a>
+</template>

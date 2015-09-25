@@ -3,14 +3,16 @@ using Raven.Client;
 using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Data.Entity;
 
 namespace Lisa.Breakpoint.WebApi
 {
     public partial class RavenDB
     {
-        public IDocumentStore createDocumentStore()
+        public IDocumentStore CreateDocumentStore()
         {
             IDocumentStore store = new DocumentStore
             {
@@ -23,7 +25,7 @@ namespace Lisa.Breakpoint.WebApi
 
         internal Project insert(Project project)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(project);
@@ -35,41 +37,43 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public IList<Report> getAllReports()
+        public IList<Report> GetAllReports()
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Query<Report>().ToList();
             }
         }
 
-        public Report getReport(int id)
+        public Report GetReport(int id)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Load<Report>(id);
             }
         }
 
-        public Report insertReport(Report report)
+        public void PostReport(Report report)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(report);
-                string reportId = report.Id;
+                int reportId = report.Id;
 
+                //report.Number = 0;
+                //report.Reported = DateTime.Now;
                 session.SaveChanges();
 
-                return session.Load<Report>(reportId);
+                return session.Load<Project>(reportId);
             }
         }
 
-        public Report patchReport(int id, Report patchedReport)
+        public void PatchReport(int id, Report patchedReport)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 Report report = session.Load<Report>(id);
@@ -91,25 +95,48 @@ namespace Lisa.Breakpoint.WebApi
                             store.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
                         }
                     }
-
-                    return report;
                 }
                 catch (Exception)
                 {
-                    return null;
+                    //return null;
                 }
             }
         }
 
-        public void deleteReport(int id)
+        public void DeleteReport(int id)
         {
-            IDocumentStore store = createDocumentStore();
+            IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 Report report = session.Load<Report>(id);
                 session.Delete(report);
                 session.SaveChanges();
             }
+        }
+
+        public int GenerateAvailableNumber(string projectName)
+        {
+            //IDocumentStore store = CreateDocumentStore();
+            //using (IDocumentSession session = store.Initialize().OpenSession())
+            //{
+            //    var proj = session.Load<Report>("davinci");
+
+            //    var reports = session.Query<Report>()
+            //        .Select(report => report.Project[0])
+            //        .Where(project => project.Name == projectName)
+            //        .ToList();
+
+            //    var reports2 = session.Query<Report>()
+            //        .ToList();
+
+
+            //    var report = session.Include<Report>(x => x.Id).Load("orders/1234");
+            //    var project = session.Load<Project>(report.Id);
+
+            //    Debug.WriteLine(reports);
+
+                return 0;
+            
         }
     }
 }
