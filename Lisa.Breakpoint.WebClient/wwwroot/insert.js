@@ -11,29 +11,23 @@ export class report {
 
     submit() {
         var data = {
-            Project: [
-                {
-                    Id: this.project,
-                    Slug: this.project,
-                    Name: this.project
-                }
-            ],
-            StepByStep: this.stepbystep,
-            Expectation: this.expectation,
-            WhatHappened: this.whathappened,
-            Reporters: [
-                {
-                    userName: this.reporters,
-                    FullName: this.reporters
-                }
-            ],
-            Status: "Open",
-            Priority: this.priority,
-            AssignedTo: [
-                {
-                    userName: this.assignedto,
-                }
-            ]
+            project: {
+                id: this.project,
+                slug: this.project,
+                name: this.project
+            },
+            stepByStep: this.stepbystep,
+            expectation: this.expectation,
+            whatHappened: this.whathappened,
+            reporter: {
+                userName: this.reporters,
+                fullName: this.reporters
+            },
+            status: "Open",
+            priority: this.priority,
+            assignedTo: {
+                userName: this.assignedto,
+            }
         };
 
         console.log(data);

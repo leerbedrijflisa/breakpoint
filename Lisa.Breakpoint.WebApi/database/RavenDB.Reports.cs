@@ -61,13 +61,13 @@ namespace Lisa.Breakpoint.WebApi
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(report);
-                int reportId = report.Id;
+                //int reportId = report.Id;
 
                 //report.Number = 0;
                 //report.Reported = DateTime.Now;
                 session.SaveChanges();
 
-                return session.Load<Project>(reportId);
+                //return session.Load<Project>(reportId);
             }
         }
 

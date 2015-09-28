@@ -24,9 +24,15 @@ namespace Lisa.Breakpoint.WebApi
 
         [HttpPost]
         [Route("post")]
-        public void Post([FromBody]Report report)
+        public IActionResult Post([FromBody] Report report)
         {
+            if (report == null)
+            {
+                return new BadRequestResult();
+            }
+
             _db.PostReport(report);
+            return new HttpOkResult();
         }
 
         [HttpPost]
