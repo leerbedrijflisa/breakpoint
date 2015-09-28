@@ -23,7 +23,6 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpPost]
-        [Route("post")]
         public IActionResult Post([FromBody] Report report)
         {
             if (report == null)

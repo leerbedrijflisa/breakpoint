@@ -12,7 +12,6 @@ export class report {
     submit() {
         var data = {
             project: {
-                id: this.project,
                 slug: this.project,
                 name: this.project
             },
@@ -32,7 +31,7 @@ export class report {
 
         console.log(data);
 
-        this.http.post('reports/post', data).then( response => {
+        this.http.post('reports', data).then( response => {
             window.location.replace("http://localhost:10874/#/dashboard");
             this.loading = false;
         });
