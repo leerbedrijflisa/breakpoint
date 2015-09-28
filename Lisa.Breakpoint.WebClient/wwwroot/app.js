@@ -3,7 +3,7 @@ import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 
 export class App {
-    configureRouter(config, router){
+    configureRouter(config, router) {
         config.title = 'Breakpoint';
         config.map([
 
