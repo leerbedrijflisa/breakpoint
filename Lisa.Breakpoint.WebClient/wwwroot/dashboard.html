@@ -27,12 +27,7 @@
             <p><a href="/#/edit?id=${report.idNumber}">Edit report</a></p>
             <p><span class="label">id:</span> ${report.id}</p>
             <p><span class="label">number:</span> ${report.number}</p>
-            <p>
-                <span class="label">project: </span>
-            <p repeat.for="project of report.project" class="list">
-                <span>${project.slug} - ${project.name}</span>
-            </p>
-            </p>
+            <p><span class="label">project: </span> ${report.project.slug} - ${report.project.name}</p>
             <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
             <p><span class="label">expectation:</span> ${report.expectation}</p>
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
@@ -40,20 +35,7 @@
             <p><span class="label">reported:</span> ${report.reported}</p>
             <p><span class="label">status:</span> ${report.status}</p>
             <p><span class="label">priority:</span> ${report.priority}</p>
-            <p>
-                <span class="label">assignedTo: </span>
-            <p repeat.for="assignedTo of report.assignedTo" class="list">
-                <span>${assignedTo.userName} - ${assignedTo.fullName}</span>
-            </p>
-            </p>
-            <p>
-                <span class="label">comments: </span>
-            <p repeat.for="comment of report.comments" class="list">
-                <span>${comment.text}</span>
-                <span>${comment.Author}</span>
-                <span>${comment.Posted}</span>
-            </p>
-            </p>
+            <p><span class="label">assignedTo:</span> ${report.assignedTo.userName} - ${report.assignedTo.fullName}</p>
         </li>
     </ul>
 </template>
