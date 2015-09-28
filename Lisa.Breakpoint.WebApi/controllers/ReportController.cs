@@ -31,7 +31,9 @@ namespace Lisa.Breakpoint.WebApi
             }
 
             _db.PostReport(report);
-            return new HttpOkResult();
+            // TODO: return the correct URL using the route table to create it
+            string location = string.Format("/reports/{0}", report.Number);
+            return new CreatedResult(location, report);
         }
 
         [HttpPost]
