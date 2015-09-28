@@ -1,6 +1,6 @@
 ﻿import {HttpClient} from 'aurelia-http-client';
 
-export class report {
+export class Stikkelblik {
     constructor() {
         this.http = new HttpClient().configure(x => {
             x.withBaseUrl('http://localhost:10791/');      
