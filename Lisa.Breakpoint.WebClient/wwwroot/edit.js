@@ -21,29 +21,23 @@ export class report {
 
     submit() {
         var data = {
-            Project: [
-                {
-                    Id: this.project,
-                    Slug: this.project,
-                    Name: this.project
-                }
-            ],
-            StepByStep: this.stepbystep,
-            Expectation: this.expectation,
-            WhatHappened: this.whathappened,
-            Reporters: [
-                {
-                    userName: this.reporters,
-                }
-            ],
-            Status: this.status,
-            Priority: this.priority,
-            AssignedTo: [
-                {
-                    userName: this.assignedto,
-                    FullName: this.assignedto
-                }
-            ]
+            project: {
+                slug: this.project,
+                name: this.project
+            },
+            stepByStep: this.stepbystep,
+            expectation: this.expectation,
+            whatHappened: this.whathappened,
+            reporter: {
+                userName: this.reporter,
+                fullName: this.reporter,
+            },
+            status: this.status,
+            priority: this.priority,
+            assignedTo: {
+                userName: this.assignedto,
+                fullName: this.assignedto
+            }
         }
 
         this.http.post('reports/patch', data).then( response => {

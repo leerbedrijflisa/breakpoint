@@ -16,7 +16,9 @@ namespace Lisa.Breakpoint.WebApi
         public DateTime Reported { get; set; }
         public string   Status { get; set; }
         public string   Priority { get; set; }
-        public Reporter AssignedTo { get; set; }
+        public string   AssignedTo { get; set; }
+        public Reporter AssignedToPerson { get; set; }
+        public Group    AssignedToGroup { get; set; }
         public IList<Comment>   Comments { get; set; }
     }
 
@@ -33,12 +35,17 @@ namespace Lisa.Breakpoint.WebApi
         public string FullName { get; set; }
     }
 
+    public class Group
+    {
+        public string Name { get; set; }
+        public List<Member> Members { get; set; }
+    }
+
     public class Project
     {
         public int Id { get; set; }
         public string Slug { get; set; }
         public string Name { get; set; }
-        public List<Member> Member { get; internal set; }
-        //public int Id { get; internal set; }
+        public List<Member> Members { get; set; }
     }
 }

@@ -38,10 +38,15 @@ namespace Lisa.Breakpoint.WebApi
 
         public IList<Report> GetAllReports()
         {
+            string user = "bas eenhoorn";
+            string group = "developers";
+
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                return session.Query<Report>().ToList();
+                return session.Query<Report>()
+                    .Where(r => r.AssignedTo == "person" && r.AssignedToPerson.UserName == user  || r.AssignedTo == "group" && r.AssignedToGroup.Name == group)
+                    .ToList();
             }
         }
 

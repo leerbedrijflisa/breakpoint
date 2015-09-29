@@ -36,7 +36,11 @@
         </select>
         <br />
         <label for="assignedto">Assigned to: </label>
-        <label for="userName">username: <input value.bind="assignedto.userName" value="${assignedTo.userName}" name="userName" type="text" />
+        <select value.bind="assignedto" value="${report.assignedTo.userName}" name="reporter" type="text">
+            <option value="">-</option>
+            <option value="bas eenhoorn">Bas Eenhoorn</option>
+            <option value="sab tweehoorn">Sab Tweehoorn</option>
+        </select>
         </label>
         <br />
         <button type="submit" name="submit">Report bug</button>
