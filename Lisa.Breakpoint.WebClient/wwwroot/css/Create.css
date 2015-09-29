@@ -1,0 +1,19 @@
+﻿.page-host form select {
+    margin: 5px 0px 5px 0px;
+}
+
+.page-host form input {
+    margin: 5px 0px 5px 0px;
+}
+
+.page-host form label {
+    width: 145px;
+    float: left;
+    margin: 5px 0px 5px 0px;
+}
+
+.page-host form button {
+    padding: 5px;
+    margin: 10px 0px 10px 0px;
+    font-size: 13px;
+}
