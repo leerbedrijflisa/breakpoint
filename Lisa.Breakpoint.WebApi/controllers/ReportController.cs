@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("reports")]
-    public class ReportController
+    public class ReportController : Controller
     {
         static RavenDB _db = new RavenDB();
 
@@ -16,7 +16,7 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id}", Name = "report")]
         public Report Get(int id)
         {
             return _db.GetReport(id);
@@ -31,8 +31,8 @@ namespace Lisa.Breakpoint.WebApi
             }
 
             _db.PostReport(report);
-            // TODO: return the correct URL using the route table to create it
-            string location = string.Format("/reports/{0}", report.Number);
+
+            string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
             return new CreatedResult(location, report);
         }
 
