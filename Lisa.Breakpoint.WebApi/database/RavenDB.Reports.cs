@@ -56,23 +56,15 @@ namespace Lisa.Breakpoint.WebApi
 
         public void PostReport(Report report)
         {
-            int number = GenerateAvailableNumber(report.Project.Name);
-
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
 
-                report.Number = number;
+                report.Number = 0;
                 report.Reported = DateTime.Now;
 
                 session.Store(report);
-                //int reportId = report.Id;
-
-                //report.Number = 0;
-                //report.Reported = DateTime.Now;
                 session.SaveChanges();
-
-                //return session.Load<Project>(reportId);
             }
         }
 
@@ -116,34 +108,6 @@ namespace Lisa.Breakpoint.WebApi
                 Report report = session.Load<Report>(id);
                 session.Delete(report);
                 session.SaveChanges();
-            }
-        }
-
-        public int GenerateAvailableNumber(string projectName)
-        {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
-            {
-                //kan per project reports verkrijgen, nu nog een id toevoegen
-                var reports = session.Query<Report>()
-                    .Where(r => r.Project.Name == projectName).ToList();
-
-                // foreach report
-                // get alle 'report.Number'
-                // sorteer
-                // verkrijg hoogste
-                // return hoogste + 1
-
-                IList<int> numberList = new List<int> { };
-
-                foreach (Report report in reports)
-                {
-                    numberList.Add(report.Number);
-                }
-
-                var sortedList = numberList.OrderByDescending(i => i).ToList();
-                int number = sortedList[0] + 1;
-                return number;
             }
         }
     }
