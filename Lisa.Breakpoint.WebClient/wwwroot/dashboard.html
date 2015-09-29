@@ -24,15 +24,11 @@
     <br />
     <ul>
         <li repeat.for="report of reports" class="li-item">
-            <p><a href="/#/edit?id=${report.idNumber}">Edit report</a></p>
-            <p><span class="label">id:</span> ${report.id}</p>
-            <p><span class="label">number:</span> ${report.number}</p>
-            <p>
-                <span class="label">project: </span>
-            <p repeat.for="project of report.project" class="list">
-                <span>${project.slug} - ${project.name}</span>
-            </p>
-            </p>
+            <p><a href="/#/edit?number=${report.number}">Edit report</a></p>
+            <h2 repeat.for="project of report.project" class="list">
+                <span>${project.name}</span>
+            </h2>
+            <h3><span class="label">Bug #</span>${report.number}</h3>
             <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
             <p><span class="label">expectation:</span> ${report.expectation}</p>
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>

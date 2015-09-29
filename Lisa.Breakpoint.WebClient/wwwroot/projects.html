@@ -1,0 +1,30 @@
+﻿<template>
+    <style>
+      p {
+          margin: 0px;
+      }
+
+      .li-item {
+          background-color: #D8D8D8;
+          margin-bottom: 20px;
+          padding: 10px;
+      }
+
+      .list {
+          background-color: white;
+          margin-left: 20px;
+      }
+
+      .label {
+          font-weight: bold;
+      }
+    </style>
+    <a href="/#/insert">new project</a>
+    <h2>List of reports: </h2>
+    <br />
+    <ul>
+        <li repeat.for="project of projects" class="li-item">
+            <h4><span class="label">Project </span>${project.name}</h4>
+        </li>
+    </ul>
+</template>

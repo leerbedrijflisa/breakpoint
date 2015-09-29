@@ -10,6 +10,9 @@ export class App {
           { route: 'dashboard', name: 'dashboard', moduleId: 'dashboard', nav: true, title:'Dashboard' },
           { route: 'insert', name: 'insert', moduleId: 'insert', nav: true, title:'New Report' },
           { route: 'edit', name: 'edit', moduleId: 'edit', nav: true, title:'Edit Report' },
+          
+          { route: 'dashboard/projects', name: 'projects', moduleId: 'projects', nav: true, title:'Projects' },
+          { route: 'dashboard/projects/insert', name: 'insertProject', moduleId: 'insertProject', nav: true, title:'Insert Project' },
         ]);
 
         this.router = router;

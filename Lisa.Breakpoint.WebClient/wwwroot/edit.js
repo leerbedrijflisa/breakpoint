@@ -12,7 +12,8 @@ export class report {
     activate() {
         this.loading = true;
 
-        var path = "reports/609";
+        var number = location.search.split('number=')[1]
+        var path = "reports/" = number;
         return this.http.get(path).then( response => {
             this.report = response.content;
             this.loading = false;

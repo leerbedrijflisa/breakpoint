@@ -99,21 +99,20 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
+        // gets highest number+1 of a bug report (per project)
         public int GenerateAvailableNumber(string projectName)
         {
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                //kan per project reports verkrijgen, nu nog een id toevoegen
-                var reports = session.Query<Report>()
-                    .Where(r => r.Project.Any(project => project.Name == projectName)).ToList();
-
                 // foreach report
                 // get alle 'report.Number'
                 // sorteer
                 // verkrijg hoogste
                 // return hoogste + 1
 
+                var reports = session.Query<Report>()
+                    .Where(r => r.Project.Any(project => project.Name == projectName)).ToList();
 
                 IList<int> numberList = new List<int> { };
 
@@ -124,6 +123,7 @@ namespace Lisa.Breakpoint.WebApi
 
                 var sortedList = numberList.OrderByDescending(i => i).ToList();
                 int number = sortedList[0] + 1;
+
                 return number;
             }
         }
