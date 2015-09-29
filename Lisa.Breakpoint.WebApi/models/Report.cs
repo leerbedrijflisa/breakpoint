@@ -18,6 +18,7 @@ namespace Lisa.Breakpoint.WebApi
         public string   Priority { get; set; }
         public Reporter AssignedTo { get; set; }
         public IList<Comment>   Comments { get; set; }
+        public string   Version { get; set; }
     }
 
     public class Comment

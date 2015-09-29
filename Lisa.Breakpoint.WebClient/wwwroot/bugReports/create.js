@@ -31,7 +31,8 @@ export class Create {
             priority: this.priority,
             assignedTo: {
                 userName: this.assignedto,
-            }
+            },
+            version: this.version
         };
 
         this.http.post('reports', data).then(response => {
