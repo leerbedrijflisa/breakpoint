@@ -45,7 +45,8 @@ namespace Lisa.Breakpoint.WebApi
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Query<Report>()
-                    .Where(r => r.AssignedTo == "person" && r.AssignedToPerson.UserName == user  || r.AssignedTo == "group" && r.AssignedToGroup.Name == group)
+                    .Where(r => r.AssignedTo == "person" && r.AssignedToPerson.UserName == user)
+                    //.Where(r => r.AssignedTo == "person" && r.AssignedToPerson.UserName == user  || r.AssignedTo == "group" && r.AssignedToGroup.Name == group)
                     .ToList();
             }
         }
