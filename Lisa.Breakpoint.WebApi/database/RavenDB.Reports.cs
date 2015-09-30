@@ -3,7 +3,6 @@ using Raven.Client;
 using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -38,15 +37,14 @@ namespace Lisa.Breakpoint.WebApi
 
         public IList<Report> GetAllReports()
         {
-            string user = "bas eenhoorn";
+            string userName = "bas eenhoorn";
             string group = "developers";
 
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Query<Report>()
-                    .Where(r => r.AssignedTo == "person" && r.AssignedToPerson.UserName == user)
-                    //.Where(r => r.AssignedTo == "person" && r.AssignedToPerson.UserName == user  || r.AssignedTo == "group" && r.AssignedToGroup.Name == group)
+                    .Where(r => r.AssignedToPerson.UserName == userName || r.AssignedToGroup.Name == group)
                     .ToList();
             }
         }
@@ -65,7 +63,6 @@ namespace Lisa.Breakpoint.WebApi
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-
                 report.Number = 0;
                 report.Reported = DateTime.Now;
 

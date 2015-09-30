@@ -1,6 +1,9 @@
 ﻿<template>
     <h3>Report a bug:</h3>
     <form submit.delegate="submit()">
+        <label for="title">Title: </label>
+        <input value.bind="title" name="title" type="text" />
+        <br />
         <label for="project">Project: </label>
         <select value.bind="project" name="project" type="text">
             <option value="">-</option>
@@ -36,7 +39,7 @@
         <p>
             <label for="assignedToRadio">Person: <input id="personRadioButton" checked="checked" type="radio" name="assignedToRadio" value="person" /></label>
         </p>
-        <select id="selectperson" value.bind="assignedtoperson" value="${report.assignedTo.userName}" name="reporter" type="text">
+        <select id="selectperson" value.bind="assignedtoperson" name="reporter" type="text">
             <option value="">-</option>
             <option value="bas eenhoorn">Bas Eenhoorn</option>
             <option value="sab tweehoorn">Sab Tweehoorn</option>
@@ -44,7 +47,7 @@
         <p>
             <label for="assignedToRadio">group: <input type="radio" name="assignedToRadio" value="group" /></label>
         </p>
-        <select id="selectgroup" value.bind="assignedtogroup" value="${report.assignedTo.userName}" name="reporter" type="text">
+        <select id="selectgroup" value.bind="assignedtogroup" name="reporter" type="text">
             <option value="">-</option>
             <option value="developers">Developers</option>
             <option value="testers">Testers</option>

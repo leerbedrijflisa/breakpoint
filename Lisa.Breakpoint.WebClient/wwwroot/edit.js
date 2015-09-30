@@ -21,6 +21,7 @@ export class report {
 
     submit() {
         var data = {
+            title: this.title,
             project: {
                 slug: this.project,
                 name: this.project

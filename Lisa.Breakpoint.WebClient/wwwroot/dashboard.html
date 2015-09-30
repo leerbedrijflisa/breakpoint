@@ -24,18 +24,19 @@
     <br />
     <ul>
         <li repeat.for="report of reports" class="li-item">
-            <p><a href="/#/edit?id=${report.idNumber}">Edit report</a></p>
-            <p><span class="label">id:</span> ${report.id}</p>
-            <p><span class="label">number:</span> ${report.number}</p>
-            <p><span class="label">project: </span> ${report.project.slug} - ${report.project.name}</p>
+            <h3>Bug #${report.number} - ${report.title}</h3>
+            <p><span class="label">project: </span>${report.project.name}</p>
             <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
             <p><span class="label">expectation:</span> ${report.expectation}</p>
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
-            <p><span class="label">reporter:</span> ${report.reporter}</p>
+            <p><span class="label">reporter:</span> ${report.reporter.userName}</p>
             <p><span class="label">reported:</span> ${report.reported}</p>
             <p><span class="label">status:</span> ${report.status}</p>
             <p><span class="label">priority:</span> ${report.priority}</p>
-            <p><span class="label">assignedTo:</span> ${report.assignedTo.userName} - ${report.assignedTo.fullName}</p>
+            <br />
+            <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup.name}${report.assignedToPerson.userName}</p>
+            <br />
+            <p><a href="/#/edit?id=${report.idNumber}">Edit report</a></p>
         </li>
     </ul>
 </template>

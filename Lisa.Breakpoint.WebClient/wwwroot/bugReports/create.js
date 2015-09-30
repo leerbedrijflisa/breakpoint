@@ -17,6 +17,7 @@ export class Create {
     submit() {
         if (document.getElementById('personRadioButton').checked == true) {
             var data = {
+                title: this.title,
                 project: {
                     slug: this.project,
                     name: this.project
@@ -38,6 +39,7 @@ export class Create {
             };
         } else {
             var data = {
+                title: this.title,
                 project: {
                     slug: this.project,
                     name: this.project
@@ -53,17 +55,7 @@ export class Create {
                 priority: this.priority,
                 assignedTo: "group",
                 assignedToGroup: {
-                    name: this.assignedToGroup,
-                    members: [
-                        {
-                            userName: "developUser",
-                            fullName: "developUser"
-                        },
-                        {
-                            userName: "developUser222",
-                            fullName: "developUser222"
-                        }
-                    ]
+                    name: this.assignedtogroup,
                 }
             };
         }

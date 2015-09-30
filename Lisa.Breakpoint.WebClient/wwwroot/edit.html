@@ -1,6 +1,9 @@
 ﻿<template>
     <h3>Edit a bug:</h3>
     <form submit.delegate="submit()">
+        <label for="title">Title: </label>
+        <input value.bind="title" value="${report.title}" name="title" type="text" />
+        <br />
         <label for="project">Project: </label>
         <select value.bind="project" value="" name="project" type="text">
             <option value="">-</option>
