@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -10,13 +9,15 @@ namespace Lisa.Breakpoint.WebApi
         static RavenDB _db = new RavenDB();
 
         [HttpGet]
-        public IList<Report> Get()
+        [Route("{username}")]
+        public IList<Report> Get(string userName)
         {
-            return _db.GetAllReports();
+            string group = _db.GetGroupFromUser(userName) + "s";
+            return _db.GetAllReports(userName, group);
         }
 
         [HttpGet]
-        [Route("{id}", Name = "report")]
+        [Route("get/{id}")]
         public Report Get(int id)
         {
             return _db.GetReport(id);
@@ -38,7 +39,7 @@ namespace Lisa.Breakpoint.WebApi
 
         [HttpPost]
         [Route("patch/{id}")]
-        public void Patch(int id)
+        public void Patch(int id, [FromBody] Report report)
         {
             Report patchedReport = new Report
             {

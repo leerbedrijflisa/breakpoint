@@ -27,6 +27,20 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
+        public string GetGroupFromUser(string userName)
+        {
+            IDocumentStore store = CreateDocumentStore();
+            using (IDocumentSession session = store.Initialize().OpenSession())
+            {
+                var user = session.Query<User>()
+                    .Where(u => u.Username == userName)
+                    .ToList();
+
+                return user[0].Role;
+
+            }
+        }
+
         public User PostUser(User user)
 
         {

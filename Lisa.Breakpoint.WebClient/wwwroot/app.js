@@ -18,5 +18,6 @@ export class App {
         ]);
 
         this.router = router;
+        this.userName = readCookie("userName");
     }
 }

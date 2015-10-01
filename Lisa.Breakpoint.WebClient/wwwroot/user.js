@@ -15,18 +15,25 @@ export class user {
         });
     }
 
-    Post() {
-        var data = {
-            userName: this.userName,
-            fullName: this.fullName,
-            role: this.role
-        }
-
-        this.http.post('users/insert', data).then( response => {
-            this.reports = response.content;
-            console.log(response.content);
-            console.log(response.statusCode); // Might come in handy
+    activate() {
+        if (readCookie("userName")) {
             this.router.navigateToRoute("dashboard");
-        });
+        }
+    }
+
+    Post() {
+        if (!readCookie("userName")) {
+            var data = {
+                userName: this.userName,
+                fullName: this.fullName,
+                role: this.role
+            }
+
+            setCookie("userName", this.userName, 2);
+
+            this.http.post('users/insert', data).then( response => {
+                this.router.navigateToRoute("dashboard");
+            });
+        }
     }
 }

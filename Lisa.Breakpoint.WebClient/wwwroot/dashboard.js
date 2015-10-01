@@ -11,14 +11,11 @@ export class dashboard {
 
     activate() {
         this.loading = true;
-        return this.http.get("reports").then( response => {
+        return this.http.get("reports/"+readCookie("userName")).then( response => {
             this.reports = response.content;
-
-            // this.reports.idNumber = this.reports.Id.split("/")[1];
-
-
+            this.userName = readCookie("userName");
             console.log(response.content);
-            console.log(response.statusCode); // Might come in handy
+            console.log(response.statusCode);
             this.loading = false;
         });
     }

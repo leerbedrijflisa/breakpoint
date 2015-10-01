@@ -1,4 +1,5 @@
-﻿using Raven.Abstractions.Data;
+﻿using Microsoft.AspNet.Http;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
 using System;
@@ -35,11 +36,8 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public IList<Report> GetAllReports()
+        public IList<Report> GetAllReports(string userName, string group)
         {
-            string userName = "bas eenhoorn";
-            string group = "developers";
-
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
@@ -92,7 +90,7 @@ namespace Lisa.Breakpoint.WebApi
                                 Type = PatchCommandType.Set,
                                 Value = newVal.ToString()
                             };
-                            store.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+                            store.DatabaseCommands.Patch("reports /" + id, new[] { patchRequest });
                         }
                     }
                 }
