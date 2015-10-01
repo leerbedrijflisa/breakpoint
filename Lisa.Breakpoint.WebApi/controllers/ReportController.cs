@@ -33,7 +33,8 @@ namespace Lisa.Breakpoint.WebApi
 
             _db.PostReport(report);
 
-            string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
+            string location = "report/{id}";
+            //string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
             return new CreatedResult(location, report);
         }
 
