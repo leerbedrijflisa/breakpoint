@@ -1,24 +1,5 @@
 ﻿<template>
-    <style>
-      p {
-          margin: 0px;
-      }
-
-      .li-item {
-          background-color: #D8D8D8;
-          margin-bottom: 20px;
-          padding: 10px;
-      }
-
-      .list {
-          background-color: white;
-          margin-left: 20px;
-      }
-
-      .label {
-          font-weight: bold;
-      }
-    </style>
+    <link rel="stylesheet" href="css/Dashboard.css" />
     <a route-href="route: createBugReport"> new report</a>
     <h2>List of reports: </h2>
     <br />
@@ -34,6 +15,16 @@
             <p><span class="label">reporter:</span> ${report.reporter}</p>
             <p><span class="label">reported:</span> ${report.reported}</p>
             <p><span class="label">status:</span> ${report.status}</p>
+            <form submit.delegate="$parent.submit(report.id)">
+                <select value.bind="status" name="status" type="text">
+                    <option value="open" selected>Open</option>
+                    <option value="fixed">Fixed</option>
+                    <option value="wont fix">Won't Fix</option>
+                    <option value="wont fix approved">Won't Fix (Approved)</option>
+                    <option value="closed">Closed</option>
+                </select>
+                <button type="submit" name="submit">Edit Status</button>
+            </form>
             <p><span class="label">priority:</span> ${report.priority}</p>
             <p><span class="label">assignedTo:</span> ${report.assignedTo.userName} - ${report.assignedTo.fullName}</p>
         </li>
