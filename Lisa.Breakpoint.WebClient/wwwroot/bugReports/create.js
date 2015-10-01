@@ -13,7 +13,6 @@ export class Create {
             x.withHeader('Content-Type', 'application/json')
         });
     }
-
     submit() {
         var data = {
             project: {
@@ -33,7 +32,7 @@ export class Create {
                 userName: this.assignedto,
             }
         };
-
+        console.log(this.priority);
         this.http.post('reports', data).then(response => {
             this.router.navigateToRoute("dashboard");
         });
