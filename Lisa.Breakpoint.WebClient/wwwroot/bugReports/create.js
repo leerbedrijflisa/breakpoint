@@ -53,7 +53,7 @@ export class Create {
         this.http.post('reports', data).then(response => {
             this.report = response.content;
 
-            this.router.navigateToRoute("dashboard");
+            this.router.navigateToRoute("report");
             //console.log("-> " + response.content);
             //console.log(response.statusCode); // Might come in handy
 
