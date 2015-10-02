@@ -3,10 +3,9 @@
     <h3>Report a bug:</h3>
     <form submit.delegate="submit()">
         <label for="project">Project: </label>
-        <select value.bind="project" name="project" type="text">
+        <select value.bind="project">
             <option value="">-</option>
-            <option value="lisa">Lisa</option>
-            <option value="davinci">Da Vinci</option>
+            <option repeat.for="project of projects" value.bind="project.name" model.bind="project">${project.name}</option>
         </select>
         <br />
         <label for="stepbystep">Step By Step: </label>
@@ -37,7 +36,11 @@
         <input value.bind="assignedto" name="assignedto" type="text" />
         <br />
         <label for="version">Test version: </label>
-        <input value.bind="version" name="version" type="text" />
+        <select value.bind="version">
+            <option value="">-</option>
+            <option repeat.for="version of project.version" model.bind="version">${version}</option>
+        </select>
+
         <br />
         <button type="submit" name="submit">Report bug</button>
     </form>
