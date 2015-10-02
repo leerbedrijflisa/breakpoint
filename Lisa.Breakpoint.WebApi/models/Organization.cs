@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Lisa.Breakpoint.WebApi.models
+namespace Lisa.Breakpoint.WebApi.Models
 {
     public class Organization
     {
@@ -10,10 +10,10 @@ namespace Lisa.Breakpoint.WebApi.models
         public IList<Project> Project { get; set; }
     }
 
-    public class Member
-    {
-        public string Role { get; set; }
-        public string UserName { get; set; }
-        public string FullName { get; set; }
-    }
+    //public class Member
+    //{
+    //    public string Role { get; set; }
+    //    public string UserName { get; set; }
+    //    public string FullName { get; set; }
+    //}
 }

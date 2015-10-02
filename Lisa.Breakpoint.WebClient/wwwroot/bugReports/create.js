@@ -14,11 +14,26 @@ export class Create {
         });
     }
 
+    activate() {
+        this.loading = true;
+        return this.http.get("projects").then( response => {
+            this.projects = response.content;
+
+            console.log(response.content);
+            console.log(response.statusCode); // Might come in handy
+            
+            this.loading = false;
+        });
+    }
+
     submit() {
+        console.log("hengel");
+
+
         var data = {
             project: {
-                slug: this.project,
-                name: this.project
+                slug: this.project.name,
+                name: this.project.slug
             },
             stepByStep: this.stepbystep,
             expectation: this.expectation,
@@ -31,11 +46,17 @@ export class Create {
             priority: this.priority,
             assignedTo: {
                 userName: this.assignedto,
-            }
+            },
+            version: this.version
         };
 
         this.http.post('reports', data).then(response => {
+            this.report = response.content;
+
             this.router.navigateToRoute("dashboard");
+            //console.log("-> " + response.content);
+            //console.log(response.statusCode); // Might come in handy
+
         });
     }
 }

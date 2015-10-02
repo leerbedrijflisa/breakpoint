@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Lisa.Breakpoint.WebApi.Models;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -14,7 +15,9 @@ namespace Lisa.Breakpoint.WebApi
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                return session.Query<Project>().ToList();
+                var list = session.Query<Project>().ToList();
+                return list;
+                //return session.Query<Project>().ToList();
             }
         }
 
