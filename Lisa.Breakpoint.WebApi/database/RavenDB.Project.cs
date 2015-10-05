@@ -30,17 +30,13 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Project PostProject(Project project)
+        public void PostProject(Project project)
         {
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(project);
-                string projectId = project.Id;
-
                 session.SaveChanges();
-
-                return session.Load<Project>(projectId);
             }
         }
 

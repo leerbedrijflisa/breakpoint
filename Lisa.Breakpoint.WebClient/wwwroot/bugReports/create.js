@@ -31,7 +31,7 @@ export class Create {
                 priority: this.priority,
                 assignedTo: "person",
                 assignedToPerson: "baseenhoorn"
-            };
+            }
         } else {
             var data = {
                 title: this.title,
@@ -44,7 +44,7 @@ export class Create {
                 priority: this.priority,
                 assignedTo: "group",
                 assignedToGroup: "baseenhoorn"
-            };
+            }
         }
 
         this.http.post('reports', data).then(response => {

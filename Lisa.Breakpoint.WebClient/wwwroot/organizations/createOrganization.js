@@ -17,7 +17,7 @@ export class Create {
     submit() {
         var data = {
             name: this.name,
-            slug: this.name,
+            slug: this.slug,
             members: [
                 {
                     userName: this.members,

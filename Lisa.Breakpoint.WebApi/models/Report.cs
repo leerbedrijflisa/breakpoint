@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Lisa.Breakpoint.WebApi.models;
-using Lisa.Breakpoint.WebApi.Models;
 
 namespace Lisa.Breakpoint.WebApi
 {

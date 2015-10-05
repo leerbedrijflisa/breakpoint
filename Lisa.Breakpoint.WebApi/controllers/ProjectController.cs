@@ -24,10 +24,9 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpPost]
-        [Route("insert")]
-        public Project insert([FromBody]Project project)
+        public void insert([FromBody]Project project)
         {
-            return _db.PostProject(project);
+            _db.PostProject(project);
         }
 
         [HttpPost]
