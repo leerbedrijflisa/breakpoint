@@ -29,7 +29,7 @@ export class user {
                 role: this.role
             }
 
-            setCookie("userName", this.userName, 2);
+            //setCookie("userName", this.userName, 2);
 
             this.http.post('users/insert', data).then( response => {
                 this.router.navigateToRoute("dashboard");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lisa.Breakpoint.WebApi.models;
 using Lisa.Breakpoint.WebApi.Models;
 
 namespace Lisa.Breakpoint.WebApi
@@ -9,17 +10,17 @@ namespace Lisa.Breakpoint.WebApi
         public string   Title { get; set; }
         public string   Id { get; set; }
         public int      Number { get; set; }
-        public Project  Project { get; set; }
+        public string   Project { get; set; }
         public string   StepByStep { get; set; }
         public string   Expectation { get; set; }
         public string   WhatHappened { get; set; }
-        public Reporter Reporter { get; set; }
+        public string   Reporter { get; set; }
         public DateTime Reported { get; set; }
         public string   Status { get; set; }
         public string   Priority { get; set; }
         public string   AssignedTo { get; set; }
-        public Reporter AssignedToPerson { get; set; }
-        public Group    AssignedToGroup { get; set; }
+        public string   AssignedToPerson { get; set; }
+        public string   AssignedToGroup { get; set; }
         public IList<Comment>   Comments { get; set; }
     }
 
@@ -38,14 +39,6 @@ namespace Lisa.Breakpoint.WebApi
 
     public class Group
     {
-        public string Name { get; set; }
-        public List<Member> Members { get; set; }
-    }
-
-    public class Project
-    {
-        public int Id { get; set; }
-        public string Slug { get; set; }
         public string Name { get; set; }
         public List<Member> Members { get; set; }
     }

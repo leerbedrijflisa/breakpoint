@@ -9,11 +9,11 @@ namespace Lisa.Breakpoint.WebApi
         static RavenDB _db = new RavenDB();
 
         [HttpGet]
-        [Route("{username}")]
-        public IList<Report> Get(string userName)
+        [Route("{project}/{username}")]
+        public IList<Report> Get(string project, string userName)
         {
-            string group = _db.GetGroupFromUser(userName) + "s";
-            return _db.GetAllReports(userName, group);
+            string group = _db.GetGroupFromUser(userName);
+            return _db.GetAllReports(project, userName, group);
         }
 
         [HttpGet]

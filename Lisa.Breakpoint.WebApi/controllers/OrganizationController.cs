@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    [Route("organization")]
+    [Route("organizations")]
     public class OrganizationController
     {
         static RavenDB _db = new RavenDB();
@@ -26,7 +26,7 @@ namespace Lisa.Breakpoint.WebApi
         [Route("post")]
         public void Post([FromBody]Organization organization)
         {
-            _db.InsertOrganization(organization);
+            _db.PostOrganization(organization);
         }
 
         [HttpPost]

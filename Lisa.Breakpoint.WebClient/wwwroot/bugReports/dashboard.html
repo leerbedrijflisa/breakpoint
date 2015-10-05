@@ -4,6 +4,11 @@
           margin: 0px;
       }
 
+      ul {
+          list-style: none;
+          margin: 0px;
+      }
+
       .li-item {
           background-color: #D8D8D8;
           margin-bottom: 20px;
@@ -19,7 +24,7 @@
           font-weight: bold;
       }
     </style>
-    <a route-href="route: createBugReport"> new report</a>
+    <a route-href="route: create-report; params.bind: { organization: organization, project: project }">Create report</a>
     <h2>List of reports: </h2>
     <br />
     <ul>
@@ -36,7 +41,7 @@
             <br />
             <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup.name}${report.assignedToPerson.userName}</p>
             <br />
-            <p><a href="/#/edit?id=${report.idNumber}">Edit report</a></p>
+            <p><a route-href="route: edit-report; params.bind: { organization: project.organization, project: project.slug }">Edit report</a></p>
         </li>
     </ul>
 </template>

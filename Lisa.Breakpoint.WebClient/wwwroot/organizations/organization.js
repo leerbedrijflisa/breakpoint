@@ -10,13 +10,9 @@ export class dashboard {
     }
 
     activate() {
-        this.loading = true;
-        return this.http.get("reports/"+readCookie("userName")).then( response => {
-            this.reports = response.content;
+        return this.http.get("organizations").then( response => {
+            this.organizations = response.content;
             this.userName = readCookie("userName");
-            console.log(response.content);
-            console.log(response.statusCode);
-            this.loading = false;
         });
     }
 }

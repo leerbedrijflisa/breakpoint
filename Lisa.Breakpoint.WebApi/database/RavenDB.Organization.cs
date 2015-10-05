@@ -28,17 +28,13 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public Organization InsertOrganization(Organization organization)
+        public void PostOrganization(Organization organization)
         {
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(organization);
-                string organizationId = organization.Id;
-
                 session.SaveChanges();
-
-                return session.Load<Organization>(organizationId);
             }
         }
 

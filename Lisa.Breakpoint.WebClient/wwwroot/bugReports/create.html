@@ -4,13 +4,6 @@
         <label for="title">Title: </label>
         <input value.bind="title" name="title" type="text" />
         <br />
-        <label for="project">Project: </label>
-        <select value.bind="project" name="project" type="text">
-            <option value="">-</option>
-            <option value="lisa">Lisa</option>
-            <option value="davinci">Da Vinci</option>
-        </select>
-        <br />
         <label for="stepbystep">Step By Step: </label>
         <input value.bind="stepbystep" name="stepbystep" type="text" />
         <br />
@@ -56,5 +49,5 @@
         <button type="submit" name="submit">Report bug</button>
     </form>
 
-    <a href="/#/dashboard">dashboard</a>
+    <a route-href="route: organizations">dashboard</a>
 </template>

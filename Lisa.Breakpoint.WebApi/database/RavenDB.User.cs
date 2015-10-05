@@ -36,7 +36,7 @@ namespace Lisa.Breakpoint.WebApi
                     .Where(u => u.Username == userName)
                     .ToList();
 
-                return user[0].Role;
+                return user[0].Role + "s";
 
             }
         }

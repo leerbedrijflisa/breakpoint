@@ -11,26 +11,20 @@ export class createProject {
 
     create() {
         var data = {
-            Name: this.projectName,
-            Slug: this.projectName.replace(/\s+/g, '-').toLowerCase(),
-            Member: [
+            name: this.name,
+            slug: this.name,
+            organization: this.organization,
+            members: [
                 {
-                    Role: "ProjectManager",
-                    UserName: "Leon",
-                    FullName: "Leon Tribe"
+                    userName: this.members,
+                    fullName: this.members
                 }
             ]
-        }
-
-        console.log(data);
+        };
 
         this.http.post('projects/insert', data).then( response => {
             this.projects = response.content;
-            console.log(response.content);
-            console.log(response.statusCode); // Might come in handy
-            this.loading = false;
         });
-        window.location.href = '#/project';
     }
 
 }

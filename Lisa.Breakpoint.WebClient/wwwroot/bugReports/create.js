@@ -14,54 +14,44 @@ export class Create {
         });
     }
     
+    activate(params) {
+        this.params = params;
+    }
+
     submit() {
         if (document.getElementById('personRadioButton').checked == true) {
             var data = {
                 title: this.title,
-                project: {
-                    slug: this.project,
-                    name: this.project
-                },
+                project: this.params.project,
                 stepByStep: this.stepbystep,
                 expectation: this.expectation,
                 whatHappened: this.whathappened,
-                reporter: {
-                    userName: this.reporter,
-                    fullName: this.reporter
-                },
+                reporter: this.reporter,
                 status: "Open",
                 priority: this.priority,
                 assignedTo: "person",
-                assignedToPerson: {
-                    userName: this.assignedtoperson,
-                    fullName: this.assignedtoperson
-                }
+                assignedToPerson: "baseenhoorn"
             };
         } else {
             var data = {
                 title: this.title,
-                project: {
-                    slug: this.project,
-                    name: this.project
-                },
+                project: this.params.project,
                 stepByStep: this.stepbystep,
                 expectation: this.expectation,
                 whatHappened: this.whathappened,
-                reporter: {
-                    userName: this.reporter,
-                    fullName: this.reporter
-                },
+                reporter: this.reporter,
                 status: "Open",
                 priority: this.priority,
                 assignedTo: "group",
-                assignedToGroup: {
-                    name: this.assignedtogroup,
-                }
+                assignedToGroup: "baseenhoorn"
             };
         }
 
         this.http.post('reports', data).then(response => {
-            this.router.navigateToRoute("dashboard");
+            var organization = this.params.organization;
+            var project = this.params.project;
+
+            this.router.navigateToRoute("reports", { organization: organization, project, project });
         });
     }
 }

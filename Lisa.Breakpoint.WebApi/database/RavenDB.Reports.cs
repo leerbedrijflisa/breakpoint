@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Http;
+﻿using Lisa.Breakpoint.WebApi.Models;
+using Microsoft.AspNet.Http;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
@@ -28,7 +29,7 @@ namespace Lisa.Breakpoint.WebApi
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(project);
-                int projectId = project.Id;
+                string projectId = project.Id;
 
                 session.SaveChanges();
 
@@ -36,13 +37,13 @@ namespace Lisa.Breakpoint.WebApi
             }
         }
 
-        public IList<Report> GetAllReports(string userName, string group)
+        public IList<Report> GetAllReports(string project, string userName, string group)
         {
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 return session.Query<Report>()
-                    .Where(r => r.AssignedToPerson.UserName == userName || r.AssignedToGroup.Name == group)
+                    .Where(r => r.Project == project && r.AssignedToPerson == userName || r.Project == project && r.AssignedToGroup == group)
                     .ToList();
             }
         }

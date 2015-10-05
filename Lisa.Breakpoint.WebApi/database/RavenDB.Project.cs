@@ -1,4 +1,5 @@
-﻿using Raven.Abstractions.Data;
+﻿using Lisa.Breakpoint.WebApi.Models;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,14 @@ namespace Lisa.Breakpoint.WebApi
 {
     public partial class RavenDB
     {
-        public IList<Project> GetAllProjects()
+        public IList<Project> GetAllProjects(string organizationName)
         {
             IDocumentStore store = CreateDocumentStore();
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
-                return session.Query<Project>().ToList();
+                return session.Query<Project>()
+                    .Where(p => p.Organization == organizationName)
+                    .ToList();
             }
         }
 
@@ -33,7 +36,7 @@ namespace Lisa.Breakpoint.WebApi
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
                 session.Store(project);
-                int projectId = project.Id;
+                string projectId = project.Id;
 
                 session.SaveChanges();
 

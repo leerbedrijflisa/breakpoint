@@ -1,0 +1,18 @@
+﻿<template>
+    <form submit.delegate="create()">
+        <label>Project name: </label>
+        <input value.bind="projectName" name="projectName" type="text" required />
+        <br />
+        <label>Organization: </label>
+        <input value.bind="organization" name="organization" type="text" required />
+        <br />
+        <label for="members">Members: </label>
+        <select value.bind="members" name="members" type="text">
+            <option value="">-</option>
+            <option value="bas eenhoorn">Bas Eenhoorn</option>
+            <option value="sab tweehoorn">Sab Tweehoorn</option>
+        </select>
+        <br />
+        <input type="submit" value="Submit" />
+    </form>
+</template>

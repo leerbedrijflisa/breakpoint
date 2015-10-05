@@ -1,7 +1,6 @@
-﻿using Lisa.Breakpoint.WebApi.models;
+﻿using Lisa.Breakpoint.WebApi.Models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -10,12 +9,15 @@ namespace Lisa.Breakpoint.WebApi
     {
         static RavenDB _db = new RavenDB();
 
-        public IList<Project> Get()
+        [HttpGet]
+        [Route("{organization}")]
+        public IList<Project> Get(string organization)
         {
-            return _db.GetAllProjects();
+            return _db.GetAllProjects(organization);
         }
 
-        [Route("{id}")]
+        [HttpGet]
+        [Route("/get/{id}")]
         public Project Get(int id)
         {
             return _db.GetProject(id);
@@ -25,19 +27,6 @@ namespace Lisa.Breakpoint.WebApi
         [Route("insert")]
         public Project insert([FromBody]Project project)
         {
-            //Member member = new Member
-            //{
-            //    Role = "admin",
-            //    UserName = "blablaname",
-            //    FullName = "Bas Eenhoorn"
-            //};
-
-            //Project project = new Project
-            //{
-            //    Slug = "eerste-project",
-            //    Name = "Eerste project",
-            //};
-
             return _db.PostProject(project);
         }
 
