@@ -1,12 +1,18 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using Lisa.Breakpoint.WebApi.database;
+using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("reports")]
-    public class ReportController : Controller
+    public class ReportController
     {
-        static RavenDB _db = new RavenDB();
+        private readonly RavenDB _db;
+
+        public ReportController(RavenDB db)
+        {
+            _db = db;
+        }
 
         [HttpGet]
         [Route("{project}/{username}")]
@@ -40,7 +46,7 @@ namespace Lisa.Breakpoint.WebApi
 
         [HttpPost]
         [Route("patch/{id}")]
-        public void Patch(int id, [FromBody] Report report)
+        public void Patch(int id, [FromBody]Report report)
         {
             Report patchedReport = new Report
             {

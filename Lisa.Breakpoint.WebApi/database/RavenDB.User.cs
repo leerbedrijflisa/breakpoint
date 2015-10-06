@@ -1,18 +1,18 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Client;
+using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Lisa.Breakpoint.WebApi
+namespace Lisa.Breakpoint.WebApi.database
 {
-    public partial class RavenDB
+    public partial class RavenDB : DocumentStore
     {
         public IList<User> GetAllUsers()
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<User>().ToList();
             }
@@ -20,8 +20,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public User GetUser(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Load<User>(id);
             }
@@ -29,8 +28,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public string GetGroupFromUser(string userName)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 var user = session.Query<User>()
                     .Where(u => u.Username == userName)
@@ -42,10 +40,8 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         public User PostUser(User user)
-
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(user);
                 string userId = user.Id;
@@ -58,8 +54,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public User PatchUser(int id, User patchedUser)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 User user = session.Load<User>(id);
 
@@ -77,7 +72,7 @@ namespace Lisa.Breakpoint.WebApi
                                 Type = PatchCommandType.Set,
                                 Value = newVal.ToString()
                             };
-                            store.DatabaseCommands.Patch("users/" + id, new[] { patchRequest });
+                            documentStore.DatabaseCommands.Patch("users/" + id, new[] { patchRequest });
                         }
                     }
 
@@ -92,8 +87,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public void DeleteUser(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 User organization = session.Load<User>(id);
                 session.Delete(organization);

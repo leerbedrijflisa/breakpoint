@@ -1,19 +1,19 @@
 ﻿using Lisa.Breakpoint.WebApi.models;
 using Raven.Abstractions.Data;
 using Raven.Client;
+using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Lisa.Breakpoint.WebApi
+namespace Lisa.Breakpoint.WebApi.database
 {
-    public partial class RavenDB
+    public partial class RavenDB : DocumentStore
     {
         public IList<Organization> GetAllOrganizations()
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Organization>().ToList();
             }
@@ -21,8 +21,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public Organization GetOrganization(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Load<Organization>(id);
             }
@@ -30,8 +29,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public void PostOrganization(Organization organization)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(organization);
                 session.SaveChanges();
@@ -40,8 +38,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public Organization PatchOrganization(int id, Organization patchedOrganization)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Organization Organization = session.Load<Organization>(id);
 
@@ -59,7 +56,7 @@ namespace Lisa.Breakpoint.WebApi
                                 Type = PatchCommandType.Set,
                                 Value = newVal.ToString()
                             };
-                            store.DatabaseCommands.Patch("organizations/" + id, new[] { patchRequest });
+                            documentStore.DatabaseCommands.Patch("organizations/" + id, new[] { patchRequest });
                         }
                     }
 
@@ -74,8 +71,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public void DeleteOrganization(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Organization organization = session.Load<Organization>(id);
                 session.Delete(organization);

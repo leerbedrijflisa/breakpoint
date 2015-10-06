@@ -34,12 +34,12 @@
             <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
             <p><span class="label">expectation:</span> ${report.expectation}</p>
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
-            <p><span class="label">reporter:</span> ${report.reporter.userName}</p>
+            <p><span class="label">reporter:</span> ${report.reporter}</p>
             <p><span class="label">reported:</span> ${report.reported}</p>
             <p><span class="label">status:</span> ${report.status}</p>
             <p><span class="label">priority:</span> ${report.priority}</p>
             <br />
-            <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup.name}${report.assignedToPerson.userName}</p>
+            <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup}${report.assignedToPerson}</p>
             <br />
             <p><a route-href="route: edit-report; params.bind: { organization: project.organization, project: project.slug }">Edit report</a></p>
         </li>

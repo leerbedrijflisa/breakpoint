@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using Lisa.Breakpoint.WebApi.database;
+using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi.controllers
@@ -6,7 +7,12 @@ namespace Lisa.Breakpoint.WebApi.controllers
     [Route("users")]
     public class UserController
     {
-        static RavenDB _db = new RavenDB();
+        private readonly RavenDB _db;
+
+        public UserController(RavenDB db)
+        {
+            _db = db;
+        }
 
         [HttpPost]
         [Route("insert")]

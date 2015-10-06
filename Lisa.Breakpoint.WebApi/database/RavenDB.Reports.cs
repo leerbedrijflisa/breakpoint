@@ -1,6 +1,4 @@
-﻿using Lisa.Breakpoint.WebApi.Models;
-using Microsoft.AspNet.Http;
-using Raven.Abstractions.Data;
+﻿using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
 using System;
@@ -8,35 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Lisa.Breakpoint.WebApi
+namespace Lisa.Breakpoint.WebApi.database
 {
-    public partial class RavenDB
+    public partial class RavenDB : DocumentStore
     {
-        public IDocumentStore CreateDocumentStore()
-        {
-            IDocumentStore store = new DocumentStore
-            {
-                Url = "http://localhost:8080/",
-                DefaultDatabase = "breakpoint"
-            };
-            
-            return store;
-        }
-
-        internal void insert(Project project)
-        {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
-            {
-                session.Store(project);
-                session.SaveChanges();
-            }
-        }
-
         public IList<Report> GetAllReports(string project, string userName, string group)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Report>()
                     .Where(r => r.Project == project && r.AssignedToPerson == userName || r.Project == project && r.AssignedToGroup == group)
@@ -46,8 +22,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public Report GetReport(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Load<Report>(id);
             }
@@ -55,8 +30,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public void PostReport(Report report)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 report.Number = 0;
                 report.Reported = DateTime.Now;
@@ -68,8 +42,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public void PatchReport(int id, Report patchedReport)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Report report = session.Load<Report>(id);
 
@@ -87,7 +60,7 @@ namespace Lisa.Breakpoint.WebApi
                                 Type = PatchCommandType.Set,
                                 Value = newVal.ToString()
                             };
-                            store.DatabaseCommands.Patch("reports /" + id, new[] { patchRequest });
+                            documentStore.DatabaseCommands.Patch("reports /" + id, new[] { patchRequest });
                         }
                     }
                 }
@@ -100,8 +73,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public void DeleteReport(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Report report = session.Load<Report>(id);
                 session.Delete(report);

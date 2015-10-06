@@ -1,19 +1,19 @@
 ﻿using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
 using Raven.Client;
+using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Lisa.Breakpoint.WebApi
+namespace Lisa.Breakpoint.WebApi.database
 {
-    public partial class RavenDB
+    public partial class RavenDB : DocumentStore
     {
         public IList<Project> GetAllProjects(string organizationName)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Project>()
                     .Where(p => p.Organization == organizationName)
@@ -23,8 +23,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public Project GetProject(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Load<Project>(id);
             }
@@ -32,8 +31,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public void PostProject(Project project)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(project);
                 session.SaveChanges();
@@ -42,8 +40,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public Project PatchProject(int id, Project patchedProject)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Project project = session.Load<Project>(id);
 
@@ -61,7 +58,7 @@ namespace Lisa.Breakpoint.WebApi
                                 Type = PatchCommandType.Set,
                                 Value = newVal.ToString()
                             };
-                            store.DatabaseCommands.Patch("Projects/" + id, new[] { patchRequest });
+                            documentStore.DatabaseCommands.Patch("Projects/" + id, new[] { patchRequest });
                         }
                     }
 
@@ -76,8 +73,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public void DeleteProject(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Project organization = session.Load<Project>(id);
                 session.Delete(organization);

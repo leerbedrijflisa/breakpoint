@@ -1,4 +1,5 @@
-﻿using Lisa.Breakpoint.WebApi.models;
+﻿using Lisa.Breakpoint.WebApi.database;
+using Lisa.Breakpoint.WebApi.models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 
@@ -7,7 +8,12 @@ namespace Lisa.Breakpoint.WebApi
     [Route("organizations")]
     public class OrganizationController
     {
-        static RavenDB _db = new RavenDB();
+        private readonly RavenDB _db;
+
+        public OrganizationController(RavenDB db)
+        {
+            _db = db;
+        }
 
         [HttpGet]
         public IList<Organization> Get()
