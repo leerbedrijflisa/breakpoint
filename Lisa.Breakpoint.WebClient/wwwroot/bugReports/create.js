@@ -30,7 +30,7 @@ export class Create {
                 status: "Open",
                 priority: this.priority,
                 assignedTo: "person",
-                assignedToPerson: "baseenhoorn"
+                assignedToPerson: this.assignedtoperson
             }
         } else {
             var data = {
@@ -43,7 +43,7 @@ export class Create {
                 status: "Open",
                 priority: this.priority,
                 assignedTo: "group",
-                assignedToGroup: "baseenhoorn"
+                assignedToGroup: this.assignedtogroup
             }
         }
 
