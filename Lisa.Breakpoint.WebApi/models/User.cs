@@ -1,4 +1,4 @@
-﻿namespace Lisa.Breakpoint.WebApi
+﻿namespace Lisa.Breakpoint.WebApi.models
 {
     public class User
     {

@@ -1,5 +1,4 @@
-﻿using Lisa.Breakpoint.WebApi.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi.models
 {

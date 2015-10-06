@@ -1,6 +1,6 @@
-﻿using Raven.Abstractions.Data;
+﻿using Lisa.Breakpoint.WebApi.models;
+using Raven.Abstractions.Data;
 using Raven.Client;
-using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Lisa.Breakpoint.WebApi.database
 {
-    public partial class RavenDB : DocumentStore
+    public partial class RavenDB
     {
         public IList<Report> GetAllReports(string project, string userName, string group)
         {

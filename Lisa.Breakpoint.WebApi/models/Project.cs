@@ -1,7 +1,6 @@
-﻿using Lisa.Breakpoint.WebApi.models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Lisa.Breakpoint.WebApi.Models
+namespace Lisa.Breakpoint.WebApi.models
 {
     public class Project
     {

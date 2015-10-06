@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Lisa.Breakpoint.WebApi.models;
 
-namespace Lisa.Breakpoint.WebApi
+namespace Lisa.Breakpoint.WebApi.models
 {
     public class Report
     {
