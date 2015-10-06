@@ -16,13 +16,14 @@ export class App {
 
           { route: ':organization/:project',            name: 'reports',          moduleId: 'bugReports/dashboard',   title:'Reports' },
           { route: ':organization/:project/create',     name: 'create-report',    moduleId: 'bugReports/create',      title:'New Report' },
-          { route: ':organization/:project/:id/edit',   name: 'edit-report',      moduleId: 'bugReports/edit',        title:'Edit Report' },
+          { route: ':organization/:project/edit/:id',   name: 'edit-report',      moduleId: 'bugReports/edit',        title:'Edit Report' },
         ]);
 
         this.router = router;
 
-        //fake user login
+        //fake user login and group
         setCookie("userName", "baseenhoorn", 2);
         this.userName = readCookie("userName");
+        this.group = "developer";
     }
 }

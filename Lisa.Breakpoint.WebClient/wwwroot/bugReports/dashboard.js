@@ -12,8 +12,7 @@ export class dashboard {
     activate(params) {
         return this.http.get("reports/"+params.project+"/"+readCookie("userName")).then( response => {
             this.reports = response.content;
-            this.organization = params.organization;
-            this.project = params.project;
+            this.params = params;
             this.userName = readCookie("userName");
         });
     }

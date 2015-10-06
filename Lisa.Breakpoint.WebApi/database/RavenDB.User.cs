@@ -34,7 +34,13 @@ namespace Lisa.Breakpoint.WebApi.database
                     .Where(u => u.Username == userName)
                     .ToList();
 
-                return user[0].Role + "s";
+                if (user.Count != 0)
+                {
+                    return user[0].Role + "s";
+                } else
+                {
+                    return "no group";
+                }
 
             }
         }

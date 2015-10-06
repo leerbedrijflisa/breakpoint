@@ -20,7 +20,7 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public Report GetReport(int id)
+        public Report GetReport(string id)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
@@ -28,15 +28,19 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public void PostReport(Report report)
+        public Report PostReport(Report report)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                report.Number = 0;
+                session.Store(report);
+
+                string reportId = session.Advanced.GetDocumentId(report);
+                report.Number = reportId.Split('/').Last();
                 report.Reported = DateTime.Now;
 
-                session.Store(report);
                 session.SaveChanges();
+
+                return report;
             }
         }
 

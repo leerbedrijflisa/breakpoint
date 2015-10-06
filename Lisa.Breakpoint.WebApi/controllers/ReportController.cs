@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("reports")]
-    public class ReportController
+    public class ReportController : Controller
     {
         private readonly RavenDB _db;
 
@@ -17,20 +17,35 @@ namespace Lisa.Breakpoint.WebApi
 
         [HttpGet]
         [Route("{project}/{username}")]
-        public IList<Report> Get(string project, string userName)
+        public IActionResult Get(string project, string userName)
         {
             string group = _db.GetGroupFromUser(userName);
-            return _db.GetAllReports(project, userName, group);
+            var reports  = _db.GetAllReports(project, userName, group);
+
+            if (reports == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new HttpOkObjectResult(reports);
         }
 
         [HttpGet]
         [Route("get/{id}")]
-        public Report Get(int id)
+        public IActionResult Get(string id)
         {
-            return _db.GetReport(id);
+            var report = _db.GetReport("reports/"+id);
+
+            if (report == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new HttpOkObjectResult(report);
         }
 
         [HttpPost]
+        [Route("", Name = "report")]
         public IActionResult Post([FromBody] Report report)
         {
             if (report == null)
@@ -38,16 +53,15 @@ namespace Lisa.Breakpoint.WebApi
                 return new BadRequestResult();
             }
 
-            _db.PostReport(report);
+            Report postedReport = _db.PostReport(report);
 
-            string location = "report/{id}";
-            //string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
-            return new CreatedResult(location, report);
+            string location = Url.RouteUrl("report", new {  }, Request.Scheme);
+            return new CreatedResult(location, postedReport);
         }
 
         [HttpPost]
         [Route("patch/{id}")]
-        public void Patch(int id, [FromBody]Report report)
+        public IActionResult Patch(int id, [FromBody]Report report)
         {
             Report patchedReport = new Report
             {
@@ -55,13 +69,17 @@ namespace Lisa.Breakpoint.WebApi
             };
 
             _db.PatchReport(id, patchedReport);
+
+            return new HttpOkObjectResult(patchedReport);
         }
 
         [HttpPost]
         [Route("delete/{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
             _db.DeleteReport(id);
+
+            return new HttpOkResult();
         }
     }
 }

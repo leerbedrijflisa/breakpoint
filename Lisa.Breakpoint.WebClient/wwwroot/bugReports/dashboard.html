@@ -24,13 +24,16 @@
           font-weight: bold;
       }
     </style>
-    <a route-href="route: create-report; params.bind: { organization: organization, project: project }">Create report</a>
+    <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <h2>List of reports: </h2>
     <br />
     <ul>
         <li repeat.for="report of reports" class="li-item">
-            <h3>Bug #${report.number} - ${report.title}</h3>
-            <p><span class="label">project: </span>${report.project.name}</p>
+            <h3>
+                <a route-href="route: edit-report; params.bind: { organization: $parent.params.organization, project: $parent.params.project, id: report.number }">
+                    Report #${report.number} - ${report.title}
+                </a>
+            </h3>
             <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
             <p><span class="label">expectation:</span> ${report.expectation}</p>
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
@@ -40,8 +43,6 @@
             <p><span class="label">priority:</span> ${report.priority}</p>
             <br />
             <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup}${report.assignedToPerson}</p>
-            <br />
-            <p><a route-href="route: edit-report; params.bind: { organization: project.organization, project: project.slug }">Edit report</a></p>
         </li>
     </ul>
 </template>

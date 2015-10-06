@@ -1,49 +1,42 @@
 ﻿import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 
 export class report {
-    constructor() {
+    static inject() {
+        return [ Router ];
+    }
+
+    constructor(router) {
+        this.router = router;
         this.http = new HttpClient().configure(x => {
             x.withBaseUrl('http://localhost:10791/');      
             x.withHeader('Content-Type', 'application/json')
         });
     }
 
-    activate() {
-        this.loading = true;
-
-        var path = "reports/609";
+    activate(params) {
+        var path = "reports/get/"+params.id;
         return this.http.get(path).then( response => {
             this.report = response.content;
-            this.loading = false;
         });
     }
 
     submit() {
         var data = {
             title: this.title,
-            project: {
-                slug: this.project,
-                name: this.project
-            },
+            project: this.project,
             stepByStep: this.stepbystep,
             expectation: this.expectation,
             whatHappened: this.whathappened,
-            reporter: {
-                userName: this.reporter,
-                fullName: this.reporter,
-            },
+            reporter: this.reporter,
             status: this.status,
             priority: this.priority,
-            assignedTo: {
-                userName: this.assignedto,
-                fullName: this.assignedto
-            }
+            assignedTo: this.assignedTo
         }
 
         this.http.post('reports/patch', data).then( response => {
-            window.location.replace("http://localhost:10874/#/dashboard");
-            this.loading = false;
+            this.router.navigateToRoute("reports");
         });
     }
 }
