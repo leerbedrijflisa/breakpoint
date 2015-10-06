@@ -10,7 +10,7 @@ export class dashboard {
     }
 
     activate() {
-        return this.http.get("organizations").then( response => {
+        return this.http.get("organizations/"+readCookie("userName")).then( response => {
             this.organizations = response.content;
             this.userName = readCookie("userName");
         });

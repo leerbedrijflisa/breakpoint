@@ -10,12 +10,12 @@ namespace Lisa.Breakpoint.WebApi.database
 {
     public partial class RavenDB
     {
-        public IList<Project> GetAllProjects(string organizationName)
+        public IList<Project> GetAllProjects(string organizationName, string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Project>()
-                    .Where(p => p.Organization == organizationName)
+                    .Where(p => p.Members.Any(m => m.UserName == userName) && p.Organization == organizationName)
                     .ToList();
             }
         }

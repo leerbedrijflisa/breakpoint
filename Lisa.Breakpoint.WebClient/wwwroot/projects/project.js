@@ -8,7 +8,7 @@ export class project {
     }
 
     activate(params) {
-        return this.http.get("projects/"+params.organization).then( response => {
+        return this.http.get("projects/"+params.organization+'/'+readCookie("userName")).then( response => {
             this.projects = response.content;
             this.organization = params.organization;
         });
