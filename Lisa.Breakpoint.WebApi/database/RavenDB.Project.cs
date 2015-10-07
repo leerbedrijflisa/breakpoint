@@ -62,7 +62,7 @@ namespace Lisa.Breakpoint.WebApi
                             var patchRequest = new PatchRequest()
                             {
                                 Name = propertyInfo.Name,
-                                Type = PatchCommandType.Set,
+                                Type = PatchCommandType.Add,
                                 Value = newVal.ToString()
                             };
                             store.DatabaseCommands.Patch("Projects/" + id, new[] { patchRequest });

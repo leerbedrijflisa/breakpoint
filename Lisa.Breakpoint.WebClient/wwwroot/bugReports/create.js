@@ -32,6 +32,7 @@ export class Create {
 
         var data = {
             project: {
+                id: this.project.id,
                 slug: this.project.name,
                 name: this.project.slug
             },
