@@ -17,6 +17,9 @@ export class createProject {
 
     activate(params) {
         this.params = params;
+        this.http.get('users/users').then(response => {
+            this.users = response.content;
+        });
     }
 
     create() {

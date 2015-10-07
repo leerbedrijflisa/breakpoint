@@ -13,6 +13,12 @@ export class Create {
             x.withHeader('Content-Type', 'application/json')
         });
     }
+
+    activate() {
+        this.http.get('users/users').then(response => {
+            this.users = response.content;
+        });
+    }
     
     submit() {
         var data = {
