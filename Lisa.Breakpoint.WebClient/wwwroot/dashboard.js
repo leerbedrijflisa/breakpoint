@@ -19,11 +19,14 @@ export class dashboard {
             this.loading = false;
         });
     }
+
     submit() {
         var data = {
             Status: this.status,
+            id: this.id
         };
-        console.log(this.status);
+        console.log(data.id);
+        console.log(data.Status);
         this.http.post('reports/patch', data).then( response => {
             window.location.replace("http://localhost:10874/#/dashboard");
             this.loading = false;
