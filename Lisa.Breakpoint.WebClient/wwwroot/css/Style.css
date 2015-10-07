@@ -13,3 +13,33 @@ table {
 th, td {
     width: auto;
 }
+
+.page-host form select {
+   margin: 7px 0px 7px 0px;
+   width: 173px;
+}
+
+.page-host form input {
+ margin: 5px 0px 5px 0px;
+}
+
+.page-host form label {
+ width: 145px;
+ float: left;
+ margin: 5px 0px 5px 0px;
+}
+
+.page-host form button {
+ padding: 5px;
+ margin: 10px 0px 10px 0px;
+ font-family: verdana;
+ font-size: 13px;
+}
+
+.page-host form p {
+   width: 145px;
+}
+
+select#selectperson {
+   margin: 24px 0px 5px 0px;
+}

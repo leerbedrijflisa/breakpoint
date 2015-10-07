@@ -18,6 +18,14 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
+        public IList<Group> GetAllGroups()
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                return session.Query<Group>().ToList();
+            }
+        }
+
         public User GetUser(int id)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
@@ -44,6 +52,20 @@ namespace Lisa.Breakpoint.WebApi.database
 
             }
         }
+
+        public User UserExists(string userName)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                var user = session.Query<User>()
+                    .Where(u => u.Username == userName)
+                    .ToList()
+                    .First();
+
+                return user;
+            }
+        }
+
 
         public User PostUser(User user)
         {

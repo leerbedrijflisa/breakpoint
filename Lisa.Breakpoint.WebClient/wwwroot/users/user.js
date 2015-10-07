@@ -17,22 +17,32 @@ export class user {
 
     activate() {
         if (readCookie("userName")) {
-            this.router.navigateToRoute("dashboard");
+            this.router.navigateToRoute("organizations");
         }
     }
 
     Post() {
+        var data = {
+            userName: this.userNameRegister,
+            fullName: this.fullName,
+            role: this.role
+        }
+
+        this.http.post('users/post', data).then( response => {
+            this.router.navigateToRoute("organizations");
+        });
+    }
+
+    Login() {
         if (!readCookie("userName")) {
             var data = {
-                userName: this.userName,
-                fullName: this.fullName,
-                role: this.role
+                userNameLogin: this.userNameLogin
             }
 
-            //setCookie("userName", this.userName, 2);
-
-            this.http.post('users/insert', data).then( response => {
-                this.router.navigateToRoute("dashboard");
+            this.http.get('users/login/'+data.userNameLogin).then( response => {
+                setCookie("userName", response.content.username, 2);
+                setCookie("role", response.content.role, 2);
+                this.router.navigateToRoute("organizations");
             });
         }
     }

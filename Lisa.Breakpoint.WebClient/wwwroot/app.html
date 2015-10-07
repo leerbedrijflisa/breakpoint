@@ -1,14 +1,14 @@
 ﻿<template>
-    <p>Logged in as: ${userName} (${group})</p>
+    <p>Logged in as: ${userName} (${role})</p>
     <nav>
         <ul>
-            <li><a route-href="route: organizations">Organizations</a></li>
+            <li><a route-href="route: organizations">Orgaizations</a></li>
+            <li><a route-href="route: groups">Groups</a></li>
+            <li><a route-href="route: logout">Log out</a></li>
         </ul>
     </nav>
 
-    <div>
-        <h1>Breakpoint</h1>
-    </div>
+    <hr />
 
     <div class="page-host">
         <router-view></router-view>

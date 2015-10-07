@@ -16,6 +16,7 @@ export class report {
     }
 
     activate(params) {
+        this.params = params;
         var path = "reports/get/"+params.id;
         return this.http.get(path).then( response => {
             this.report = response.content;
@@ -35,8 +36,8 @@ export class report {
             assignedTo: this.assignedTo
         }
 
-        this.http.post('reports/patch', data).then( response => {
-            this.router.navigateToRoute("reports");
+        this.http.post('reports/patch/'+this.params.id, data).then( response => {
+            this.router.navigateToRoute("reports", { organization: this.params.organization, project: this.params.project });
         });
     }
 }

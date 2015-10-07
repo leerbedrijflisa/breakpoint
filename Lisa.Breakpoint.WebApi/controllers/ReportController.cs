@@ -63,12 +63,7 @@ namespace Lisa.Breakpoint.WebApi
         [Route("patch/{id}")]
         public IActionResult Patch(int id, [FromBody]Report report)
         {
-            Report patchedReport = new Report
-            {
-                Expectation = "it should work again",
-            };
-
-            _db.PatchReport(id, patchedReport);
+            Report patchedReport = _db.PatchReport(id, report);
 
             return new HttpOkObjectResult(patchedReport);
         }

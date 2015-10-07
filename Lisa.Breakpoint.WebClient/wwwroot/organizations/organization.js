@@ -9,6 +9,7 @@ export class dashboard {
             x.withHeader('Content-Type', 'application/json')});
     }
 
+
     activate() {
         return this.http.get("organizations/"+readCookie("userName")).then( response => {
             this.organizations = response.content;

@@ -16,8 +16,7 @@
         <label for="reporter">Reporter: </label>
         <select value.bind="reporter" name="reporter" type="text">
             <option value="">-</option>
-            <option value="baseenhoorn">Bas Eenhoorn</option>
-            <option value="sabtweehoorn">Sab Tweehoorn</option>
+            <option repeat.for="user of users" value="${user.username}">${user.username}</option>
         </select>
         <br />
         <label for="priority">Priority: </label>
@@ -34,16 +33,14 @@
         </p>
         <select id="selectperson" value.bind="assignedtoperson" name="assignedtoperson" type="text">
             <option value="">-</option>
-            <option value="baseenhoorn">Bas Eenhoorn</option>
-            <option value="sabtweehoorn">Sab Tweehoorn</option>
+            <option repeat.for="user of users" value="${user.username}">${user.username}</option>
         </select>
         <p>
             <label for="assignedToRadio">group: <input type="radio" name="assignedToRadio" value="group" /></label>
         </p>
         <select id="selectgroup" value.bind="assignedtogroup" name="assignedtogroup" type="text">
             <option value="">-</option>
-            <option value="developers">Developers</option>
-            <option value="testers">Testers</option>
+            <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
         </select>
         <br />
         <button type="submit" name="submit">Report bug</button>

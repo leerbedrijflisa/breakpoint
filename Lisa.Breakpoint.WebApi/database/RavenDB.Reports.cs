@@ -44,7 +44,7 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public void PatchReport(int id, Report patchedReport)
+        public Report PatchReport(int id, Report patchedReport)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
@@ -64,13 +64,17 @@ namespace Lisa.Breakpoint.WebApi.database
                                 Type = PatchCommandType.Set,
                                 Value = newVal.ToString()
                             };
-                            documentStore.DatabaseCommands.Patch("reports /" + id, new[] { patchRequest });
+                            documentStore.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+
+                            return session.Load<Report>("reports/"+id);
                         }
+                        return null;
                     }
+                    return null;
                 }
                 catch (Exception)
                 {
-                    //return null;
+                    return null;
                 }
             }
         }

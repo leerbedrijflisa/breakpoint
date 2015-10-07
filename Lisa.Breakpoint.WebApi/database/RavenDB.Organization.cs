@@ -37,6 +37,17 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
+        public Group PostGroup(Group group)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                session.Store(group);
+                session.SaveChanges();
+
+                return group;
+            }
+        }
+
         public Organization PatchOrganization(int id, Organization patchedOrganization)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())

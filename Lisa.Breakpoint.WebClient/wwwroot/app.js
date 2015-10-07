@@ -5,10 +5,13 @@ import {HttpClient} from 'aurelia-http-client';
 export class App {
     configureRouter(config, router) {
         config.title = 'Breakpoint';
+        config.addPipelineStep('authorize', AuthorizeStep);
         config.map([
-          { route: ['', 'user'], name: 'user', moduleId: 'users/user', title:'User' },
+          { route: 'user/login',  name: 'login',   moduleId: 'users/user',   title:'User' },
+          { route: 'user/logout', name: 'logout',  moduleId: 'users/logout', title:'Logout' },
+          { route: 'user/group',  name: 'groups',  moduleId: 'users/group',  title:'Group' },
 
-          { route: ['', 'organization'],    name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
+          { route: ['', 'organization'],    auth: true, name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
           { route: 'organization/create',   name: 'create-organization',    moduleId: 'organizations/createOrganization',    title:'New organization' },
 
           { route: ':organization',         name: 'projects',       moduleId: 'projects/project',       title:'Projects' },
@@ -21,9 +24,29 @@ export class App {
 
         this.router = router;
 
-        //fake user login and group
-        setCookie("userName", "baseenhoorn", 2);
+        //fake user login and role
+        //setCookie("userName", "baseenhoorn", 2);
+        //setCookie("role", "developer", 2);
         this.userName = readCookie("userName");
-        this.group = "developer";
+        this.role     = readCookie("role");
+    }
+}
+
+
+class AuthorizeStep {
+    run(routingContext, next) {
+        if (routingContext.nextInstructions.some(i => i.config.auth)) {
+            var isLoggedIn = AuthorizeStep.isLoggedIn();
+            if (!isLoggedIn) {
+                alert("Not Logged In!");
+                return next.cancel();
+            }
+        }
+        return next();
+    }
+ 
+    static isLoggedIn(): boolean {
+        var auth_token = readCookie("userName");
+        return (typeof auth_token !== "undefined" && auth_token !== null);
     }
 }
