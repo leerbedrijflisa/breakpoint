@@ -39,27 +39,9 @@ namespace Lisa.Breakpoint.WebApi
 
             var project = _db.GetProject(report.Project.Id);
 
-            //foreach (var version in project.Version)
-            //{
-            //    Debug.WriteLine("versions -> " + version);
-            //    if (version == report.Version)
-            //    {
-            //        report.Version = version;
-            //        Debug.WriteLine("bestaat al");
-            //    }
-            //    else
-            //    {
-            //        Debug.WriteLine("bestaat nog niet");
-            //    }
-            //}
-
-            // TODO: finish patch project function
-
             if (!project.Version.Contains(report.Version))
             {
                 Debug.WriteLine("bestaat nog niet");
-                //Project patchedProject = new Project();
-                //patchedProject.Add(report.Version);
 
                 Project patchedProject = project;
 
@@ -69,19 +51,15 @@ namespace Lisa.Breakpoint.WebApi
                 {
                     Debug.WriteLine(version);
                 }
+
+                // TODO: finish patch project function
                 //_db.PatchProject(project.Id, patchedProject);
 
             }
 
-
-            //_db.PatchProject(project.Id, patchedProject);
-
-
-            //debug.WriteLine("Version that is going in the database " + report.Version);
             _db.PostReport(report);
 
-
-            string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
+            string location = Url.RouteUrl("report", new { id = report.Id }, Request.Scheme);
             return new CreatedResult(location, report);
         }
 

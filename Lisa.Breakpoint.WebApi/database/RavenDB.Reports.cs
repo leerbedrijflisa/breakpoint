@@ -61,7 +61,6 @@ namespace Lisa.Breakpoint.WebApi
             using (IDocumentSession session = store.Initialize().OpenSession())
             {
 
-                report.Number = 0;
                 report.Reported = DateTime.Now;
 
                 session.Store(report);
