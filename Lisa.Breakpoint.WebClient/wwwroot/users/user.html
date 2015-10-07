@@ -1,8 +1,18 @@
 ﻿<template>
+    <h3>Login</h3>
+    <form submit.delegate="Login()">
+        <label for="userNameLogin">Username: </label>
+        <input value.bind="userNameLogin" name="userNameLogin" type="text" />
+        
+        <button type="submit" name="submit">log in</button>
+    </form>
+
+    <hr />
+
     <h3>Register</h3>
     <form submit.delegate="Post()">
         <label for="userName">Username: </label>
-        <input value.bind="userName" name="userName" type="text" />
+        <input value.bind="userNameRegister" name="userNameRegister" type="text" />
         <br />
         <label for="fullName">Fullname: </label>
         <input value.bind="fullName" name="fullname" type="text" />

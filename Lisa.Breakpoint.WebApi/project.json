@@ -1,28 +1,29 @@
 {
-  "webroot": "wwwroot",
-  "version": "1.0.0-*",
-
+  "commands": {
+    "web": "Microsoft.AspNet.Hosting --config hosting.ini"
+  },
   "dependencies": {
     "EntityFramework.Relational": "7.0.0-beta7",
     "Microsoft.AspNet.Cors": "1.0.0-beta7",
+    "Microsoft.AspNet.Hosting.Abstractions": "1.0.0-beta7",
     "Microsoft.AspNet.Http.Abstractions": "1.0.0-beta7",
     "Microsoft.AspNet.Mvc": "6.0.0-beta7",
+    "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-beta7",
     "Microsoft.AspNet.Server.IIS": "1.0.0-beta7",
     "Microsoft.AspNet.Server.WebListener": "1.0.0-beta7",
     "Microsoft.Net.Http.Server": "1.0.0-beta7",
     "RavenDB.Client": "3.0.3785",
     "RavenDB.Server": "3.0.3785"
   },
-
-  "commands": {
-    "web": "Microsoft.AspNet.Hosting --config hosting.ini"
-  },
-
+  "exclude": [
+    "wwwroot",
+    "node_modules",
+    "bower_components"
+  ],
   "frameworks": {
-      "dnx451": { },
-      "dnx50": { }
-    },
-
+    "dnx451": { },
+    "dnx50": { }
+  },
   "publishExclude": [
     "node_modules",
     "bower_components",
@@ -30,9 +31,6 @@
     "**.user",
     "**.vspscc"
   ],
-  "exclude": [
-    "wwwroot",
-    "node_modules",
-    "bower_components"
-  ]
+  "version": "1.0.0-*",
+  "webroot": "wwwroot"
 }

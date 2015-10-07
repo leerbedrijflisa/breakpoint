@@ -9,17 +9,11 @@ export class dashboard {
             x.withHeader('Content-Type', 'application/json')});
     }
 
+
     activate() {
-        this.loading = true;
-        return this.http.get("reports").then( response => {
-            this.reports = response.content;
-
-            // this.reports.idNumber = this.reports.Id.split("/")[1];
-
-
-            console.log(response.content);
-            console.log(response.statusCode); // Might come in handy
-            this.loading = false;
+        return this.http.get("organizations/"+readCookie("userName")).then( response => {
+            this.organizations = response.content;
+            this.userName = readCookie("userName");
         });
     }
 }

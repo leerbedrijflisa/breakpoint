@@ -1,6 +1,9 @@
 ﻿<template>
     <h3>Edit a bug:</h3>
     <form submit.delegate="submit()">
+        <label for="title">Title: </label>
+        <input value.bind="title" value="${report.title}" name="title" type="text" />
+        <br />
         <label for="project">Project: </label>
         <select value.bind="project" value="" name="project" type="text">
             <option value="">-</option>
@@ -20,8 +23,8 @@
         <label for="reporters">Reporter: </label>
         <select value.bind="reporter" value="${report.reporter}" name="reporter" type="text">
             <option value="">-</option>
-            <option value="bas eenhoorn">Bas Eenhoorn</option>
-            <option value="sab tweehoorn">Sab Tweehoorn</option>
+            <option value="basenhoorn">Bas Eenhoorn</option>
+            <option value="sabtweehoorn">Sab Tweehoorn</option>
         </select>
         <br />
         <label for="status">Status: </label>
@@ -29,16 +32,11 @@
         <br />
         <label for="priority">Priority: </label>
         <select value.bind="priority" value="${report.priority}" name="priority" type="text">
-            <option value="">-</option>
-            <option value="Fix whenever">Fix whenever</option>
+            <option selected value="Fix immediately">Fix immediately</option>
             <option value="Fix before release">Fix before release</option>
             <option value="Fix for next release">Fix for next release</option>
-            <option value="Fix immediately">Fix immediately</option>
+            <option value="Fix whenever">Fix whenever</option>
         </select>
-        <br />
-        <label for="assignedto">Assigned to: </label>
-        <label for="userName">username: <input value.bind="assignedto.userName" value="${assignedTo.userName}" name="userName" type="text" />
-        </label>
         <br />
         <button type="submit" name="submit">Report bug</button>
     </form>

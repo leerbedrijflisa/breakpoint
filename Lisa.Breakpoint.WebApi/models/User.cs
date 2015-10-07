@@ -1,4 +1,4 @@
-﻿namespace Lisa.Breakpoint.WebApi
+﻿namespace Lisa.Breakpoint.WebApi.models
 {
     public class User
     {
@@ -7,5 +7,4 @@
         public string   FullName { get; set; }
         public string   Role { get; set; }
     }
-
 }

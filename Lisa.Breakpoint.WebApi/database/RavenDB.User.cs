@@ -1,37 +1,79 @@
-﻿using Raven.Abstractions.Data;
+﻿using Lisa.Breakpoint.WebApi.models;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Lisa.Breakpoint.WebApi
+namespace Lisa.Breakpoint.WebApi.database
 {
     public partial class RavenDB
     {
         public IList<User> GetAllUsers()
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<User>().ToList();
             }
         }
 
+        public IList<Group> GetAllGroups()
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                return session.Query<Group>().ToList();
+            }
+        }
+
         public User GetUser(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Load<User>(id);
             }
         }
 
-        public User PostUser(User user)
-
+        public string GetGroupFromUser(string userName)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                var user = session.Query<User>()
+                    .Where(u => u.Username == userName)
+                    .ToList();
+
+                if (user.Count != 0)
+                {
+                    return user[0].Role + "s";
+                } else
+                {
+                    return "no group";
+                }
+
+            }
+        }
+
+        public User UserExists(string userName)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                var user = session.Query<User>()
+                    .Where(u => u.Username == userName)
+                    .ToList();
+
+                if (user.Count != 0)
+                {
+                    return user.First();
+                }
+
+                return null;
+            }
+        }
+
+
+        public User PostUser(User user)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(user);
                 string userId = user.Id;
@@ -44,8 +86,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public User PatchUser(int id, User patchedUser)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 User user = session.Load<User>(id);
 
@@ -63,7 +104,7 @@ namespace Lisa.Breakpoint.WebApi
                                 Type = PatchCommandType.Set,
                                 Value = newVal.ToString()
                             };
-                            store.DatabaseCommands.Patch("users/" + id, new[] { patchRequest });
+                            documentStore.DatabaseCommands.Patch("users/" + id, new[] { patchRequest });
                         }
                     }
 
@@ -78,8 +119,7 @@ namespace Lisa.Breakpoint.WebApi
 
         public void DeleteUser(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 User organization = session.Load<User>(id);
                 session.Delete(organization);

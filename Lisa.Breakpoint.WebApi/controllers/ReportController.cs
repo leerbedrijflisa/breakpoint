@@ -1,29 +1,51 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using Lisa.Breakpoint.WebApi.database;
+using Lisa.Breakpoint.WebApi.models;
+using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Lisa.Breakpoint.WebApi.Models;
 
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("reports")]
     public class ReportController : Controller
     {
-        static RavenDB _db = new RavenDB();
+        private readonly RavenDB _db;
 
-        [HttpGet]
-        public IList<Report> Get()
+        public ReportController(RavenDB db)
         {
-            return _db.GetAllReports();
+            _db = db;
         }
 
         [HttpGet]
-        [Route("{id}", Name = "report")]
-        public Report Get(int id)
+        [Route("{project}/{username}")]
+        public IActionResult Get(string project, string userName)
         {
-            return _db.GetReport(id);
+            string group = _db.GetGroupFromUser(userName);
+            var reports  = _db.GetAllReports(project, userName, group);
+
+            if (reports == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new HttpOkObjectResult(reports);
+        }
+
+        [HttpGet]
+        [Route("get/{id}")]
+        public IActionResult Get(string id)
+        {
+            var report = _db.GetReport("reports/"+id);
+
+            if (report == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new HttpOkObjectResult(report);
         }
 
         [HttpPost]
+        [Route("", Name = "report")]
         public IActionResult Post([FromBody] Report report)
         {
             if (report == null)
@@ -31,29 +53,28 @@ namespace Lisa.Breakpoint.WebApi
                 return new BadRequestResult();
             }
 
-            _db.PostReport(report);
+            Report postedReport = _db.PostReport(report);
 
-            string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
-            return new CreatedResult(location, report);
+            string location = Url.RouteUrl("report", new {  }, Request.Scheme);
+            return new CreatedResult(location, postedReport);
         }
 
         [HttpPost]
         [Route("patch/{id}")]
-        public void Patch(int id)
+        public IActionResult Patch(int id, [FromBody]Report report)
         {
-            Report patchedReport = new Report
-            {
-                Expectation = "it should work again",
-            };
+            Report patchedReport = _db.PatchReport(id, report);
 
-            _db.PatchReport(id, patchedReport);
+            return new HttpOkObjectResult(patchedReport);
         }
 
         [HttpPost]
         [Route("delete/{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
             _db.DeleteReport(id);
+
+            return new HttpOkResult();
         }
     }
 }
