@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Lisa.Breakpoint.WebApi.Models;
 
-namespace Lisa.Breakpoint.WebApi
+namespace Lisa.Breakpoint.WebApi.Models
 {
     public class Report
     {
@@ -18,6 +18,7 @@ namespace Lisa.Breakpoint.WebApi
         public string   Priority { get; set; }
         public Reporter AssignedTo { get; set; }
         public IList<Comment>   Comments { get; set; }
+        public string   Version { get; set; }
     }
 
     public class Comment
@@ -31,14 +32,5 @@ namespace Lisa.Breakpoint.WebApi
     {
         public string UserName { get; set; }
         public string FullName { get; set; }
-    }
-
-    public class Project
-    {
-        public int Id { get; set; }
-        public string Slug { get; set; }
-        public string Name { get; set; }
-        public List<Member> Member { get; internal set; }
-        //public int Id { get; internal set; }
     }
 }
