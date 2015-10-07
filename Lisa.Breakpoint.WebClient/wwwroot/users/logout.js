@@ -18,6 +18,8 @@ export class user {
     activate() {
         deleteCookie("userName");
         deleteCookie("role");
+        document.getElementById("user_userName").innerHTML = "";
+        document.getElementById("user_role").innerHTML = "";
         this.router.navigateToRoute("login");
     }
 }

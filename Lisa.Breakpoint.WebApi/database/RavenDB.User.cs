@@ -59,10 +59,14 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 var user = session.Query<User>()
                     .Where(u => u.Username == userName)
-                    .ToList()
-                    .First();
+                    .ToList();
 
-                return user;
+                if (user.Count != 0)
+                {
+                    return user.First();
+                }
+
+                return null;
             }
         }
 

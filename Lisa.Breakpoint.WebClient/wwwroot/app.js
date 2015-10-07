@@ -7,19 +7,19 @@ export class App {
         config.title = 'Breakpoint';
         config.addPipelineStep('authorize', AuthorizeStep);
         config.map([
-          { route: 'user/login',  name: 'login',   moduleId: 'users/user',   title:'User' },
+          { route: ['', 'user'],  name: 'login',   moduleId: 'users/user',   title:'User' },
           { route: 'user/logout', name: 'logout',  moduleId: 'users/logout', title:'Logout' },
-          { route: 'user/group',  name: 'groups',  moduleId: 'users/group',  title:'Group' },
+          { route: 'user/group',  auth: true, name: 'groups',  moduleId: 'users/group',  title:'Group' },
 
-          { route: ['', 'organization'],    auth: true, name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
-          { route: 'organization/create',   name: 'create-organization',    moduleId: 'organizations/createOrganization',    title:'New organization' },
+          { route: 'organization',    auth: true, name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
+          { route: 'organization/create',   auth: true, name: 'create-organization',    moduleId: 'organizations/createOrganization',    title:'New organization' },
 
-          { route: ':organization',         name: 'projects',       moduleId: 'projects/project',       title:'Projects' },
-          { route: ':organization/create',  name: 'create-project', moduleId: 'projects/createProject', title:'New project' },
+          { route: ':organization',         auth: true, name: 'projects',       moduleId: 'projects/project',       title:'Projects' },
+          { route: ':organization/create',  auth: true, name: 'create-project', moduleId: 'projects/createProject', title:'New project' },
 
-          { route: ':organization/:project',            name: 'reports',          moduleId: 'bugReports/dashboard',   title:'Reports' },
-          { route: ':organization/:project/create',     name: 'create-report',    moduleId: 'bugReports/create',      title:'New Report' },
-          { route: ':organization/:project/edit/:id',   name: 'edit-report',      moduleId: 'bugReports/edit',        title:'Edit Report' },
+          { route: ':organization/:project',            auth: true, name: 'reports',          moduleId: 'bugReports/dashboard',   title:'Reports' },
+          { route: ':organization/:project/create',     auth: true, name: 'create-report',    moduleId: 'bugReports/create',      title:'New Report' },
+          { route: ':organization/:project/edit/:id',   auth: true, name: 'edit-report',      moduleId: 'bugReports/edit',        title:'Edit Report' },
         ]);
 
         this.router = router;

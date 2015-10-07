@@ -46,9 +46,14 @@ namespace Lisa.Breakpoint.WebApi.controllers
 
         [HttpGet]
         [Route("login/{userName}")]
-        public User LogIn(string userName)
+        public IActionResult LogIn(string userName)
         {
-            return _db.UserExists(userName);
+            var user = _db.UserExists(userName);
+            if (user != null)
+            {
+                return new HttpOkObjectResult(_db.UserExists(userName));
+            }
+            return new HttpNotFoundObjectResult(_db.UserExists(userName));
         }
     }
 }
