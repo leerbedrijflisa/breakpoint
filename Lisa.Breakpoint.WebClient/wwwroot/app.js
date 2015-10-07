@@ -24,11 +24,8 @@ export class App {
 
         this.router = router;
 
-        //fake user login and role
-        //setCookie("userName", "baseenhoorn", 2);
-        //setCookie("role", "developer", 2);
-        this.userName = readCookie("userName");
-        this.role     = readCookie("role");
+        this.userName = "Logged in as: " + readCookie("userName");
+        this.role     = "(" + readCookie("role") + ")";
     }
 }
 
@@ -38,7 +35,7 @@ class AuthorizeStep {
         if (routingContext.nextInstructions.some(i => i.config.auth)) {
             var isLoggedIn = AuthorizeStep.isLoggedIn();
             if (!isLoggedIn) {
-                alert("Not Logged In!");
+                //alert("Not Logged In!");
                 return next.cancel();
             }
         }

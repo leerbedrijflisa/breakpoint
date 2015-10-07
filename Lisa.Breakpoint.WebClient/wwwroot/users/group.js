@@ -35,7 +35,7 @@ export class Create {
         }
 
         this.http.post('users/groups', data).then(response => {
-            this.router.navigateToRoute("groups");
+            this.router.navigateToRoute("organization");
         });
     }
 }
