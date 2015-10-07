@@ -29,14 +29,21 @@ export class user {
         }
 
         this.http.post('users/post', data).then( response => {
+            this.Login("afterRegister");
             this.router.navigateToRoute("organizations");
         });
     }
 
-    Login() {
+    Login(from) {
         if (!readCookie("userName")) {
-            var data = {
-                userNameLogin: this.userNameLogin
+            if (from == "afterRegister") {
+                var data = {
+                    userNameLogin: this.userNameRegister
+                }
+            } else {
+                var data = {
+                    userNameLogin: this.userNameLogin
+                }
             }
 
             this.http.get('users/login/'+data.userNameLogin).then( response => {
