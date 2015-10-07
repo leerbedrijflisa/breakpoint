@@ -1,78 +1,52 @@
-﻿using Raven.Abstractions.Data;
+﻿using Lisa.Breakpoint.WebApi.models;
+using Raven.Abstractions.Data;
 using Raven.Client;
-using Raven.Client.Document;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Lisa.Breakpoint.WebApi.Models;
 
-namespace Lisa.Breakpoint.WebApi
+namespace Lisa.Breakpoint.WebApi.database
 {
     public partial class RavenDB
     {
-        public IDocumentStore CreateDocumentStore()
+        public IList<Report> GetAllReports(string project, string userName, string group)
         {
-            IDocumentStore store = new DocumentStore
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                Url = "http://localhost:8080/",
-                DefaultDatabase = "breakpoint"
-            };
-            
-            return store;
-        }
-
-        internal Project insert(Project project)
-        {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
-            {
-                session.Store(project);
-                int projectId = project.Id;
-
-                session.SaveChanges();
-
-                return session.Load<Project>(projectId);
+                return session.Query<Report>()
+                    .Where(r => r.Project == project && r.AssignedToPerson == userName || r.Project == project && r.AssignedToGroup == group)
+                    .ToList();
             }
         }
 
-        public IList<Report> GetAllReports()
+        public Report GetReport(string id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
-            {
-                return session.Query<Report>().ToList();
-            }
-        }
-
-        public Report GetReport(int id)
-        {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Load<Report>(id);
             }
         }
 
-        public void PostReport(Report report)
+        public Report PostReport(Report report)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
+                session.Store(report);
 
-                report.Number = 0;
+                string reportId = session.Advanced.GetDocumentId(report);
+                report.Number = reportId.Split('/').Last();
                 report.Reported = DateTime.Now;
 
-                session.Store(report);
                 session.SaveChanges();
+
+                return report;
             }
         }
 
-        public void PatchReport(int id, Report patchedReport)
+        public Report PatchReport(int id, Report patchedReport)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Report report = session.Load<Report>(id);
 
@@ -90,21 +64,24 @@ namespace Lisa.Breakpoint.WebApi
                                 Type = PatchCommandType.Set,
                                 Value = newVal.ToString()
                             };
-                            store.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+                            documentStore.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+
+                            return session.Load<Report>("reports/"+id);
                         }
+                        return null;
                     }
+                    return null;
                 }
                 catch (Exception)
                 {
-                    //return null;
+                    return null;
                 }
             }
         }
 
         public void DeleteReport(int id)
         {
-            IDocumentStore store = CreateDocumentStore();
-            using (IDocumentSession session = store.Initialize().OpenSession())
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Report report = session.Load<Report>(id);
                 session.Delete(report);

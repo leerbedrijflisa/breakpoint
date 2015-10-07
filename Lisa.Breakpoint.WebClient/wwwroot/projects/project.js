@@ -7,13 +7,10 @@ export class project {
             x.withHeader('Content-Type', 'application/json')});
     }
 
-    activate() {
-        this.loading = true;
-        return this.http.get("projects").then( response => {
+    activate(params) {
+        return this.http.get("projects/"+params.organization+'/'+readCookie("userName")).then( response => {
             this.projects = response.content;
-            console.log(response.content);
-            console.log(response.statusCode); // Might come in handy
-            this.loading = false;
+            this.organization = params.organization;
         });
     }
 }

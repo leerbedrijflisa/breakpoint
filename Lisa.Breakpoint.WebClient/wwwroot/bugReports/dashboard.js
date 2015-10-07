@@ -10,13 +10,11 @@ export class dashboard {
             x.withHeader('Content-Type', 'application/json')});
     }
 
-    activate() {
-        this.loading = true;
-        return this.http.get("reports").then( response => {
+    activate(params) {
+        return this.http.get("reports/"+params.project+"/"+readCookie("userName")).then( response => {
             this.reports = response.content;
-            console.log(response.content);
-            console.log(response.statusCode); // Might come in handy
-            this.loading = false;
+            this.params = params;
+            this.userName = readCookie("userName");
         });
     }
 

@@ -1,14 +1,43 @@
 ﻿<template>
+<<<<<<< HEAD:Lisa.Breakpoint.WebClient/wwwroot/dashboard.html
     <link rel="stylesheet" href="css/Dashboard.css" />
     <a route-href="route: createBugReport"> new report</a>
+=======
+    <style>
+      p {
+          margin: 0px;
+      }
+
+      ul {
+          list-style: none;
+          margin: 0px;
+      }
+
+      .li-item {
+          background-color: #D8D8D8;
+          margin-bottom: 20px;
+          padding: 10px;
+      }
+
+      .list {
+          background-color: white;
+          margin-left: 20px;
+      }
+
+      .label {
+          font-weight: bold;
+      }
+    </style>
+    <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <h2>List of reports: </h2>
     <br />
     <ul>
         <li repeat.for="report of reports" class="li-item">
-            <p><a href="/#/edit?id=${report.idNumber}">Edit report</a></p>
-            <p><span class="label">id:</span> ${report.id}</p>
-            <p><span class="label">number:</span> ${report.number}</p>
-            <p><span class="label">project: </span> ${report.project.slug} - ${report.project.name}</p>
+            <h3>
+                <a route-href="route: edit-report; params.bind: { organization: $parent.params.organization, project: $parent.params.project, id: report.number }">
+                    Report #${report.number} - ${report.title}
+                </a>
+            </h3>
             <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
             <p><span class="label">expectation:</span> ${report.expectation}</p>
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
@@ -27,8 +56,8 @@
                 <button type="submit" name="submit">Edit Status</button>
             </form>
             <p><span class="label">priority:</span> ${report.priority}</p>
-            <p><span class="label">assignedTo:</span> ${report.assignedTo.userName} - ${report.assignedTo.fullName}</p>
-            <p><span class="label">test version:</span> ${report.version}</p>
+            <br />
+            <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup}${report.assignedToPerson}</p>
         </li>
     </ul>
 </template>

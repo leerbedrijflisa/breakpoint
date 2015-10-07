@@ -13,49 +13,51 @@ export class Create {
             x.withHeader('Content-Type', 'application/json')
         });
     }
-
-    activate() {
-        this.loading = true;
-        return this.http.get("projects").then( response => {
-            this.projects = response.content;
-
-            console.log(response.content);
-            console.log(response.statusCode); // Might come in handy
-            
-            this.loading = false;
+    
+    activate(params) {
+        this.params = params;
+        this.http.get('users/users').then(response => {
+            this.users = response.content;
+        });
+        this.http.get('users/groups').then(response => {
+            this.groups = response.content;
         });
     }
 
     submit() {
+        if (document.getElementById('personRadioButton').checked == true) {
+            var data = {
+                title: this.title,
+                project: this.params.project,
+                stepByStep: this.stepbystep,
+                expectation: this.expectation,
+                whatHappened: this.whathappened,
+                reporter: this.reporter,
+                status: "Open",
+                priority: this.priority,
+                assignedTo: "person",
+                assignedToPerson: this.assignedtoperson
+            }
+        } else {
+            var data = {
+                title: this.title,
+                project: this.params.project,
+                stepByStep: this.stepbystep,
+                expectation: this.expectation,
+                whatHappened: this.whathappened,
+                reporter: this.reporter,
+                status: "Open",
+                priority: this.priority,
+                assignedTo: "group",
+                assignedToGroup: this.assignedtogroup
+            }
+        }
 
-
-        var data = {
-            project: {
-                slug: this.project.name,
-                name: this.project.slug
-            },
-            stepByStep: this.stepbystep,
-            expectation: this.expectation,
-            whatHappened: this.whathappened,
-            reporter: {
-                userName: this.reporters,
-                fullName: this.reporters
-            },
-            status: "Open",
-            priority: this.priority,
-            assignedTo: {
-                userName: this.assignedto,
-            },
-            version: this.version
-        };
-        console.log(this.priority);
         this.http.post('reports', data).then(response => {
-            this.report = response.content;
+            var organization = this.params.organization;
+            var project = this.params.project;
 
-            this.router.navigateToRoute("report");
-            //console.log("-> " + response.content);
-            //console.log(response.statusCode); // Might come in handy
-
+            this.router.navigateToRoute("reports", { organization: organization, project, project });
         });
     }
 }

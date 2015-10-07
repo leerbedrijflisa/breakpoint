@@ -1,17 +1,14 @@
 ﻿<template>
-    Hé hallo
+    <p><span id="user_userName">${userName}</span> <span id="user_role">${role}</span></p>
     <nav>
         <ul>
-            <li><a route-href="route: user">Home</a></li>
-            <li><a route-href="route: report">Reports</a></li>
-            <li><a route-href="route: project">Projects</a></li>
-
+            <li><a route-href="route: organizations">Organizations</a></li>
+            <li><a route-href="route: groups">Groups</a></li>
+            <li><a route-href="route: logout">Log out</a></li>
         </ul>
     </nav>
 
-    <div>
-        <h1>Breakpoint</h1>
-    </div>
+    <hr />
 
     <div class="page-host">
         <router-view></router-view>

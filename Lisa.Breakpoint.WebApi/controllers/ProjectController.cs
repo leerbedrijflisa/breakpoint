@@ -1,44 +1,38 @@
-﻿using Lisa.Breakpoint.WebApi.Models;
+﻿using Lisa.Breakpoint.WebApi.database;
+using Lisa.Breakpoint.WebApi.models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("projects")]
     public class ProjectController
     {
-        static RavenDB _db = new RavenDB();
+        private readonly RavenDB _db;
 
-        public IList<Project> Get()
+        public ProjectController(RavenDB db)
         {
-            return _db.GetAllProjects();
+            _db = db;
         }
 
-        [Route("{id}")]
+        [HttpGet]
+        [Route("{organization}/{username}")]
+        public IList<Project> Get(string organization, string userName)
+        {
+            return _db.GetAllProjects(organization, userName);
+        }
+
+        [HttpGet]
+        [Route("/get/{id}")]
         public Project Get(int id)
         {
             return _db.GetProject(id);
         }
 
         [HttpPost]
-        [Route("insert")]
-        public Project insert([FromBody]Project project)
+        public void insert([FromBody]Project project)
         {
-            //Member member = new Member
-            //{
-            //    Role = "admin",
-            //    UserName = "blablaname",
-            //    FullName = "Bas Eenhoorn"
-            //};
-
-            //Project project = new Project
-            //{
-            //    Slug = "eerste-project",
-            //    Name = "Eerste project",
-            //};
-
-            return _db.PostProject(project);
+            _db.PostProject(project);
         }
 
         [HttpPost]

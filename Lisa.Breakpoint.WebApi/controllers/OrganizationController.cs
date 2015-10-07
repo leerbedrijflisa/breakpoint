@@ -1,22 +1,29 @@
-﻿using Lisa.Breakpoint.WebApi.Models;
+﻿using Lisa.Breakpoint.WebApi.database;
+using Lisa.Breakpoint.WebApi.models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
-    [Route("organization")]
+    [Route("organizations")]
     public class OrganizationController
     {
-        static RavenDB _db = new RavenDB();
+        private readonly RavenDB _db;
 
-        [HttpGet]
-        public IList<Organization> Get()
+        public OrganizationController(RavenDB db)
         {
-            return _db.GetAllOrganizations();
+            _db = db;
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{username}")]
+        public IList<Organization> Get(string userName)
+        {
+            return _db.GetAllOrganizations(userName);
+        }
+
+        [HttpGet]
+        [Route("get/{id}")]
         public Organization Get(int id)
         {
             return _db.GetOrganization(id);
@@ -26,7 +33,7 @@ namespace Lisa.Breakpoint.WebApi
         [Route("post")]
         public void Post([FromBody]Organization organization)
         {
-            _db.InsertOrganization(organization);
+            _db.PostOrganization(organization);
         }
 
         [HttpPost]

@@ -1,0 +1,29 @@
+﻿<template>
+    <style>
+        p {
+            margin: 0px;
+        }
+
+        .li-item {
+            background-color: #D8D8D8;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .list {
+            background-color: white;
+            margin-left: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+    </style>
+    <h2>${organization}</h2>
+    <a route-href="route: create-project; params.bind: { organization: organization }">Create project</a>
+    <ul>
+        <li repeat.for="project of projects" class="li-item">
+            <h2><a route-href="route: reports; params.bind: { organization: project.organization, project: project.slug }">${project.name}</a></h2>
+        </li>
+    </ul>
+</template>
