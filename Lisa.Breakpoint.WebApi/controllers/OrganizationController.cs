@@ -23,6 +23,13 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet]
+        [Route("members/{organization}")]
+        public IList<string> GetOrganizationMembers(string organization)
+        {
+            return _db.GetOrganizationMembers(organization);
+        }
+
+        [HttpGet]
         [Route("get/{id}")]
         public Organization Get(int id)
         {

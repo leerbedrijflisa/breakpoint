@@ -10,6 +10,9 @@ export class dashboard {
     }
 
     activate(params) {
+        this.http.get('projects/members/'+params.project).then(response => {
+            this.members = response.content;
+        });
         return this.http.get("reports/"+params.project+"/"+readCookie("userName")).then( response => {
             this.reports = response.content;
             this.params = params;

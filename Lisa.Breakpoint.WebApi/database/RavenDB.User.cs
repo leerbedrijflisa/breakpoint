@@ -26,6 +26,17 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
+        public Group PostGroup(Group group)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                session.Store(group);
+                session.SaveChanges();
+
+                return group;
+            }
+        }
+
         public User GetUser(int id)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
@@ -44,7 +55,7 @@ namespace Lisa.Breakpoint.WebApi.database
 
                 if (user.Count != 0)
                 {
-                    return user[0].Role + "s";
+                    return user[0].Role;
                 } else
                 {
                     return "no group";

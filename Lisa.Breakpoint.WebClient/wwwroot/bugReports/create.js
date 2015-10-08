@@ -32,7 +32,7 @@ export class Create {
                 stepByStep: this.stepbystep,
                 expectation: this.expectation,
                 whatHappened: this.whathappened,
-                reporter: this.reporter,
+                reporter: readCookie("userName"),
                 status: "Open",
                 priority: this.priority,
                 assignedTo: "person",

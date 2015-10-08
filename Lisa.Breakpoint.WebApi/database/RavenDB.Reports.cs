@@ -28,6 +28,18 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
+        public IList<string> GetOrganizationMembers(string organization)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                var list = session.Query<Organization>()
+                    .Where(o => o.Slug == organization)
+                    .ToList();
+
+                return list[0].Members;
+            }
+        }
+
         public Report PostReport(Report report)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())

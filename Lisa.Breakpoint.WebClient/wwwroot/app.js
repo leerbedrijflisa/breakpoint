@@ -11,7 +11,7 @@ export class App {
           { route: 'user/logout', name: 'logout',  moduleId: 'users/logout', title:'Logout' },
           { route: 'user/group',  auth: true, name: 'groups',  moduleId: 'users/group',  title:'Group' },
 
-          { route: 'organization',    auth: true, name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
+          { route: 'organization',          auth: true, name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
           { route: 'organization/create',   auth: true, name: 'create-organization',    moduleId: 'organizations/createOrganization',    title:'New organization' },
 
           { route: ':organization',         auth: true, name: 'projects',       moduleId: 'projects/project',       title:'Projects' },
@@ -24,8 +24,10 @@ export class App {
 
         this.router = router;
 
-        this.userName = "Logged in as: " + readCookie("userName");
-        this.role     = "(" + readCookie("role") + ")";
+        if (readCookie("userName") != null) {
+            this.userName = "Logged in as: " + readCookie("userName");
+            this.role     = "(" + readCookie("role") + ")";
+        }
     }
 }
 

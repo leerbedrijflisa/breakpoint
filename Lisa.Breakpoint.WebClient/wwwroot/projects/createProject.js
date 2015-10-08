@@ -27,12 +27,7 @@ export class createProject {
             name: this.name,
             slug: this.name,
             organization: this.params.organization,
-            members: [
-                {
-                    userName: this.members,
-                    fullName: this.members
-                }
-            ]
+            members: getSelectValues(document.getElementById("membersSelect"))
         };
 
         this.http.post('projects', data).then( response => {
