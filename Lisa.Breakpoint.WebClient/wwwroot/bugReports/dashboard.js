@@ -21,7 +21,7 @@ export class dashboard {
     submit() {
         var data = {
             Status: this.status,
-            id: this.id
+            id: this.number
         };
         console.log(data.id);
         console.log(data.Status);
