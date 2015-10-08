@@ -19,6 +19,10 @@ export class user {
         if (readCookie("userName")) {
             this.router.navigateToRoute("organizations");
         }
+
+        this.http.get('users/groups').then(response => {
+            this.roles = response.content;
+        });
     }
 
     Post() {

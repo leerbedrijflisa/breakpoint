@@ -18,7 +18,10 @@
         <input value.bind="fullName" name="fullname" type="text" />
         <br />
         <label for="Role">Role: </label>
-        <input value.bind="role" name="role" type="text" />
+        <select id="role" value.bind="role" name="role" type="text">
+            <option value="">-</option>
+            <option repeat.for="role of roles" value="${role.name}">${role.name}</option>
+        </select>
         <br />
         <button type="submit" name="submit">Sign up!</button>
     </form>

@@ -24,12 +24,7 @@ export class Create {
         var data = {
             name: this.name,
             slug: this.slug,
-            members: [
-                {
-                    userName: this.members,
-                    fullName: this.members
-                }
-            ]
+            members: getSelectValues(document.getElementById("membersSelect"))
         };
 
         this.http.post('organizations/post', data).then(response => {

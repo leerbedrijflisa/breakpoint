@@ -44,7 +44,7 @@ namespace Lisa.Breakpoint.WebApi.database
 
                 if (user.Count != 0)
                 {
-                    return user[0].Role + "s";
+                    return user[0].Role;
                 } else
                 {
                     return "no group";

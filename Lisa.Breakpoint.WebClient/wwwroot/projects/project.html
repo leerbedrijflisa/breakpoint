@@ -26,4 +26,12 @@
             <h2><a route-href="route: reports; params.bind: { organization: project.organization, project: project.slug }">${project.name}</a></h2>
         </li>
     </ul>
+
+    <hr />
+
+    <h4>Members in this organization</h4>
+
+    <ul>
+        <li repeat.for="member of members">${member}</li>
+    </ul>
 </template>

@@ -4,7 +4,7 @@
         <input value.bind="name" name="name" type="text" required />
         <br />
         <label for="members">Members: </label>
-        <select value.bind="members" name="members" type="text">
+        <select multiple id="membersSelect" value.bind="members" name="members" type="text">
             <option value="">-</option>
             <option repeat.for="user of users" value="${user.username}">${user.username}</option>
         </select>
