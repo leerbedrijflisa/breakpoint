@@ -27,7 +27,9 @@ export class App {
 
         if (readCookie("userName") != null) {
             this.userName = "Logged in as: " + readCookie("userName");
-            this.role     = "(" + readCookie("role") + ")";
+            if (readCookie("role") != null) {
+                this.role     = "(" + readCookie("role") + ")";
+            }
         }
     }
 }
@@ -38,7 +40,6 @@ class AuthorizeStep {
         if (routingContext.nextInstructions.some(i => i.config.auth)) {
             var isLoggedIn = AuthorizeStep.isLoggedIn();
             if (!isLoggedIn) {
-                //alert("Not Logged In!");
                 return next.cancel();
             }
         }
