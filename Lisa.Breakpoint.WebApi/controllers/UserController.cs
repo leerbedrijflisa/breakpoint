@@ -36,6 +36,13 @@ namespace Lisa.Breakpoint.WebApi.controllers
             return _db.GetAllGroups();
         }
 
+        [HttpGet]
+        [Route("groups/{group}")]
+        public IList<string> GetGroupMembers(string group)
+        {
+            return _db.GetGroupMembers(group);
+        }
+
         [HttpPost]
         [Route("groups")]
         public Group PostGroup([FromBody] Group group)
