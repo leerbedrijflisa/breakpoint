@@ -9,7 +9,7 @@ export class App {
         config.map([
           { route: ['', 'user'],  name: 'login',   moduleId: 'users/user',   title:'User' },
           { route: 'user/logout', name: 'logout',  moduleId: 'users/logout', title:'Logout' },
-          { route: 'user/group',        auth: true, name: 'groups',  moduleId: 'users/createGroup', title:'Create a group' },
+          { route: 'user/group',  name: 'groups',  moduleId: 'users/createGroup', title:'Create a group' },
           { route: 'user/group/:group', auth: true, name: 'group',   moduleId: 'users/group',       title:'Group' },
 
           { route: 'organization',          auth: true, name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
