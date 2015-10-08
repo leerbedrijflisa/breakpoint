@@ -45,4 +45,12 @@
             <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup}${report.assignedToPerson}</p>
         </li>
     </ul>
+
+    <hr />
+
+    <h4>Members in this project</h4>
+
+    <ul>
+        <li repeat.for="member of members">${member}</li>
+    </ul>
 </template>

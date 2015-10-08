@@ -9,7 +9,7 @@ export class project {
 
     activate(params) {
         this.http.get('organizations/members/'+params.organization).then(response => {
-            this.members = response.content[0].members;
+            this.members = response.content;
         });
         return this.http.get("projects/"+params.organization+'/'+readCookie("userName")).then( response => {
             this.projects = response.content;

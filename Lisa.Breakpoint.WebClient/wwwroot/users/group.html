@@ -7,7 +7,7 @@
         </p>
         <p>
             <label for="members">Members: </label>
-            <select id="members" value.bind="members" name="members" type="text">
+            <select multiple id="members" value.bind="members" name="members" type="text">
                 <option value="">-</option>
                 <option repeat.for="user of users" value="${user.username}">${user.username}</option>
             </select>

@@ -27,15 +27,11 @@ export class Create {
     submit() {
         var data = {
             name: this.name,
-            members: [
-                {
-                    fullName: this.members
-                }
-            ]
+            members: getSelectValues(document.getElementById("members"))
         }
 
         this.http.post('users/groups', data).then(response => {
-            this.router.navigateToRoute("organization");
+            this.router.navigateToRoute("organizations");
         });
     }
 }

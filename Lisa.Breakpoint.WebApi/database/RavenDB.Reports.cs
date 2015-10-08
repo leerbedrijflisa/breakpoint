@@ -28,7 +28,7 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public IList<Organization> GetOrganizationMembers(string organization)
+        public IList<string> GetOrganizationMembers(string organization)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
@@ -36,7 +36,7 @@ namespace Lisa.Breakpoint.WebApi.database
                     .Where(o => o.Slug == organization)
                     .ToList();
 
-                return list;
+                return list[0].Members;
             }
         }
 
