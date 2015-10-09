@@ -1,37 +1,12 @@
 ﻿<template>
-    <style>
-      p {
-          margin: 0px;
-      }
-
-      ul.report {
-          list-style: none;
-          margin: 0px;
-      }
-
-      .li-item {
-          background-color: #D8D8D8;
-          margin-bottom: 20px;
-          padding: 10px;
-      }
-
-      .list {
-          background-color: white;
-          margin-left: 20px;
-      }
-
-      .label {
-          font-weight: bold;
-      }
-    </style>
+    <link rel="stylesheet" href="css/Dashboard.css" />
     <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <h2>List of reports: </h2>
-    <br />
-    <ul class="report">
+    <ul>
         <li repeat.for="report of reports" class="li-item">
             <h3>
                 <a route-href="route: edit-report; params.bind: { organization: $parent.params.organization, project: $parent.params.project, id: report.number }">
-                    Report #${report.number} - ${report.title}
+                    Report ${report.number} - ${report.title}
                 </a>
             </h3>
             <p><span class="label">stepByStep:</span> ${report.stepByStep}</p>
@@ -40,6 +15,16 @@
             <p><span class="label">reporter:</span> ${report.reporter}</p>
             <p><span class="label">reported:</span> ${report.reported}</p>
             <p><span class="label">status:</span> ${report.status}</p>
+            <form submit.delegate="$parent.submit(report.number)">
+                <select value.bind="$parent.status[$index]" name="status">
+                    <option value="open" selected>Open</option>
+                    <option value="fixed">Fixed</option>
+                    <option value="wont fix">Won't Fix</option>
+                    <option value="wont fix approved">Won't Fix (Approved)</option>
+                    <option value="closed">Closed</option>
+                </select>
+                <button type="submit" name="submit">Edit Status</button>
+            </form>
             <p><span class="label">priority:</span> ${report.priority}</p>
             <br />
             <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup}${report.assignedToPerson}</p>

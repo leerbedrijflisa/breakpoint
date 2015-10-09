@@ -1,5 +1,5 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
-using Lisa.Breakpoint.WebApi.models;
+using Lisa.Breakpoint.WebApi.Models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 
@@ -44,12 +44,12 @@ namespace Lisa.Breakpoint.WebApi
 
         [HttpPost]
         [Route("patch/{id}")]
-        public void Patch(int id)
+        public void Patch(int id, Project patchedProject)
         {
-            Project patchedProject = new Project
-            {
-                Slug = "patched-slug"
-            };
+            //Project patchedProject = new Project
+            //{
+            //    Slug = "patched-slug"
+            //};
 
             _db.PatchProject(id, patchedProject);
         }
@@ -60,5 +60,7 @@ namespace Lisa.Breakpoint.WebApi
         {
             _db.DeleteProject(id);
         }
+
+        //public void CheckVersion() { }
     }
 }

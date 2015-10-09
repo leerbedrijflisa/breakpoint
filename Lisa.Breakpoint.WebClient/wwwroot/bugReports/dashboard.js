@@ -3,13 +3,21 @@ import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 
 export class dashboard {
-    constructor() {
+    static inject() {
+        return [ Router ];
+    }
+
+
+    constructor(router) {
+        this.router = router;
+        this.isVisible = false;
         this.http = new HttpClient().configure(x => {
             x.withBaseUrl('http://localhost:10791/');      
             x.withHeader('Content-Type', 'application/json')});
     }
 
     activate(params) {
+        this.status = [];
         this.http.get('projects/members/'+params.project).then(response => {
             this.members = response.content;
         });
@@ -17,6 +25,16 @@ export class dashboard {
             this.reports = response.content;
             this.params = params;
             this.userName = readCookie("userName");
+        });
+    }
+
+    submit(id) {
+        var data = {
+            status: this.status[0]
+        };
+        console.log(data.status);
+        this.http.post('reports/patch/'+id, data).then( response => {
+            window.location.reload();
         });
     }
 }

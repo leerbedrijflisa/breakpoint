@@ -1,0 +1,19 @@
+﻿<template>
+    <a route-href="route: createProject">New project</a>
+    <h2>Projects</h2>
+    <table align="left">
+        <tr>
+            <th>Id</th>
+            <th>Member</th>
+            <th>Name</th>
+            <th>Slug</th>
+        </tr>
+        <tr repeat.for="project of projects">
+            <td>${project.id}</td>
+            <td>${project.member.userName}</td>
+            <td>${project.name}</td>
+            <td>${project.slug}</td>
+        </tr>
+    </table>
+
+</template>

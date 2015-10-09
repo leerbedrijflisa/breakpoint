@@ -1,7 +1,9 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
-using Lisa.Breakpoint.WebApi.models;
 using Microsoft.AspNet.Mvc;
-using System.Collections.Generic;
+using System.Diagnostics;
+using Lisa.Breakpoint.WebApi.Models;
+using System.Linq;
+using Microsoft.Framework.DependencyInjection.Extensions;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -53,10 +55,32 @@ namespace Lisa.Breakpoint.WebApi
                 return new BadRequestResult();
             }
 
-            Report postedReport = _db.PostReport(report);
+            Debug.WriteLine(report.Version);
 
-            string location = Url.RouteUrl("report", new {  }, Request.Scheme);
-            return new CreatedResult(location, postedReport);
+            var project = _db.GetProject(report.Project.Id);
+
+            if (!project.Version.Contains(report.Version))
+            {
+                Debug.WriteLine("bestaat nog niet");
+
+                Project patchedProject = project;
+
+                patchedProject.Version.Add(report.Version);
+
+                foreach (var version in patchedProject.Version)
+                {
+                    Debug.WriteLine(version);
+                }
+
+                // TODO: finish patch project function
+                //_db.PatchProject(project.Id, patchedProject);
+
+            }
+
+            _db.PostReport(report);
+
+            string location = Url.RouteUrl("report", new { id = report.Id }, Request.Scheme);
+            return new CreatedResult(location, report);
         }
 
         [HttpPost]
