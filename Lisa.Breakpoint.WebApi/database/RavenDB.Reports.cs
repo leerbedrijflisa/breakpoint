@@ -48,29 +48,28 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                Report report = session.Load<Report>(id);
+                Report report = session.Load<Report>("reports/"+id);
 
                 try
                 {
                     foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
                     {
                         var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
-
-                        if (newVal != null)
+                        if (propertyInfo.Name != "Reported" )
                         {
-                            var patchRequest = new PatchRequest()
+                            if (newVal != null)
                             {
-                                Name = propertyInfo.Name,
-                                Type = PatchCommandType.Set,
-                                Value = newVal.ToString()
-                            };
-                            documentStore.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
-
-                            return session.Load<Report>("reports/"+id);
+                                var patchRequest = new PatchRequest()
+                                {
+                                    Name = propertyInfo.Name,
+                                    Type = PatchCommandType.Set,
+                                    Value = newVal.ToString()
+                                };
+                                documentStore.DatabaseCommands.Patch("reports/"+id, new[] { patchRequest });
+                            }
                         }
-                        return null;
                     }
-                    return null;
+                    return session.Load<Report>("reports/" + id);
                 }
                 catch (Exception)
                 {
