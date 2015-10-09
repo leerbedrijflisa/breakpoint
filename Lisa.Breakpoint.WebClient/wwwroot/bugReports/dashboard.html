@@ -4,7 +4,7 @@
           margin: 0px;
       }
 
-      ul {
+      ul.report {
           list-style: none;
           margin: 0px;
       }
@@ -27,7 +27,7 @@
     <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <h2>List of reports: </h2>
     <br />
-    <ul>
+    <ul class="report">
         <li repeat.for="report of reports" class="li-item">
             <h3>
                 <a route-href="route: edit-report; params.bind: { organization: $parent.params.organization, project: $parent.params.project, id: report.number }">

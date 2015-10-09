@@ -29,6 +29,10 @@ export class Create {
     }
 
     submit() {
+        if (this.priority == null) {
+            this.priority = document.getElementById("priority").options[0].value; // if the first option is selected it wont register the value so i have to get the first option myself
+        }
+
         if (document.getElementById('personRadioButton').checked == true) {
             var data = {
                 title: this.title,
