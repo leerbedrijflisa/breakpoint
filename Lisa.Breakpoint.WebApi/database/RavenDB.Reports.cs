@@ -35,7 +35,10 @@ namespace Lisa.Breakpoint.WebApi.database
                 var list = session.Query<Organization>()
                     .Where(o => o.Slug == organization)
                     .ToList();
-
+                if(list == null)
+                {
+                    return null;
+                }
                 return list[0].Members;
             }
         }
