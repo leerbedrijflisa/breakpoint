@@ -1,4 +1,4 @@
-﻿using Lisa.Breakpoint.WebApi.models;
+﻿using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using System;
@@ -15,7 +15,7 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Report>()
-                    .Where(r => r.Project == project && r.AssignedToPerson == userName || r.Project == project && r.AssignedToGroup == group)
+                    .Where(r => r.ProjectName == project && r.AssignedToPerson == userName || r.ProjectName == project && r.AssignedToGroup == group)
                     .ToList();
             }
         }
@@ -28,14 +28,29 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
+        public IList<string> GetOrganizationMembers(string organization)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                var list = session.Query<Organization>()
+                    .Where(o => o.Slug == organization)
+                    .ToList();
+
+                return list[0].Members;
+            }
+        }
+
         public Report PostReport(Report report)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(report);
 
-                string reportId = session.Advanced.GetDocumentId(report);
-                report.Number = reportId.Split('/').Last();
+//<<<<<<< HEAD
+//                string reportId = session.Advanced.GetDocumentId(report);
+//                report.Number = reportId.Split('/').Last();
+//=======
+//>>>>>>> feature/test-version
                 report.Reported = DateTime.Now;
 
                 session.SaveChanges();

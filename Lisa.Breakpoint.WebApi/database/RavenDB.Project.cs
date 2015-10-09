@@ -1,4 +1,4 @@
-﻿using Lisa.Breakpoint.WebApi.models;
+﻿using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using System;
@@ -15,7 +15,7 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Project>()
-                    .Where(p => p.Members.Any(m => m.UserName == userName) && p.Organization == organizationName)
+                    .Where(p => p.Members.Any(m => m == userName) && p.Organization == organizationName)
                     .ToList();
             }
         }
@@ -25,6 +25,18 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Load<Project>(id);
+            }
+        }
+
+        public IList<string> GetProjectMembers(string project)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                var list = session.Query<Project>()
+                    .Where(p => p.Slug == project)
+                    .ToList();
+
+                return list[0].Members;
             }
         }
 
@@ -54,7 +66,7 @@ namespace Lisa.Breakpoint.WebApi.database
                             var patchRequest = new PatchRequest()
                             {
                                 Name = propertyInfo.Name,
-                                Type = PatchCommandType.Set,
+                                Type = PatchCommandType.Add,
                                 Value = newVal.ToString()
                             };
                             documentStore.DatabaseCommands.Patch("Projects/" + id, new[] { patchRequest });

@@ -16,15 +16,23 @@ export class Create {
     
     activate(params) {
         this.params = params;
+        console.log(params);
         this.http.get('users/users').then(response => {
             this.users = response.content;
         });
         this.http.get('users/groups').then(response => {
             this.groups = response.content;
         });
+        this.http.get('projects').then(response => {
+            this.project = response.content;
+        });
     }
 
     submit() {
+        if (this.priority == null) {
+            this.priority = document.getElementById("priority").options[0].value; // if the first option is selected it wont register the value so i have to get the first option myself
+        }
+
         if (document.getElementById('personRadioButton').checked == true) {
             var data = {
                 title: this.title,
@@ -32,7 +40,7 @@ export class Create {
                 stepByStep: this.stepbystep,
                 expectation: this.expectation,
                 whatHappened: this.whathappened,
-                reporter: this.reporter,
+                reporter: readCookie("userName"),
                 status: "Open",
                 priority: this.priority,
                 assignedTo: "person",

@@ -16,26 +16,9 @@ export class Create {
     
     activate(params) {
         this.params = params;
-        this.http.get('users/users').then(response => {
-            this.users = response.content;
-        });
-        this.http.get('users/groups').then(response => {
-            this.groups = response.content;
-        });
-    }
-
-    submit() {
-        var data = {
-            name: this.name,
-            members: [
-                {
-                    fullName: this.members
-                }
-            ]
-        }
-
-        this.http.post('users/groups', data).then(response => {
-            this.router.navigateToRoute("organization");
+        this.group = params.group;
+        this.http.get('users/groups/'+params.group).then(response => {
+            this.members = response.content;
         });
     }
 }

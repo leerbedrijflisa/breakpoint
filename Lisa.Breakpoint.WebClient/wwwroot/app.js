@@ -9,9 +9,10 @@ export class App {
         config.map([
           { route: ['', 'user'],  name: 'login',   moduleId: 'users/user',   title:'User' },
           { route: 'user/logout', name: 'logout',  moduleId: 'users/logout', title:'Logout' },
-          { route: 'user/group',  auth: true, name: 'groups',  moduleId: 'users/group',  title:'Group' },
+          { route: 'user/group',  name: 'groups',  moduleId: 'users/createGroup', title:'Create a group' },
+          { route: 'user/group/:group', auth: true, name: 'group',   moduleId: 'users/group',       title:'Group' },
 
-          { route: 'organization',    auth: true, name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
+          { route: 'organization',          auth: true, name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
           { route: 'organization/create',   auth: true, name: 'create-organization',    moduleId: 'organizations/createOrganization',    title:'New organization' },
 
           { route: ':organization',         auth: true, name: 'projects',       moduleId: 'projects/project',       title:'Projects' },
@@ -24,8 +25,12 @@ export class App {
 
         this.router = router;
 
-        this.userName = "Logged in as: " + readCookie("userName");
-        this.role     = "(" + readCookie("role") + ")";
+        if (readCookie("userName") != null) {
+            this.userName = "Logged in as: " + readCookie("userName");
+            if (readCookie("role") != null) {
+                this.role     = "(" + readCookie("role") + ")";
+            }
+        }
     }
 }
 
@@ -35,7 +40,6 @@ class AuthorizeStep {
         if (routingContext.nextInstructions.some(i => i.config.auth)) {
             var isLoggedIn = AuthorizeStep.isLoggedIn();
             if (!isLoggedIn) {
-                //alert("Not Logged In!");
                 return next.cancel();
             }
         }

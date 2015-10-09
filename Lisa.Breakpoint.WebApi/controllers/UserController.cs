@@ -1,5 +1,5 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
-using Lisa.Breakpoint.WebApi.models;
+using Lisa.Breakpoint.WebApi.Models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 
@@ -34,6 +34,13 @@ namespace Lisa.Breakpoint.WebApi.controllers
         public IList<Group> GetGroups()
         {
             return _db.GetAllGroups();
+        }
+
+        [HttpGet]
+        [Route("groups/{group}")]
+        public IList<string> GetGroupMembers(string group)
+        {
+            return _db.GetGroupMembers(group);
         }
 
         [HttpPost]

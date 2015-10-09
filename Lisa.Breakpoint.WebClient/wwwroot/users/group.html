@@ -1,25 +1,10 @@
 ﻿<template>
-    <h3>Make a group:</h3>
-    <form submit.delegate="submit()">
-        <p>
-            <label for="name">Name: </label>
-            <input value.bind="name" name="name" type="text" />
-        </p>
-        <p>
-            <label for="members">Members: </label>
-            <select id="members" value.bind="members" name="members" type="text">
-                <option value="">-</option>
-                <option repeat.for="user of users" value="${user.username}">${user.username}</option>
-            </select>
-        </p>
-        <button type="submit" name="submit">Create group</button>
-    </form>
-
-    <hr />
-
+    <h3>Group: ${group.name}</h3>
+    <p></p>
+    <h4>Members in this group:</h4>
     <ul>
-        <li repeat.for="group of groups">
-            <p>${group.name}</p>
+        <li repeat.for="member of members">
+            <p>${member}</p>
         </li>
     </ul>
 </template>

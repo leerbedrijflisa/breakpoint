@@ -1,4 +1,8 @@
-﻿using Raven.Client;
+﻿using System;
+using System.Collections.Generic;
+using Lisa.Breakpoint.WebApi.Models;
+using Raven.Client;
+using System.Linq;
 
 namespace Lisa.Breakpoint.WebApi.database
 {

@@ -1,4 +1,4 @@
-﻿using Lisa.Breakpoint.WebApi.models;
+﻿using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using System;
@@ -26,11 +26,34 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
+        public Group PostGroup(Group group)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                session.Store(group);
+                session.SaveChanges();
+
+                return group;
+            }
+        }
+
         public User GetUser(int id)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Load<User>(id);
+            }
+        }
+
+        public IList<string> GetGroupMembers(string group)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                var list = session.Query<Group>()
+                    .Where(g => g.Name == group)
+                    .ToList();
+
+                return list[0].Members;
             }
         }
 
@@ -44,7 +67,7 @@ namespace Lisa.Breakpoint.WebApi.database
 
                 if (user.Count != 0)
                 {
-                    return user[0].Role + "s";
+                    return user[0].Role;
                 } else
                 {
                     return "no group";

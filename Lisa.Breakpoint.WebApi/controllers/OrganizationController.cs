@@ -1,5 +1,5 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
-using Lisa.Breakpoint.WebApi.models;
+using Lisa.Breakpoint.WebApi.Models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 
@@ -20,6 +20,13 @@ namespace Lisa.Breakpoint.WebApi
         public IList<Organization> Get(string userName)
         {
             return _db.GetAllOrganizations(userName);
+        }
+
+        [HttpGet]
+        [Route("members/{organization}")]
+        public IList<string> GetOrganizationMembers(string organization)
+        {
+            return _db.GetOrganizationMembers(organization);
         }
 
         [HttpGet]
