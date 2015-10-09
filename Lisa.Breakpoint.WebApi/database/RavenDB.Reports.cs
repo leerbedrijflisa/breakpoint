@@ -60,7 +60,7 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                Report report = session.Load<Report>(id);
+                Report report = session.Load<Report>("reports/"+id);
 
                 try
                 {
@@ -77,12 +77,9 @@ namespace Lisa.Breakpoint.WebApi.database
                                 Value = newVal.ToString()
                             };
                             documentStore.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
-
-                            return session.Load<Report>("reports/"+id);
                         }
-                        return null;
                     }
-                    return null;
+                    return session.Load<Report>("reports/" + id);
                 }
                 catch (Exception)
                 {
