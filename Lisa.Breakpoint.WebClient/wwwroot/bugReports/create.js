@@ -16,11 +16,15 @@ export class Create {
     
     activate(params) {
         this.params = params;
+        console.log(params);
         this.http.get('users/users').then(response => {
             this.users = response.content;
         });
         this.http.get('users/groups').then(response => {
             this.groups = response.content;
+        });
+        this.http.get('projects').then(response => {
+            this.project = response.content;
         });
     }
 

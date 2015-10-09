@@ -1,4 +1,4 @@
-﻿using Lisa.Breakpoint.WebApi.models;
+﻿using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using System;
@@ -66,7 +66,7 @@ namespace Lisa.Breakpoint.WebApi.database
                             var patchRequest = new PatchRequest()
                             {
                                 Name = propertyInfo.Name,
-                                Type = PatchCommandType.Set,
+                                Type = PatchCommandType.Add,
                                 Value = newVal.ToString()
                             };
                             documentStore.DatabaseCommands.Patch("Projects/" + id, new[] { patchRequest });

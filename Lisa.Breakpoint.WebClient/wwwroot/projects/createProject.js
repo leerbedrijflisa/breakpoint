@@ -25,7 +25,7 @@ export class createProject {
     create() {
         var data = {
             name: this.name,
-            slug: this.name,
+            slug: this.name.replace(/\s+/g, '-').toLowerCase(),
             organization: this.params.organization,
             members: getSelectValues(document.getElementById("membersSelect"))
         };
