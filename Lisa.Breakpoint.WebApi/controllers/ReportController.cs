@@ -55,31 +55,18 @@ namespace Lisa.Breakpoint.WebApi
                 return new BadRequestResult();
             }
 
-            Debug.WriteLine(report.Version);
-
-            var project = _db.GetProject(report.Project.Id);
-
-            if (!project.Version.Contains(report.Version))
-            {
-                Debug.WriteLine("bestaat nog niet");
-
-                Project patchedProject = project;
-
-                patchedProject.Version.Add(report.Version);
-
-                foreach (var version in patchedProject.Version)
-                {
-                    Debug.WriteLine(version);
-                }
-
+            //Project project = _db.GetProject(report.Project);
+            //if (!project.Version.Contains(report.Version))
+            //{
+                //Project patchedProject = project;
+                //patchedProject.Version.Add(report.Version);
                 // TODO: finish patch project function
                 //_db.PatchProject(project.Id, patchedProject);
-
-            }
+            //}
 
             _db.PostReport(report);
 
-            string location = Url.RouteUrl("report", new { id = report.Id }, Request.Scheme);
+            string location = Url.RouteUrl("report", new {  }, Request.Scheme);
             return new CreatedResult(location, report);
         }
 

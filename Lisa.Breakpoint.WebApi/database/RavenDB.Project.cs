@@ -20,11 +20,13 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public Project GetProject(int id)
+        public Project GetProject(string project)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                return session.Load<Project>(id);
+                return session.Query<Project>()
+                    .Where(p => p.Slug == project)
+                    .ToList().First();
             }
         }
 

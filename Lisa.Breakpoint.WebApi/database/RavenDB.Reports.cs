@@ -15,7 +15,7 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Report>()
-                    .Where(r => r.ProjectName == project && r.AssignedToPerson == userName || r.ProjectName == project && r.AssignedToGroup == group)
+                    .Where(r => r.Project == project && r.AssignedToPerson == userName || r.Project == project && r.AssignedToGroup == group)
                     .ToList();
             }
         }
@@ -49,11 +49,8 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 session.Store(report);
 
-//<<<<<<< HEAD
-//                string reportId = session.Advanced.GetDocumentId(report);
-//                report.Number = reportId.Split('/').Last();
-//=======
-//>>>>>>> feature/test-version
+                string reportId = session.Advanced.GetDocumentId(report);
+                report.Number = reportId.Split('/').Last();
                 report.Reported = DateTime.Now;
 
                 session.SaveChanges();
@@ -68,31 +65,24 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 Report report = session.Load<Report>("reports/"+id);
 
-                try
+                foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
                 {
-                    foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
+                    var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
+                    if (propertyInfo.Name != "Reported" )
                     {
-                        var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
-                        if (propertyInfo.Name != "Reported" )
+                        if (newVal != null)
                         {
-                            if (newVal != null)
+                            var patchRequest = new PatchRequest()
                             {
-                                var patchRequest = new PatchRequest()
-                                {
-                                    Name = propertyInfo.Name,
-                                    Type = PatchCommandType.Set,
-                                    Value = newVal.ToString()
-                                };
-                                documentStore.DatabaseCommands.Patch("reports/"+id, new[] { patchRequest });
-                            }
+                                Name = propertyInfo.Name,
+                                Type = PatchCommandType.Set,
+                                Value = newVal.ToString()
+                            };
+                            documentStore.DatabaseCommands.Patch("reports/"+id, new[] { patchRequest });
                         }
                     }
-                    return session.Load<Report>("reports/" + id);
                 }
-                catch (Exception)
-                {
-                    return null;
-                }
+                return session.Load<Report>("reports/" + id);
             }
         }
 

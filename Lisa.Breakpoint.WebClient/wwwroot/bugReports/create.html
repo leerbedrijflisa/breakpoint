@@ -5,13 +5,13 @@
         <input value.bind="title" name="title" type="text" />
         <br />
         <label for="stepbystep">Step By Step: </label>
-        <textarea value.bind="stepbystep" name="stepbystep" type="text"></textarea>
+        <textarea value.bind="stepbystep" value="${report.stepByStep}" name="stepbystep" type="text"></textarea>
         <br />
         <label for="expectation">Expectation: </label>
-        <textarea value.bind="expectation" name="expectation" type="text"></textarea>
+        <textarea value.bind="expectation" value="${report.expectation}" name="expectation" type="text"></textarea>
         <br />
         <label for="whathappened">What happened: </label>
-        <textarea value.bind="whathappened" name="whathappened" type="text"></textarea>
+        <textarea value.bind="whathappened" value="${report.whatHappened}" name="whathappened" type="text"></textarea>
         <br />
         <label for="priority">Priority: </label>
         <select value.bind="priority" id="priority" name="priority" type="text">

@@ -45,7 +45,7 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public IList<string> GetGroupMembers(string group)
+        public IList<Member> GetGroupMembers(string group)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {

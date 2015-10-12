@@ -5,14 +5,9 @@ namespace Lisa.Breakpoint.WebApi.Models
 {
     public class Report
     {
-        public string   Id { get; set; }
         public string   Title { get; set; }
         public string   Number { get; set; }
-        public string   ProjectName { get; set; }
-
-        //public ProjectReference Project { get; set; }
-        public Project Project { get; set; }
-
+        public string   Project { get; set; }
         public string   StepByStep { get; set; }
         public string   Expectation { get; set; }
         public string   WhatHappened { get; set; }
@@ -23,8 +18,8 @@ namespace Lisa.Breakpoint.WebApi.Models
         public string   AssignedTo { get; set; }
         public string   AssignedToPerson { get; set; }
         public string   AssignedToGroup { get; set; }
+        public string   Version { get; set; }
         public IList<Comment>   Comments { get; set; }
-        public string Version { get; set; }
     }
 
     public class Comment
@@ -43,14 +38,6 @@ namespace Lisa.Breakpoint.WebApi.Models
     public class Group
     {
         public string Name { get; set; }
-        public IList<string> Members { get; set; }
+        public IList<Member> Members { get; set; }
     }
-
-    public class ProjectReference
-    {
-        public int Id { get; set; }
-        public string Slug { get; set; }
-        public string Name { get; set; }
-    }
-
 }

@@ -28,9 +28,9 @@ export class dashboard {
         });
     }
 
-    submit(id) {
+    submit(id, index) {
         var data = {
-            status: this.status[0]
+            status: this.status[index]
         };
         console.log(data.status);
         this.http.post('reports/patch/'+id, data).then( response => {
