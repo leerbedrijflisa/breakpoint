@@ -29,8 +29,11 @@ export class dashboard {
     }
 
     submit(id, index) {
+        if (this.status[index] == null) {
+            this.status[index] = "Open"; 
+        }
         var data = {
-            status: this.status[index]
+                status: this.status[index]
         };
         console.log(data.status);
         this.http.post('reports/patch/'+id, data).then( response => {

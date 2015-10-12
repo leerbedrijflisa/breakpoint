@@ -17,11 +17,11 @@
             <p><span class="label">status:</span> ${report.status}</p>
             <form submit.delegate="$parent.submit(report.number, $index )">
                 <select value.bind="$parent.status[$index]" name="status">
-                    <option value="open" selected>Open</option>
-                    <option value="fixed">Fixed</option>
-                    <option value="wont fix">Won't Fix</option>
-                    <option value="wont fix approved">Won't Fix (Approved)</option>
-                    <option value="closed">Closed</option>
+                    <option value="Open" selected>Open</option>
+                    <option value="Fixed">Fixed</option>
+                    <option value="Won't Fix">Won't Fix</option>
+                    <option value="Won't Fix (Approved)">Won't Fix (Approved)</option>
+                    <option value="Closed">Closed</option>
                 </select>
                 <button type="submit" name="submit">Edit Status</button>
             </form>
