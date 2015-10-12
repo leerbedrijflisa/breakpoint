@@ -53,6 +53,10 @@ namespace Lisa.Breakpoint.WebApi.database
                     .Where(g => g.Name == group)
                     .ToList();
 
+                if (list == null)
+                {
+                    return null;
+                }
                 return list[0].Members;
             }
         }

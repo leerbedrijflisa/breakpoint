@@ -36,6 +36,10 @@ namespace Lisa.Breakpoint.WebApi.database
                     .Where(p => p.Slug == project)
                     .ToList();
 
+                if (list == null)
+                {
+                    return null;
+                }
                 return list[0].Members;
             }
         }
