@@ -16,7 +16,7 @@
             <p><span class="label">reported:</span> ${report.reported}</p>
             <p><span class="label">status:</span> ${report.status}</p>
             <form submit.delegate="$parent.submit(report.number, $index )">
-                <select value.bind="$parent.status[$index]" name="status">
+                <select value.bind="$parent.status[$index]" name="status" id="status${report.number}">
                     <option value="Open" selected>Open</option>
                     <option value="Fixed">Fixed</option>
                     <option value="Won't Fix">Won't Fix</option>
