@@ -2,7 +2,20 @@
 import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 
+// TODO: implement injection of HttpClient in all modules
+
 export class App {
+    static inject() {
+        return [ HttpClient ];
+    }
+
+    constructor(http) {
+        http.configure(x => {
+            x.withBaseUrl('http://localhost:10791/');
+            x.withHeader('Content-Type', 'application/json');
+        });
+    }
+
     configureRouter(config, router) {
         config.title = 'Breakpoint';
         config.addPipelineStep('authorize', AuthorizeStep);
