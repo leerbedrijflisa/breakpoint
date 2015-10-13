@@ -23,11 +23,23 @@ export class createProject {
     }
 
     create() {
+        var members = getSelectValues(document.getElementById("membersSelect"));
+        var memberList = [];
+
+        members.forEach(function(member) {
+            var m = {
+                userName: member,
+                role: ''
+            };
+            memberList.push(m);
+        });
+
         var data = {
             name: this.name,
             slug: this.name.replace(/\s+/g, '-').toLowerCase(),
             organization: this.params.organization,
-            members: getSelectValues(document.getElementById("membersSelect"))
+            projectManager: readCookie("userName"),
+            members: memberList
         };
 
         this.http.post('projects', data).then( response => {

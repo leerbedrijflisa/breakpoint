@@ -1,9 +1,6 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
 using Microsoft.AspNet.Mvc;
-using System.Diagnostics;
 using Lisa.Breakpoint.WebApi.Models;
-using System.Linq;
-using Microsoft.Framework.DependencyInjection.Extensions;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -54,15 +51,6 @@ namespace Lisa.Breakpoint.WebApi
             {
                 return new BadRequestResult();
             }
-
-            //Project project = _db.GetProject(report.Project);
-            //if (!project.Version.Contains(report.Version))
-            //{
-                //Project patchedProject = project;
-                //patchedProject.Version.Add(report.Version);
-                // TODO: finish patch project function
-                //_db.PatchProject(project.Id, patchedProject);
-            //}
 
             _db.PostReport(report);
 

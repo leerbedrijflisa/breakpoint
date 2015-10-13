@@ -15,8 +15,9 @@ export class App {
           { route: 'organization',          auth: true, name: 'organizations',          moduleId: 'organizations/organization',         title:'Organizations' },
           { route: 'organization/create',   auth: true, name: 'create-organization',    moduleId: 'organizations/createOrganization',    title:'New organization' },
 
-          { route: ':organization',         auth: true, name: 'projects',       moduleId: 'projects/project',       title:'Projects' },
-          { route: ':organization/create',  auth: true, name: 'create-project', moduleId: 'projects/createProject', title:'New project' },
+          { route: ':organization',         auth: true, name: 'projects',        moduleId: 'projects/project',        title:'Projects' },
+          { route: ':organization/create',  auth: true, name: 'create-project',  moduleId: 'projects/createProject',  title:'New project' },
+          { route: ':organization/members', auth: true, name: 'project-members', moduleId: 'projects/projectMembers', title:'Project members' },
 
           { route: ':organization/:project',            auth: true, name: 'reports',          moduleId: 'bugReports/dashboard',   title:'Reports' },
           { route: ':organization/:project/create',     auth: true, name: 'create-report',    moduleId: 'bugReports/create',      title:'New Report' },
@@ -27,9 +28,6 @@ export class App {
 
         if (readCookie("userName") != null) {
             this.userName = "Logged in as: " + readCookie("userName");
-            if (readCookie("role") != null) {
-                this.role     = "(" + readCookie("role") + ")";
-            }
         }
     }
 }

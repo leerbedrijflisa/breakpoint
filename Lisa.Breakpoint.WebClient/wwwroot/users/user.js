@@ -28,8 +28,7 @@ export class user {
     Post() {
         var data = {
             userName: this.userNameRegister,
-            fullName: this.fullName,
-            role: this.role
+            fullName: this.fullName
         }
 
         this.http.post('users/post', data).then( response => {
@@ -53,9 +52,7 @@ export class user {
             this.http.get('users/login/'+data.userNameLogin).then( response => {
                 if (response.content != null) {
                     setCookie("userName", response.content.username, 2);
-                    setCookie("role", response.content.role, 2);
                     document.getElementById("user_userName").innerHTML = "Logged in as: " + readCookie("userName");
-                    document.getElementById("user_role").innerHTML = "(" + readCookie("role") + ")";
                     this.router.navigateToRoute("organizations");
                 }
             });

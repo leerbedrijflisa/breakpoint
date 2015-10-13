@@ -31,7 +31,7 @@ namespace Lisa.Breakpoint.WebApi
 
         [HttpGet]
         [Route("members/{project}")]
-        public IList<string> GetProjectMembers(string project)
+        public IList<Member> GetProjectMembers(string project)
         {
             return _db.GetProjectMembers(project);
         }
