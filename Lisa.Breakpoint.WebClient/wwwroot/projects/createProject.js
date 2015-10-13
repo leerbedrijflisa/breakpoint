@@ -27,7 +27,8 @@ export class createProject {
             name: this.name,
             slug: this.name.replace(/\s+/g, '-').toLowerCase(),
             organization: this.params.organization,
-            members: getSelectValues(document.getElementById("membersSelect"))
+            members: getSelectValues(document.getElementById("membersSelect")),
+            browsers: getSelectValues(document.getElementById("browserSelect"))
         };
 
         this.http.post('projects', data).then( response => {

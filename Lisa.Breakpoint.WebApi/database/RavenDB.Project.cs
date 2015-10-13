@@ -30,18 +30,6 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public IList<string> GetProjectMembers(string project)
-        {
-            using (IDocumentSession session = documentStore.Initialize().OpenSession())
-            {
-                var list = session.Query<Project>()
-                    .Where(p => p.Slug == project)
-                    .ToList();
-
-                return list[0].Members;
-            }
-        }
-
         public void PostProject(Project project)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())

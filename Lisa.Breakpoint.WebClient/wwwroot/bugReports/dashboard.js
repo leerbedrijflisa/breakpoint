@@ -18,8 +18,9 @@ export class dashboard {
 
     activate(params) {
         this.status = [];
-        this.http.get('projects/members/'+params.project).then(response => {
-            this.members = response.content;
+        this.http.get('projects/get/'+params.project).then(response => {
+            this.members = response.content.members;
+            this.browsers = response.content.browsers;
         });
         return this.http.get("reports/"+params.project+"/"+readCookie("userName")).then( response => {
             this.reports = response.content;
