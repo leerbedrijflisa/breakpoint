@@ -12,9 +12,12 @@ namespace Lisa.Breakpoint.WebApi
             _db = db;
         }
 
+        // TODO: add 404 if project doesn't exist
+        // TODO: add 404 if username doesn't exist
         [HttpGet("{project}/{username}")]
         public IActionResult Get(string project, string userName)
         {
+            // TODO: put these two queries in one function
             string group = _db.GetGroupFromUser(userName);
             var reports  = _db.GetAllReports(project, userName, group);
 
@@ -28,7 +31,7 @@ namespace Lisa.Breakpoint.WebApi
         [HttpGet("{id}", Name = "report")]
         public IActionResult Get(string id)
         {
-            var report = _db.GetReport("reports/"+id);
+            var report = _db.GetReport(id);
 
             if (report == null)
             {
@@ -38,6 +41,8 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(report);
         }
 
+        // TODO: project should be specified in URL
+        // TODO: add 404 if project doesn't exist
         [HttpPost("")]
         public IActionResult Post([FromBody] Report report)
         {
@@ -69,6 +74,7 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(patchedReport);
         }
 
+        // TODO: add 404 if report doesn't exist
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

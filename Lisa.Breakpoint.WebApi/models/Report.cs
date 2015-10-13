@@ -15,6 +15,7 @@ namespace Lisa.Breakpoint.WebApi.Models
         public DateTime Reported { get; set; }
         public string   Status { get; set; }
         public string   Priority { get; set; }
+        // TODO: replace the three assignedTo fields with one combined field
         public string   AssignedTo { get; set; }
         public string   AssignedToPerson { get; set; }
         public string   AssignedToGroup { get; set; }
