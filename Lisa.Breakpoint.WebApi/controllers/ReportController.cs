@@ -1,24 +1,18 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
 using Microsoft.AspNet.Mvc;
-using System.Diagnostics;
 using Lisa.Breakpoint.WebApi.Models;
-using System.Linq;
-using Microsoft.Framework.DependencyInjection.Extensions;
 
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("reports")]
     public class ReportController : Controller
     {
-        private readonly RavenDB _db;
-
         public ReportController(RavenDB db)
         {
             _db = db;
         }
 
-        [HttpGet]
-        [Route("{project}/{username}")]
+        [HttpGet("{project}/{username}")]
         public IActionResult Get(string project, string userName)
         {
             string group = _db.GetGroupFromUser(userName);
@@ -28,12 +22,10 @@ namespace Lisa.Breakpoint.WebApi
             {
                 return new HttpNotFoundResult();
             }
-
             return new HttpOkObjectResult(reports);
         }
 
-        [HttpGet]
-        [Route("get/{id}")]
+        [HttpGet("{id}", Name = "report")]
         public IActionResult Get(string id)
         {
             var report = _db.GetReport("reports/"+id);
@@ -46,8 +38,7 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(report);
         }
 
-        [HttpPost]
-        [Route("", Name = "report")]
+        [HttpPost("")]
         public IActionResult Post([FromBody] Report report)
         {
             if (report == null)
@@ -66,26 +57,26 @@ namespace Lisa.Breakpoint.WebApi
 
             _db.PostReport(report);
 
-            string location = Url.RouteUrl("report", new {  }, Request.Scheme);
+            string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
             return new CreatedResult(location, report);
         }
 
-        [HttpPost]
-        [Route("patch/{id}")]
-        public IActionResult Patch(int id, [FromBody]Report report)
+        [HttpPatch("{id}")]
+        public IActionResult Patch(int id, [FromBody] Report report)
         {
             Report patchedReport = _db.PatchReport(id, report);
 
             return new HttpOkObjectResult(patchedReport);
         }
 
-        [HttpPost]
-        [Route("delete/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             _db.DeleteReport(id);
 
-            return new HttpOkResult();
+            return new HttpStatusCodeResult(204);
         }
+
+        private readonly RavenDB _db;
     }
 }
