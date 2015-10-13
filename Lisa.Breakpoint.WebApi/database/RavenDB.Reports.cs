@@ -16,17 +16,16 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Report>()
-                    .Where(r => r.Project == project && (r.AssignedToPerson == userName || r.AssignedToGroup == group))
+                    .Where(r => r.Project == project && (r.AssignedTo.Value == userName || r.AssignedTo.Value == group))
                     .ToList();
             }
         }
 
-        public Report GetReport(string id)
+        public Report GetReport(int id)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                var report = session.Load<Report>(int.Parse(id));
-                return report;
+                return session.Load<Report>(id);
             }
         }
 
@@ -37,7 +36,7 @@ namespace Lisa.Breakpoint.WebApi.database
                 var list = session.Query<Organization>()
                     .Where(o => o.Slug == organization)
                     .ToList();
-                if(list == null)
+                if(list == null || list.Count == 0)
                 {
                     return null;
                 }
@@ -84,7 +83,7 @@ namespace Lisa.Breakpoint.WebApi.database
                         }
                     }
                 }
-                return session.Load<Report>("reports/" + id);
+                return session.Load<Report>(id);
             }
         }
 

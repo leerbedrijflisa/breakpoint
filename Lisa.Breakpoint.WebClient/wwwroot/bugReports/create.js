@@ -13,13 +13,12 @@ export class Create {
     
     activate(params) {
         this.params = params;
-        console.log(params);
 
         // TODO: pass entire project object to this module, so we don't have to request
         // users and groups if we already know everything about the project. Note, that
         // if you go directly to the URL for creating a report, you still need to request
         // the project from the Web API, since you don't have it yet.
-        this.http.get('users/users').then(response => {
+        this.http.get('users').then(response => {
             this.users = response.content;
         });
         this.http.get('users/groups').then(response => {
@@ -35,16 +34,18 @@ export class Create {
             reporter: readCookie("userName"),
             status: "Open",
             priority: "fix immediately",
-            assignedTo: "person",
-            assignedToPerson: null,
-            assignedToGroup: null
+            assignedTo: {
+                type: "",
+                value: ""
+            }
         };
     }
 
     submit() {
-         // TODO: check if assignedTo still works correctly now that RAJ removed the code.
+        var select = document.getElementById("assignedTo");
+        this.report.assignedTo.type = select.options[select.selectedIndex].parentNode.label;
 
-        this.http.post('reports', this.report).then(response => {
+        this.http.post('reports/'+this.params.project, this.report).then(response => {
             var organization = this.params.organization;
             var project = this.params.project;
 

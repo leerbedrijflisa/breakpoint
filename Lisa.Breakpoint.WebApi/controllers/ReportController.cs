@@ -12,11 +12,19 @@ namespace Lisa.Breakpoint.WebApi
             _db = db;
         }
 
-        // TODO: add 404 if project doesn't exist
-        // TODO: add 404 if username doesn't exist
         [HttpGet("{project}/{username}")]
         public IActionResult Get(string project, string userName)
         {
+            if (_db.GetProject(project) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            if (_db.GetUser(userName) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             // TODO: put these two queries in one function
             string group = _db.GetGroupFromUser(userName);
             var reports  = _db.GetAllReports(project, userName, group);
@@ -29,7 +37,7 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet("{id}", Name = "report")]
-        public IActionResult Get(string id)
+        public IActionResult Get(int id)
         {
             var report = _db.GetReport(id);
 
@@ -42,15 +50,20 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         // TODO: project should be specified in URL
-        // TODO: add 404 if project doesn't exist
-        [HttpPost("")]
-        public IActionResult Post([FromBody] Report report)
+        [HttpPost("{project}")]
+        public IActionResult Post([FromBody] Report report, string project)
         {
             if (report == null)
             {
                 return new BadRequestResult();
             }
 
+            if (_db.GetProject(project) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            //report.Project = projectSlug;
             _db.PostReport(report);
 
             string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
@@ -65,10 +78,14 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(patchedReport);
         }
 
-        // TODO: add 404 if report doesn't exist
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            if (_db.GetReport(id) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             _db.DeleteReport(id);
 
             return new HttpStatusCodeResult(204);

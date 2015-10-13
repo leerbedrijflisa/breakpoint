@@ -27,12 +27,4 @@
             <a route-href="route: project-members; params.bind: { organization: project.organization, project: project.slug }">Rollen</a>
         </li>
     </ul>
-
-    <hr />
-
-    <h4>Members in this organization</h4>
-
-    <ul>
-        <li repeat.for="member of members">${member}</li>
-    </ul>
 </template>

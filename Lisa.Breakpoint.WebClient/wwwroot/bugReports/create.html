@@ -22,25 +22,16 @@
         </select>
         <br />
         <label for="assignedto">Assigned to: </label>
-        <p>
-            <label for="assignedToRadio">Person: <input id="personRadioButton" checked="checked" type="radio" name="assignedToRadio" value="person" /></label>
-        </p>
-        <select id="selectperson" value.bind="report.assignedToPerson" name="assignedtoperson" type="text">
+
+        <select id="assignedTo" value.bind="report.assignedTo.value" name="assignedtoperson" type="text">
             <option value="">-</option>
-            <option repeat.for="user of users" value="${user.username}">${user.username}</option>
+            <optgroup label="Groups">
+                <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
+            </optgroup>
+            <optgroup label="Members">
+                <option repeat.for="user of users" value="${user.username}">${user.username}</option>
+            </optgroup>
         </select>
-        <p>
-            <label for="assignedToRadio">group: <input type="radio" name="assignedToRadio" value="group" /></label>
-        </p>
-
-        <br /><br />
-
-        <select id="selectgroup" value.bind="report.assignedToGroup" name="assignedtogroup" type="text">
-            <option value="">-</option>
-            <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
-        </select>
-
-        <br /><br />
 
         <!--<label for="version">Test version: </label>
         <select value.bind="version">
@@ -48,10 +39,8 @@
             <option repeat.for="version of project.version" model.bind="version">${version}</option>
         </select>-->
         <!--<input type="text" value.bind="version"/>-->
-
+        
         <br />
         <button type="submit" name="submit">Report bug</button>
     </form>
-
-    <a route-href="route: organizations">dashboard</a>
 </template>

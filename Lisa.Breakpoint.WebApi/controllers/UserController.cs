@@ -15,44 +15,37 @@ namespace Lisa.Breakpoint.WebApi.controllers
             _db = db;
         }
 
-        [HttpPost]
-        [Route("post")]
-        public User Post([FromBody] User user)
-        {
-            return _db.PostUser(user);
-        }
-
         [HttpGet]
-        [Route("users")]
         public IList<User> Get()
         {
             return _db.GetAllUsers();
         }
 
-        [HttpGet]
-        [Route("groups")]
+        [HttpPost]
+        public User Post([FromBody] User user)
+        {
+            return _db.PostUser(user);
+        }
+
+        [HttpGet("groups")]
         public IList<Group> GetGroups()
         {
             return _db.GetAllGroups();
         }
 
-        [HttpGet]
-        [Route("groups/{group}")]
+        [HttpGet("groups/{group}")]
         public IList<Member> GetGroupMembers(string group)
         {
             return _db.GetGroupMembers(group);
         }
 
-        [HttpPost]
-        [Route("groups")]
+        [HttpPost("groups")]
         public Group PostGroup([FromBody] Group group)
         {
             return _db.PostGroup(group);
         }
 
-
-        [HttpGet]
-        [Route("login/{userName}")]
+        [HttpGet("login/{userName}")]
         public IActionResult LogIn(string userName)
         {
             var user = _db.UserExists(userName);

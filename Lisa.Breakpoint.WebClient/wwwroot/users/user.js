@@ -31,7 +31,7 @@ export class user {
             fullName: this.fullName
         }
 
-        this.http.post('users/post', data).then( response => {
+        this.http.post('users', data).then( response => {
             this.Login("afterRegister");
             this.router.navigateToRoute("organizations");
         });

@@ -37,11 +37,13 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public User GetUser(int id)
+        public User GetUser(string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                return session.Load<User>(id);
+                return session.Query<User>()
+                    .Where(u => u.Username == userName)
+                    .ToList().First();
             }
         }
 

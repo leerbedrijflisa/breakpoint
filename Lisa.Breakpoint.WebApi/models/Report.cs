@@ -15,12 +15,16 @@ namespace Lisa.Breakpoint.WebApi.Models
         public DateTime Reported { get; set; }
         public string   Status { get; set; }
         public string   Priority { get; set; }
-        // TODO: replace the three assignedTo fields with one combined field
-        public string   AssignedTo { get; set; }
-        public string   AssignedToPerson { get; set; }
-        public string   AssignedToGroup { get; set; }
         public string   Version { get; set; }
+        public AssignedTo AssignedTo { get; set; }
         public IList<Comment>   Comments { get; set; }
+    }
+
+    // type = person || group; value = username || groupname;
+    public class AssignedTo
+    {
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 
     public class Comment
@@ -28,11 +32,5 @@ namespace Lisa.Breakpoint.WebApi.Models
         public DateTime Posted { get; set; }
         public string   Author { get; set; }
         public string   Text { get; set; }
-    }
-
-    public class Group
-    {
-        public string Name { get; set; }
-        public IList<Member> Members { get; set; }
     }
 }
