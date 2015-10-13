@@ -2,30 +2,30 @@
     <h3>Report a bug:</h3>
     <form submit.delegate="submit()">
         <label for="title">Title: </label>
-        <input value.bind="title" name="title" type="text" />
+        <input value.bind="report.title" name="title" type="text" />
         <br />
         <label for="stepbystep">Step By Step: </label>
-        <textarea value.bind="stepbystep" value="${report.stepByStep}" name="stepbystep" type="text"></textarea>
+        <textarea value.bind="report.stepByStep" name="stepbystep" type="text"></textarea>
         <br />
         <label for="expectation">Expectation: </label>
-        <textarea value.bind="expectation" value="${report.expectation}" name="expectation" type="text"></textarea>
+        <textarea value.bind="report.expectation" name="expectation" type="text"></textarea>
         <br />
         <label for="whathappened">What happened: </label>
-        <textarea value.bind="whathappened" value="${report.whatHappened}" name="whathappened" type="text"></textarea>
+        <textarea value.bind="report.whatHappened" name="whathappened" type="text"></textarea>
         <br />
         <label for="priority">Priority: </label>
-        <select value.bind="priority" id="priority" name="priority" type="text">
-            <option selected value="Fix immediately">Fix immediately</option>
-            <option value="Fix before release">Fix before release</option>
-            <option value="Fix for next release">Fix for next release</option>
-            <option value="Fix whenever">Fix whenever</option>
+        <select value.bind="report.priority" id="priority" name="priority" type="text">
+            <option selected value="fix immediately">Fix immediately</option>
+            <option value="fix before release">Fix before release</option>
+            <option value="fix for next release">Fix for next release</option>
+            <option value="fix whenever">Fix whenever</option>
         </select>
         <br />
         <label for="assignedto">Assigned to: </label>
         <p>
             <label for="assignedToRadio">Person: <input id="personRadioButton" checked="checked" type="radio" name="assignedToRadio" value="person" /></label>
         </p>
-        <select id="selectperson" value.bind="assignedtoperson" name="assignedtoperson" type="text">
+        <select id="selectperson" value.bind="report.assignedToPerson" name="assignedtoperson" type="text">
             <option value="">-</option>
             <option repeat.for="user of users" value="${user.username}">${user.username}</option>
         </select>
@@ -35,7 +35,7 @@
 
         <br /><br />
 
-        <select id="selectgroup" value.bind="assignedtogroup" name="assignedtogroup" type="text">
+        <select id="selectgroup" value.bind="report.assignedToGroup" name="assignedtogroup" type="text">
             <option value="">-</option>
             <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
         </select>
