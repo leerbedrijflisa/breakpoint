@@ -3,65 +3,48 @@ import {HttpClient} from 'aurelia-http-client';
 
 export class Create {
     static inject() {
-        return [ Router ];
+        return [ Router, HttpClient ];
     }
 
-    constructor(router) {
+    constructor(router, http) {
         this.router = router;
-        this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/');      
-            x.withHeader('Content-Type', 'application/json')
-        });
+        this.http = http;
     }
     
     activate(params) {
         this.params = params;
         console.log(params);
+
+        // TODO: pass entire project object to this module, so we don't have to request
+        // users and groups if we already know everything about the project. Note, that
+        // if you go directly to the URL for creating a report, you still need to request
+        // the project from the Web API, since you don't have it yet.
         this.http.get('users/users').then(response => {
             this.users = response.content;
         });
         this.http.get('users/groups').then(response => {
             this.groups = response.content;
         });
-        this.http.get('projects').then(response => {
-            this.project = response.content;
-        });
+
+        this.report = {
+            title: "",
+            project: params.project,
+            stepByStep: "",
+            expectation: "",
+            whatHappened: "",
+            reporter: readCookie("userName"),
+            status: "Open",
+            priority: "fix immediately",
+            assignedTo: "person",
+            assignedToPerson: null,
+            assignedToGroup: null
+        };
     }
 
     submit() {
-        if (this.priority == null) {
-            this.priority = document.getElementById("priority").options[0].value; // if the first option is selected it wont register the value so i have to get the first option myself
-        }
+         // TODO: check if assignedTo still works correctly now that RAJ removed the code.
 
-        if (document.getElementById('personRadioButton').checked == true) {
-            var data = {
-                title: this.title,
-                project: this.params.project,
-                stepByStep: this.stepbystep,
-                expectation: this.expectation,
-                whatHappened: this.whathappened,
-                reporter: readCookie("userName"),
-                status: "Open",
-                priority: this.priority,
-                assignedTo: "person",
-                assignedToPerson: this.assignedtoperson
-            }
-        } else {
-            var data = {
-                title: this.title,
-                project: this.params.project,
-                stepByStep: this.stepbystep,
-                expectation: this.expectation,
-                whatHappened: this.whathappened,
-                reporter: this.reporter,
-                status: "Open",
-                priority: this.priority,
-                assignedTo: "group",
-                assignedToGroup: this.assignedtogroup
-            }
-        }
-
-        this.http.post('reports', data).then(response => {
+        this.http.post('reports', this.report).then(response => {
             var organization = this.params.organization;
             var project = this.params.project;
 
