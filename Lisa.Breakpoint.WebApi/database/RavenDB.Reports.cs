@@ -15,7 +15,7 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Report>()
-                    .Where(r => r.Project == project && r.AssignedToPerson == userName || r.Project == project && r.AssignedToGroup == group)
+                    .Where(r => r.Project == project && (r.AssignedToPerson == userName || r.AssignedToGroup == group))
                     .ToList();
             }
         }
