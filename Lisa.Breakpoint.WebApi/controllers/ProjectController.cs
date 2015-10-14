@@ -15,17 +15,22 @@ namespace Lisa.Breakpoint.WebApi
             _db = db;
         }
 
-        [HttpGet]
-        [Route("{organization}/{username}")]
+        [HttpGet("{organization}/{username}")]
         public IList<Project> Get(string organization, string userName)
         {
             return _db.GetAllProjects(organization, userName);
         }
 
-        [HttpGet("get/{project}")]
+        [HttpGet("{project}")]
         public Project Get(string project)
         {
             return _db.GetProject(project);
+        }
+
+        [HttpGet("members/{project}")]
+        public IList<Member> GetProjectMembers(string project)
+        {
+            return _db.GetProjectMembers(project);
         }
 
         [HttpPost]
@@ -34,25 +39,16 @@ namespace Lisa.Breakpoint.WebApi
             _db.PostProject(project);
         }
 
-        [HttpPost]
-        [Route("patch/{id}")]
+        [HttpPatch("{id}")]
         public void Patch(int id, Project patchedProject)
         {
-            //Project patchedProject = new Project
-            //{
-            //    Slug = "patched-slug"
-            //};
-
             _db.PatchProject(id, patchedProject);
         }
 
-        [HttpPost]
-        [Route("delete/{id}")]
+        [HttpDelete("{id}")]
         public void Delete(int id)
         {
             _db.DeleteProject(id);
         }
-
-        //public void CheckVersion() { }
     }
 }

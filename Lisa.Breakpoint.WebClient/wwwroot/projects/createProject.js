@@ -17,18 +17,31 @@ export class createProject {
 
     activate(params) {
         this.params = params;
-        this.http.get('users/users').then(response => {
+        this.http.get('users').then(response => {
             this.users = response.content;
         });
     }
 
     create() {
+        var members = getSelectValues(document.getElementById("membersSelect"));
+        var memberList = [];
+
+        members.forEach(function(member) {
+            var m = {
+                userName: member,
+                role: ''
+            };
+            memberList.push(m);
+        });
+
         var data = {
             name: this.name,
             slug: this.name.replace(/\s+/g, '-').toLowerCase(),
             organization: this.params.organization,
             members: getSelectValues(document.getElementById("membersSelect")),
-            browsers: getSelectValues(document.getElementById("browserSelect"))
+            browsers: getSelectValues(document.getElementById("browserSelect")),
+            projectManager: readCookie("userName"),
+            members: memberList
         };
 
         this.http.post('projects', data).then( response => {

@@ -1,7 +1,7 @@
 ﻿<template>
     <link rel="stylesheet" href="css/Dashboard.css" />
-    <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <h2>List of reports: </h2>
+    <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <ul>
         <li repeat.for="report of reports" class="li-item">
             <h3>
@@ -15,7 +15,7 @@
             <p><span class="label">reporter:</span> ${report.reporter}</p>
             <p><span class="label">reported:</span> ${report.reported}</p>
             <p><span class="label">status:</span> ${report.status}</p>
-            <form submit.delegate="$parent.submit(report.number, $index )">
+            <form submit.delegate="$parent.submit(report.number, $index)">
                 <select value.bind="$parent.status[$index]" name="status">
                     <option value="open" selected>Open</option>
                     <option value="fixed">Fixed</option>
@@ -27,22 +27,13 @@
             </form>
             <p><span class="label">priority:</span> ${report.priority}</p>
             <br />
-            <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup}${report.assignedToPerson}</p>
+            <p><span>assigned to a </span> <span class="label">${report.assignedTo.type}</span>: ${report.assignedTo.value}</p>
         </li>
     </ul>
 
     <hr />
 
-    <h4>Members in this project</h4>
-
-    <ul>
-        <li repeat.for="member of members">${member}</li>
-    </ul>
-
-    <hr />
-
     <h4>Supported browsers</h4>
-
     <ul>
         <li repeat.for="browser of browsers">${browser}</li>
     </ul>

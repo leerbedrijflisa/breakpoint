@@ -8,6 +8,7 @@ using System.Reflection;
 
 namespace Lisa.Breakpoint.WebApi.database
 {
+    // TODO: convert all IDs to int, so we don't have to prefix report/ anymore.
     public partial class RavenDB
     {
         public IList<Report> GetAllReports(string project, string userName, string group)
@@ -15,12 +16,12 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Report>()
-                    .Where(r => r.Project == project && r.AssignedToPerson == userName || r.Project == project && r.AssignedToGroup == group)
+                    .Where(r => r.Project == project && (r.AssignedTo.Value == userName || r.AssignedTo.Value == group))
                     .ToList();
             }
         }
 
-        public Report GetReport(string id)
+        public Report GetReport(int id)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
@@ -32,14 +33,9 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                var list = session.Query<Organization>()
+                return session.Query<Organization>()
                     .Where(o => o.Slug == organization)
-                    .ToList();
-                if(list == null)
-                {
-                    return null;
-                }
-                return list[0].Members;
+                    .SingleOrDefault().Members;
             }
         }
 
@@ -63,15 +59,19 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                Report report = session.Load<Report>("reports/"+id);
+                Report report = session.Load<Report>(id);
 
                 foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
                 {
                     var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
-                    if (propertyInfo.Name != "Reported" )
+                    if (propertyInfo.Name != "Reported")
                     {
                         if (newVal != null)
                         {
+                            //if (newVal.GetType() == typeof(AssignedTo))
+                            //{
+                            //    newVal = newVal.ToString(); // make object from this
+                            //}
                             var patchRequest = new PatchRequest()
                             {
                                 Name = propertyInfo.Name,
@@ -82,7 +82,7 @@ namespace Lisa.Breakpoint.WebApi.database
                         }
                     }
                 }
-                return session.Load<Report>("reports/" + id);
+                return session.Load<Report>(id);
             }
         }
 

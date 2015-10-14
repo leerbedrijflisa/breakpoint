@@ -15,18 +15,36 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Project>()
-                    .Where(p => p.Members.Any(m => m == userName) && p.Organization == organizationName)
+                    .Where(p => p.Members.Any(m => m.UserName == userName) && p.Organization == organizationName)
                     .ToList();
             }
         }
 
-        public Project GetProject(string project)
+        public Project GetProject(string projectSlug)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                var project = session.Query<Project>()
+                    .Where(p => p.Slug == projectSlug)
+                    .ToList();
+
+                if (project == null || project.Count == 0)
+                {
+                    return null;
+                }
+
+                return project.First();
+            }
+        }
+
+        public IList<Member> GetProjectMembers(string project)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Project>()
                     .Where(p => p.Slug == project)
-                    .ToList().First();
+                    .Select(p => p.Members)
+                    .SingleOrDefault();
             }
         }
 

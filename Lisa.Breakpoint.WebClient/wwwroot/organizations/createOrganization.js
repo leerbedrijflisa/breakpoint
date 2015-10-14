@@ -15,7 +15,7 @@ export class Create {
     }
 
     activate() {
-        this.http.get('users/users').then(response => {
+        this.http.get('users').then(response => {
             this.users = response.content;
         });
     }

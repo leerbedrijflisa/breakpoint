@@ -37,11 +37,13 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public User GetUser(int id)
+        public User GetUser(string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                return session.Load<User>(id);
+                return session.Query<User>()
+                    .Where(u => u.Username == userName)
+                    .ToList().First();
             }
         }
 
@@ -53,7 +55,13 @@ namespace Lisa.Breakpoint.WebApi.database
                     .Where(g => g.Name == group)
                     .ToList();
 
-                return list[0].Members;
+                if (list != null)
+                {
+                    return list[0].Members;
+                } else
+                {
+                    return null;
+                }
             }
         }
 
@@ -61,13 +69,13 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                var user = session.Query<User>()
-                    .Where(u => u.Username == userName)
+                var project = session.Query<Project>()
+                    .Where(p => p.Members.Any(m => m.UserName == userName))
                     .ToList();
 
-                if (user.Count != 0)
+                if (project.Count != 0)
                 {
-                    return user[0].Role;
+                    return project[0].Members.Where(m => m.UserName == userName).ToList()[0].Role;
                 } else
                 {
                     return "no group";
