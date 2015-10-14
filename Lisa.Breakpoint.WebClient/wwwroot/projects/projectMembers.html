@@ -1,0 +1,34 @@
+﻿<template>
+    <style>
+        p {
+            margin: 0px;
+        }
+
+        .li-item {
+            background-color: #D8D8D8;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .list {
+            background-color: white;
+            margin-left: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+    </style>
+    <h2>Leden van project: ${params.project}</h2>
+    <ul>
+        <li repeat.for="member of members" class="li-item">
+            <p>${member.userName}
+                <select id="role_${member.userName}" change.trigger="$parent.saveChanges(member.userName, this.options[this.selectedIndex].text)">
+                    <option value="tester">tester</option>
+                    <option value="developer">developer</option>
+                    <option value="manager">manager</option>
+                </select>
+            </p>
+        </li>
+    </ul>
+</template>

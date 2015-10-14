@@ -4,22 +4,20 @@ import {HttpClient} from 'aurelia-http-client';
 
 export class dashboard {
     static inject() {
-        return [ Router ];
+        return [ Router, HttpClient ];
     }
 
-
-    constructor(router) {
+    constructor(router, http) {
         this.router = router;
         this.isVisible = false;
-        this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/');      
-            x.withHeader('Content-Type', 'application/json')});
+        this.http = http;
     }
 
     activate(params) {
         this.status = [];
-        this.http.get('projects/members/'+params.project).then(response => {
-            this.members = response.content;
+        this.http.get('projects/get/'+params.project).then(response => {
+            this.members = response.content.members;
+            this.browsers = response.content.browsers;
         });
         return this.http.get("reports/"+params.project+"/"+readCookie("userName")).then( response => {
             this.reports = response.content;
@@ -28,6 +26,7 @@ export class dashboard {
         });
     }
 
+    //patch status
     submit(id, index) {
         if (this.status[index] == null) {
             this.status[index] = document.getElementById("status"+id).options[0].value; 
@@ -36,7 +35,7 @@ export class dashboard {
                 status: this.status[index]
         };
         console.log(data.status);
-        this.http.post('reports/patch/'+id, data).then( response => {
+        this.http.patch('reports/' + id, data).then( response => {
             window.location.reload();
         });
     }

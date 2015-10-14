@@ -7,10 +7,14 @@ export class project {
             x.withHeader('Content-Type', 'application/json')});
     }
 
+    saveChanges(user, val) {
+        console.log(user + ': ' + val);
+    }
+
     activate(params) {
-        return this.http.get("projects/"+params.organization+'/'+readCookie("userName")).then( response => {
-            this.projects = response.content;
-            this.organization = params.organization;
+        return this.http.get('projects/members/'+params.project).then(response => {
+            this.members = response.content;
+            this.params = params;
         });
     }
 }

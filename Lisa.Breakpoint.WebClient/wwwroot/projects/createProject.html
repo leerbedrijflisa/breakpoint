@@ -9,6 +9,18 @@
             <option repeat.for="user of users" value="${user.username}">${user.username}</option>
         </select>
         <br />
+        <label>Browsers: </label>
+        <select multiple id="browserSelect" value.bind="browsers" name="browser" type="text">
+            <option value="Internet Explorer 9"> Internet Explorer 9</option>
+            <option value="Internet Explorer 10"> Internet Explorer 10</option>
+            <option value="Internet Explorer 11"> Internet Explorer 11</option>
+            <option value="Microsoft Edge"> Microsoft Edge</option>
+            <option value="FireFox 3.6"> FireFox 3.6</option>
+            <option value="Google Chrome"> Google Chrome</option>
+            <option value="Opera 12"> Opera</option>
+            <option value="Safari"> Safari</option>
+        </select>
+        <br />
         <input type="submit" value="Submit" />
     </form>
 </template>
