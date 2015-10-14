@@ -32,9 +32,9 @@ export class App {
           { route: ':organization/create',  auth: true, name: 'create-project',  moduleId: 'projects/createProject',  title:'New project' },
           { route: ':organization/members', auth: true, name: 'project-members', moduleId: 'projects/projectMembers', title:'Project members' },
 
-          { route: ':organization/:project',            auth: true, name: 'reports',          moduleId: 'bugReports/dashboard',   title:'Reports' },
-          { route: ':organization/:project/create',     auth: true, name: 'create-report',    moduleId: 'bugReports/create',      title:'New Report' },
-          { route: ':organization/:project/edit/:id',   auth: true, name: 'edit-report',      moduleId: 'bugReports/edit',        title:'Edit Report' },
+          { route: ':organization/:project',        auth: true, name: 'reports',          moduleId: 'bugReports/dashboard',   title:'Reports' },
+          { route: ':organization/:project/create', auth: true, name: 'create-report',    moduleId: 'bugReports/create',      title:'New Report' },
+          { route: ':organization/:project/:id',    auth: true, name: 'edit-report',      moduleId: 'bugReports/edit',        title:'Edit Report' },
         ]);
 
         this.router = router;

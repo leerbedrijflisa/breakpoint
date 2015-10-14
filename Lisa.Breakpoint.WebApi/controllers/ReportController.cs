@@ -49,7 +49,6 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(report);
         }
 
-        // TODO: project should be specified in URL
         [HttpPost("{project}")]
         public IActionResult Post([FromBody] Report report, string project)
         {

@@ -33,14 +33,9 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                var list = session.Query<Organization>()
+                return session.Query<Organization>()
                     .Where(o => o.Slug == organization)
-                    .ToList();
-                if(list == null || list.Count == 0)
-                {
-                    return null;
-                }
-                return list[0].Members;
+                    .SingleOrDefault().Members;
             }
         }
 
@@ -64,15 +59,19 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                Report report = session.Load<Report>("reports/" + id);
+                Report report = session.Load<Report>(id);
 
                 foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
                 {
                     var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
-                    if (propertyInfo.Name != "Reported" )
+                    if (propertyInfo.Name != "Reported")
                     {
                         if (newVal != null)
                         {
+                            //if (newVal.GetType() == typeof(AssignedTo))
+                            //{
+                            //    newVal = newVal.ToString(); // make object from this
+                            //}
                             var patchRequest = new PatchRequest()
                             {
                                 Name = propertyInfo.Name,

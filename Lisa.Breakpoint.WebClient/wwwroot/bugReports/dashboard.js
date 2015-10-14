@@ -22,6 +22,7 @@ export class dashboard {
         });
     }
 
+    //patch status
     submit(id, index) {
         var data = {
             status: this.status[index]
