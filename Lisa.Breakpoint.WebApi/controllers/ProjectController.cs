@@ -23,7 +23,7 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet]
-        [Route("/get/{project}")]
+        [Route("{project}")]
         public Project Get(string project)
         {
             return _db.GetProject(project);

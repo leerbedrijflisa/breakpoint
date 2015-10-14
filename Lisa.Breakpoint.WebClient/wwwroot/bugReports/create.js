@@ -16,15 +16,16 @@ export class Create {
     
     activate(params) {
         this.params = params;
-        console.log(params);
+        console.log(params.project);
         this.http.get('users/users').then(response => {
             this.users = response.content;
         });
         this.http.get('users/groups').then(response => {
             this.groups = response.content;
         });
-        this.http.get('projects').then(response => {
+        this.http.get('projects/' + params.project).then(response => {
             this.project = response.content;
+            console.log(this.project.version);
         });
     }
 
@@ -44,7 +45,8 @@ export class Create {
                 status: "Open",
                 priority: this.priority,
                 assignedTo: "person",
-                assignedToPerson: this.assignedtoperson
+                assignedToPerson: this.assignedtoperson,
+                version: this.version
             }
         } else {
             var data = {
@@ -57,7 +59,8 @@ export class Create {
                 status: "Open",
                 priority: this.priority,
                 assignedTo: "group",
-                assignedToGroup: this.assignedtogroup
+                assignedToGroup: this.assignedtogroup,
+                version: this.version
             }
         }
 
