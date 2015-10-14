@@ -19,11 +19,11 @@
             font-weight: bold;
         }
     </style>
-    <h2>Leden van project: ${params.project}</h2>
+    <h2>Project leden: ${params.project}</h2>
     <ul>
         <li repeat.for="member of members" class="li-item">
             <p>${member.userName}
-                <select id="role_${member.userName}" change.trigger="$parent.saveChanges(member.userName, this.options[this.selectedIndex].text)">
+                <select id="role_${member.userName}" value.bind="member.role" change.trigger="$parent.saveChanges(member.userName)">
                     <option value="tester">tester</option>
                     <option value="developer">developer</option>
                     <option value="manager">manager</option>

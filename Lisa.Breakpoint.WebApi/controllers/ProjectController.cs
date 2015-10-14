@@ -27,13 +27,6 @@ namespace Lisa.Breakpoint.WebApi
             return _db.GetProject(project);
         }
 
-        [HttpGet("members/{project}")]
-        public IList<Member> GetProjectMembers(string project)
-        {
-            var projectObject = _db.GetProject(project);
-            return projectObject.Members;
-        }
-
         [HttpPost]
         public void insert([FromBody]Project project)
         {
@@ -44,6 +37,12 @@ namespace Lisa.Breakpoint.WebApi
         public void Patch(int id, Project patchedProject)
         {
             _db.PatchProject(id, patchedProject);
+        }
+
+        [HttpPatch("/member/{project}")]
+        public void PatchMember(string project, Member patchedMember)
+        {
+            _db.PatchMember(project, patchedMember);
         }
 
         [HttpDelete("{id}")]

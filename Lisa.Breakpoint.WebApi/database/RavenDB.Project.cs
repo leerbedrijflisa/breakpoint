@@ -79,6 +79,18 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
+        public Project PatchMember(string projectName, Member patchedMember)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                Project project = session.Query<Project>()
+                    .Where(p => p.Name == projectName)
+                    .SingleOrDefault();
+
+                return project;
+            }
+        }
+
         public void DeleteProject(int id)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
