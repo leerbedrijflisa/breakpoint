@@ -20,11 +20,10 @@ namespace Lisa.Breakpoint.WebApi.Models
         public IList<Comment>   Comments { get; set; }
     }
 
-    // type = person || group; value = username || groupname;
     public class AssignedTo
     {
-        public string Type { get; set; }
-        public string Value { get; set; }
+        public string Type { get; set; } // person OR group
+        public string Value { get; set; } // person.Name OR group.Name
     }
 
     public class Comment

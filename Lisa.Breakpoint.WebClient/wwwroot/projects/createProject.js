@@ -37,6 +37,11 @@ export class createProject {
             organization: this.params.organization,
             members: memberList,
             browsers: getSelectValues(document.getElementById("browserSelect")),
+            groups: [
+                "tester",
+                "developer",
+                "manager"
+            ],
             projectManager: readCookie("userName")
         };
 

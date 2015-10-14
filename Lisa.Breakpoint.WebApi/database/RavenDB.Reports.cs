@@ -8,7 +8,6 @@ using System.Reflection;
 
 namespace Lisa.Breakpoint.WebApi.database
 {
-    // TODO: convert all IDs to int, so we don't have to prefix report/ anymore.
     public partial class RavenDB
     {
         public IList<Report> GetAllReports(string project, string userName, string group)

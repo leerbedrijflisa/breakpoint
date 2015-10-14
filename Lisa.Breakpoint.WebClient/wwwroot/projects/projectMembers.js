@@ -8,8 +8,10 @@ export class project {
     }
 
     activate(params) {
+        this.params = params;
         return this.http.get('projects/'+params.project).then(response => {
             this.members = response.content.members;
+            this.groups = response.content.groups;
             this.params = params;
         });
     }
@@ -18,8 +20,16 @@ export class project {
         var sel = document.getElementById("role_"+member);
         var role = sel.options[sel.selectedIndex].value;
 
-        this.http.patch('projects/member/'+params.project, patch).then(response => {
-            console.log(member+": "+role);
-        });
+        var patch = {
+            type: "update",
+            field: "username",
+            key: member,
+            value: role
+        };
+
+        //this.http.patch('projects/member/'+this.params.project, patch).then(response => {
+        console.log(member+": "+role);
+        console.log(patch);
+        //});
     }
 }

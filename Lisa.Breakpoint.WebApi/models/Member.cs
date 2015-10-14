@@ -12,6 +12,5 @@ namespace Lisa.Breakpoint.WebApi.Models
     public class Group
     {
         public string Name { get; set; }
-        public IList<Member> Members { get; set; }
     }
 }

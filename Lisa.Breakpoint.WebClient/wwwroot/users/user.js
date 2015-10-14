@@ -4,25 +4,18 @@ import {HttpClient} from 'aurelia-http-client';
 
 export class user {
     static inject() {
-        return [ Router ];
+        return [ Router, HttpClient ];
     }
 
-    constructor(router) {
+    constructor(router, http) {
         this.router = router;
-        this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/');      
-            x.withHeader('Content-Type', 'application/json')
-        });
+        this.http = http;
     }
 
     activate() {
         if (readCookie("userName")) {
             this.router.navigateToRoute("organizations");
         }
-
-        this.http.get('users/groups').then(response => {
-            this.roles = response.content;
-        });
     }
 
     Post() {

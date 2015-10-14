@@ -24,22 +24,13 @@
         <label for="assignedto">Assigned to: </label>
 
         <select id="assignedTo" value.bind="report.assignedTo.value" name="assignedtoperson" type="text">
-            <option value="">-</option>
             <optgroup label="Groups">
-                <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
+                <option repeat.for="group of groups" value="${group}">${group}</option>
             </optgroup>
             <optgroup label="Members">
                 <option repeat.for="projMember of projMembers" value="${projMember.userName}">${projMember.userName}</option>
             </optgroup>
         </select>
-
-        <!--<label for="version">Test version: </label>
-        <select value.bind="version">
-            <option value="" model.bind="empty">-</option>
-            <option repeat.for="version of project.version" model.bind="version">${version}</option>
-        </select>-->
-        <!--<input type="text" value.bind="version"/>-->
-        
         <br />
         <button type="submit" name="submit">Report bug</button>
     </form>

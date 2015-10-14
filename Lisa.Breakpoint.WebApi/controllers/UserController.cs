@@ -33,12 +33,6 @@ namespace Lisa.Breakpoint.WebApi.controllers
             return _db.GetAllGroups();
         }
 
-        [HttpGet("groups/{group}")]
-        public IList<Member> GetGroupMembers(string group)
-        {
-            return _db.GetGroupMembers(group);
-        }
-
         [HttpPost("groups")]
         public Group PostGroup([FromBody] Group group)
         {

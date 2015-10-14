@@ -8,8 +8,9 @@ namespace Lisa.Breakpoint.WebApi.Models
         public string Name { get; set; }
         public string Organization  { get; set; }
         public string ProjectManager { get; set; }
-        public IList<string> Browsers { get; set; }
         public IList<string> Version { get; set; }
+        public IList<string> Browsers { get; set; }
+        public IList<string> Groups { get; set; }
         public IList<Member> Members { get; set; }
     }
 }

@@ -20,9 +20,7 @@ export class Create {
         // the project from the Web API, since you don't have it yet.
         this.http.get('projects/'+params.project).then(response => {
             this.projMembers = response.content.members;
-        });
-        this.http.get('users/groups').then(response => {
-            this.groups = response.content;
+            this.groups = response.content.groups;
         });
 
         this.report = {

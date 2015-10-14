@@ -8,8 +8,6 @@ namespace Lisa.Breakpoint.WebApi
     [Route("projects")]
     public class ProjectController
     {
-        private readonly RavenDB _db;
-
         public ProjectController(RavenDB db)
         {
             _db = db;
@@ -39,16 +37,12 @@ namespace Lisa.Breakpoint.WebApi
             _db.PatchProject(id, patchedProject);
         }
 
-        [HttpPatch("/member/{project}")]
-        public void PatchMember(string project, Member patchedMember)
-        {
-            _db.PatchMember(project, patchedMember);
-        }
-
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
             _db.DeleteProject(id);
         }
+
+        private readonly RavenDB _db;
     }
 }
