@@ -3,15 +3,12 @@ import {HttpClient} from 'aurelia-http-client';
 
 export class Create {
     static inject() {
-        return [ Router ];
+        return [ Router, HttpClient ];
     }
 
-    constructor(router) {
+    constructor(router, http) {
         this.router = router;
-        this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/');      
-            x.withHeader('Content-Type', 'application/json')
-        });
+        this.http = http;
     }
 
     activate() {

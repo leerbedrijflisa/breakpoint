@@ -18,8 +18,8 @@ export class Create {
         // users and groups if we already know everything about the project. Note, that
         // if you go directly to the URL for creating a report, you still need to request
         // the project from the Web API, since you don't have it yet.
-        this.http.get('users').then(response => {
-            this.users = response.content;
+        this.http.get('projects/'+params.project).then(response => {
+            this.projMembers = response.content.members;
         });
         this.http.get('users/groups').then(response => {
             this.groups = response.content;

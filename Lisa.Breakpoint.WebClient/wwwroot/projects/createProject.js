@@ -4,21 +4,18 @@ import {HttpClient} from 'aurelia-http-client';
 
 export class createProject {
     static inject() {
-        return [ Router ];
+        return [ Router, HttpClient ];
     }
 
-    constructor(router) {
+    constructor(router, http) {
         this.router = router;
-        this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/');      
-            x.withHeader('Content-Type', 'application/json')
-        });
+        this.http = http;
     }
 
     activate(params) {
         this.params = params;
-        this.http.get('users').then(response => {
-            this.users = response.content;
+        return this.http.get('organizations/members/'+params.organization).then(response => {
+            this.orgMembers = response.content;
         });
     }
 
@@ -38,10 +35,9 @@ export class createProject {
             name: this.name,
             slug: this.name.replace(/\s+/g, '-').toLowerCase(),
             organization: this.params.organization,
-            members: getSelectValues(document.getElementById("membersSelect")),
+            members: memberList,
             browsers: getSelectValues(document.getElementById("browserSelect")),
-            projectManager: readCookie("userName"),
-            members: memberList
+            projectManager: readCookie("userName")
         };
 
         this.http.post('projects', data).then( response => {
