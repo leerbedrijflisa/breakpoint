@@ -32,6 +32,12 @@
                 <option repeat.for="user of users" value="${user.username}">${user.username}</option>
             </optgroup>
         </select>
+        <br />
+        <label>Browsers: </label>
+        <select multiple id="browserSelect" value.bind="report.browsers" name="browser" type="text">
+            <option value="n.v.t.">n.v.t.</option>
+            <option repeat.for="browser of browsers" value="${browser}">${browser}</option>
+        </select>
 
         <!--<label for="version">Test version: </label>
         <select value.bind="version">

@@ -27,12 +27,6 @@ namespace Lisa.Breakpoint.WebApi
             return _db.GetProject(project);
         }
 
-        [HttpGet("members/{project}")]
-        public IList<Member> GetProjectMembers(string project)
-        {
-            return _db.GetProjectMembers(project);
-        }
-
         [HttpPost]
         public void insert([FromBody]Project project)
         {
