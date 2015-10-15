@@ -14,18 +14,17 @@
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
             <p><span class="label">reporter:</span> ${report.reporter}</p>
             <p><span class="label">reported:</span> ${report.reported}</p>
-            <p><span class="label">status:</span>
             <form submit.delegate="$parent.submit(report.number, $index )">
-                <select value.bind="report.status" name="status" id="status${report.number}">
-                    <option value="Open">Open</option>
-                    <option value="Fixed">Fixed</option>
-                    <option value="Won't Fix">Won't Fix</option>
-                    <option value="Won't Fix (Approved)">Won't Fix (Approved)</option>
-                    <option value="Closed">Closed</option>
-                </select>
-                <button type="submit" name="submit">Edit Status</button>
+                   <span class="label">status:</span>
+                    <select value.bind="report.status" name="status" id="status${report.number}">
+                        <option value="Open">Open</option>
+                        <option value="Fixed">Fixed</option>
+                        <option value="Won't Fix">Won't Fix</option>
+                        <option value="Won't Fix (Approved)">Won't Fix (Approved)</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                    <button type="submit" name="submit">Edit Status</button>
             </form>
-            </p>
             <p><span class="label">priority:</span> ${report.priority}</p>
             <br />
             <p><span>assigned to a </span> <span class="label">${report.assignedTo.type}</span>: ${report.assignedTo.value}</p>
