@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("projects")]
-    public class ProjectController
+    public class ProjectController : Controller
     {
         public ProjectController(RavenDB db)
         {
@@ -14,33 +14,71 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet("{organization}/{username}")]
-        public IList<Project> GetAll(string organization, string userName)
+        public IActionResult GetAll(string organization, string userName)
         {
-            return _db.GetAllProjects(organization, userName);
+            if (_db.GetOrganization(organization) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            if (_db.GetUser(userName) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var organizations = _db.GetAllProjects(organization, userName);
+            if (organizations == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new HttpOkObjectResult(organizations);
         }
 
-        [HttpGet("get/{project}/{userName}")]
-        public Project Get(string project, string userName)
+        [HttpGet("get/{project}/{userName}", Name = "project")]
+        public IActionResult Get(string project, string userName)
         {
-            return _db.GetProject(project, userName);
+            var organization = _db.GetProject(project, userName);
+            if (organization == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            return new HttpOkObjectResult(organization);
         }
 
-        [HttpPost]
-        public void Insert([FromBody]Project project)
+        [HttpPost("{userName}")]
+        public IActionResult Insert([FromBody]Project project, string userName)
         {
-            _db.PostProject(project);
+            if (project == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var postedProject = _db.PostProject(project);
+
+            string location = Url.RouteUrl("project", new { project = project.Slug, userName = userName }, Request.Scheme);
+            return new CreatedResult(location, postedProject);
         }
 
         [HttpPatch("{id}")]
-        public void Patch(int id, Project patchedProject)
+        public IActionResult Patch(int id, Project project)
         {
-            _db.PatchProject(id, patchedProject);
+            var patchedProject = _db.PatchProject(id, project);
+
+            return new HttpOkObjectResult(patchedProject);
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{project}/{userName}")]
+        public IActionResult Delete(string project, string userName)
         {
-            _db.DeleteProject(id);
+            if (_db.GetProject(project, userName) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            _db.DeleteProject(project);
+
+            return new HttpStatusCodeResult(204);
         }
 
         private readonly RavenDB _db;

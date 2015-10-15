@@ -24,11 +24,13 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public Organization GetOrganization(int id)
+        public Organization GetOrganization(string organization)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                return session.Load<Organization>(id);
+                return session.Query<Organization>()
+                    .Where(o => o.Slug == organization)
+                    .SingleOrDefault();
             }
         }
 

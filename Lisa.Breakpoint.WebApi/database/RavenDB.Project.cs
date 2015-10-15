@@ -64,12 +64,14 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public void PostProject(Project project)
+        public Project PostProject(Project project)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(project);
                 session.SaveChanges();
+
+                return project;
             }
         }
 
@@ -118,11 +120,11 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public void DeleteProject(int id)
+        public void DeleteProject(string projectSlug)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                Project organization = session.Load<Project>(id);
+                Project organization = session.Query<Project>().Where(p => p.Slug == projectSlug).SingleOrDefault();
                 session.Delete(organization);
                 session.SaveChanges();
             }

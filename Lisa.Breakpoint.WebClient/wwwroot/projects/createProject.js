@@ -61,7 +61,7 @@ export class createProject {
             projectManager: readCookie("userName")
         };
 
-        this.http.post('projects', data).then( response => {
+        this.http.post('projects/'+readCookie("userName"), data).then( response => {
             var organization = this.params.organization;
             this.router.navigateToRoute("projects", { organization: organization });
         });
