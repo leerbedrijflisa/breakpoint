@@ -26,12 +26,10 @@ export class dashboard {
         });
     }
 
-    //patch status
-    submit(id, index) {
+    patchStatus(id, index) {
         var data = {
             status: this.status[index]
         };
-        console.log(data.status);
         this.http.patch('reports/' + id, data).then( response => {
             window.location.reload();
         });
