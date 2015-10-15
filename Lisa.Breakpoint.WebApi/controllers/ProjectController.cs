@@ -14,19 +14,19 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpGet("{organization}/{username}")]
-        public IList<Project> Get(string organization, string userName)
+        public IList<Project> GetAll(string organization, string userName)
         {
             return _db.GetAllProjects(organization, userName);
         }
 
-        [HttpGet("{project}")]
-        public Project Get(string project)
+        [HttpGet("get/{project}/{userName}")]
+        public Project Get(string project, string userName)
         {
-            return _db.GetProject(project);
+            return _db.GetProject(project, userName);
         }
 
         [HttpPost]
-        public void insert([FromBody]Project project)
+        public void Insert([FromBody]Project project)
         {
             _db.PostProject(project);
         }

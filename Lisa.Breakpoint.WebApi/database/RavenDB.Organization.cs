@@ -18,7 +18,7 @@ namespace Lisa.Breakpoint.WebApi.database
                 {
                     return session.Query<Organization>()
                         .Where(o => o.Members.Any(m => m == userName))
-                       .ToList();
+                        .ToList();
                 }
                 return null;
             }
@@ -37,15 +37,10 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 var org = session.Query<Organization>()
-                    .Where(o => o.Name == organization)
-                    .SingleOrDefault();
+                    .Where(o => o.Slug == organization)
+                    ?.SingleOrDefault();
 
-                if (org.Members != null || org.Members.Count != 0)
-                {
-                    return org.Members;
-                }
-
-                return null;
+                return org?.Members;
             }
         }
 

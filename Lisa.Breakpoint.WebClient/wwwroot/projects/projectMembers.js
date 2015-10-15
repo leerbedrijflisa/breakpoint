@@ -1,17 +1,19 @@
 ﻿import {HttpClient} from 'aurelia-http-client';
 
 export class project {
-    constructor() {
-        this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/');      
-            x.withHeader('Content-Type', 'application/json')});
+    static inject() {
+        return [ HttpClient ];
+    }
+
+    constructor(http) {
+        this.http = http;
     }
 
     activate(params) {
         this.params = params;
-        return this.http.get('projects/'+params.project).then(response => {
-            this.members = response.content.members;
+        return this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
             this.groups = response.content.groups;
+            this.members = response.content.members;
             this.params = params;
         });
     }

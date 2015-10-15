@@ -20,10 +20,11 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public Project GetProject(string projectSlug)
+        public Project GetProject(string projectSlug, string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
+                var filter = false;
                 var project = session.Query<Project>()
                     .Where(p => p.Slug == projectSlug)
                     .SingleOrDefault();
@@ -31,6 +32,32 @@ namespace Lisa.Breakpoint.WebApi.database
                 if (project == null)
                 {
                     return null;
+                }
+
+                foreach (var member in project.Members)
+                {
+                    if (member.UserName == userName)
+                    {
+                        var role  = member.Role;
+                        if (role != "")
+                        {
+                            int level = project.Groups
+                                .Where(g => g.Name == role)
+                                .Select(g => g.Level)
+                                .SingleOrDefault();
+
+                            project.Groups = project.Groups
+                                .Where(g => g.Level <= level)
+                                .ToList();
+
+                            filter = true;
+                        }
+                    }
+                }
+
+                if (!filter)
+                {
+                    project.Groups = null;
                 }
 
                 return project;

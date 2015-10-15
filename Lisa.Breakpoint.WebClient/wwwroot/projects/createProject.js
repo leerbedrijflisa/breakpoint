@@ -24,9 +24,16 @@ export class createProject {
         var memberList = [];
 
         members.forEach(function(member) {
+            var role;
+
+            if (member == readCookie("userName")) {
+                role = 'manager'
+            } else {
+                role = 'developer'
+            }
             var m = {
                 userName: member,
-                role: ''
+                role: role
             };
             memberList.push(m);
         });
@@ -38,9 +45,18 @@ export class createProject {
             members: memberList,
             browsers: getSelectValues(document.getElementById("browserSelect")),
             groups: [
-                "tester",
-                "developer",
-                "manager"
+                {
+                    "Level": 0,
+                    "Name": "tester"
+                },
+                {
+                    "Level": 1,
+                    "Name": "developer"
+                },
+                {
+                    "Level": 2,
+                    "Name": "manager"
+                }
             ],
             projectManager: readCookie("userName")
         };

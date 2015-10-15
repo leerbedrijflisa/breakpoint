@@ -25,7 +25,7 @@
 
         <select id="assignedTo" value.bind="report.assignedTo.value" name="assignedtoperson" type="text">
             <optgroup label="Groups">
-                <option repeat.for="group of groups" value="${group}">${group}</option>
+                <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
             </optgroup>
             <optgroup label="Members">
                 <option repeat.for="projMember of projMembers" value="${projMember.userName}">${projMember.userName}</option>

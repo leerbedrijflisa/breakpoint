@@ -24,7 +24,7 @@
         <li repeat.for="member of members" class="li-item">
             <p>${member.userName}
                 <select id="role_${member.userName}" value.bind="member.role" change.trigger="$parent.saveChanges(member.userName)">
-                    <option repeat.for="group of $parent.groups" value.bind="$parent.role" value="${group}">${group}</option>
+                    <option repeat.for="group of $parent.groups" value.bind="$parent.role.name" value="${group.name}">${group.name}</option>
                 </select>
             </p>
         </li>

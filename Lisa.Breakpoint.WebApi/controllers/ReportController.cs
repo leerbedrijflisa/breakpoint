@@ -15,7 +15,7 @@ namespace Lisa.Breakpoint.WebApi
         [HttpGet("{project}/{username}")]
         public IActionResult Get(string project, string userName)
         {
-            if (_db.GetProject(project) == null)
+            if (_db.GetProject(project, userName) == null)
             {
                 return new HttpNotFoundResult();
             }
@@ -57,7 +57,7 @@ namespace Lisa.Breakpoint.WebApi
                 return new BadRequestResult();
             }
 
-            if (_db.GetProject(project) == null)
+            if (_db.GetProject(project, "") == null)
             {
                 return new HttpNotFoundResult();
             }
