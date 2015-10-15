@@ -1,4 +1,5 @@
-﻿import {Router} from 'aurelia-router';
+﻿import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 
 export class Create {
@@ -12,7 +13,7 @@ export class Create {
     }
 
     activate() {
-        this.http.get('users').then(response => {
+        return this.http.get('users').then(response => {
             this.users = response.content;
         });
     }

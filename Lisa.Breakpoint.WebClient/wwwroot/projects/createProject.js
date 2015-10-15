@@ -14,7 +14,9 @@ export class createProject {
 
     activate(params) {
         this.params = params;
+        console.log('lol');
         return this.http.get('organizations/members/'+params.organization).then(response => {
+            console.log(response.content);
             this.orgMembers = response.content;
         });
     }
@@ -62,8 +64,7 @@ export class createProject {
         };
 
         this.http.post('projects/'+readCookie("userName"), data).then( response => {
-            var organization = this.params.organization;
-            this.router.navigateToRoute("projects", { organization: organization });
+            this.router.navigateToRoute("projects", { organization: this.params.organization });
         });
     }
 

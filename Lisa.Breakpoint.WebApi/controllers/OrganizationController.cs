@@ -40,7 +40,7 @@ namespace Lisa.Breakpoint.WebApi
 
             var members = _db.GetOrganizationMembers(organization);
 
-            return new HttpOkObjectResult(organization);
+            return new HttpOkObjectResult(members);
         }
 
         [HttpGet("get/{organization}", Name = "organization")]
