@@ -43,6 +43,19 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(members);
         }
 
+        [HttpGet("members/new/{organization}/{project}")]
+        public IActionResult GetMembersNotInProject(string organization, string project)
+        {
+            if (_db.GetOrganization(organization) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var members = _db.GetMembersNotInProject(organization, project);
+
+            return new HttpOkObjectResult(members);
+        }
+
         [HttpGet("get/{organization}", Name = "organization")]
         public IActionResult Get(string organizationSlug)
         {

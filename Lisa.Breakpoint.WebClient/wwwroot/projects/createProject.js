@@ -14,37 +14,19 @@ export class createProject {
 
     activate(params) {
         this.params = params;
-        console.log('lol');
-        return this.http.get('organizations/members/'+params.organization).then(response => {
-            console.log(response.content);
-            this.orgMembers = response.content;
-        });
     }
 
     create() {
-        var members = getSelectValues(document.getElementById("membersSelect"));
-        var memberList = [];
-
-        members.forEach(function(member) {
-            var role;
-
-            if (member == readCookie("userName")) {
-                role = 'manager'
-            } else {
-                role = 'developer'
-            }
-            var m = {
-                userName: member,
-                role: role
-            };
-            memberList.push(m);
-        });
-
         var data = {
             name: this.name,
             slug: this.name.replace(/\s+/g, '-').toLowerCase(),
             organization: this.params.organization,
-            members: memberList,
+            members: [
+                {
+                    role: 'manager',
+                    userName: readCookie("userName")
+                }
+            ],
             browsers: getSelectValues(document.getElementById("browserSelect")),
             groups: [
                 {

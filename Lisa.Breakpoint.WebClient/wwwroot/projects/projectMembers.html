@@ -29,4 +29,17 @@
             </p>
         </li>
     </ul>
+
+    <hr />
+
+    <p>New member: </p>
+    <p>
+        <select id="newMember">
+            <option repeat.for="member of orgMembers" value="${member}">${member}</option>
+        </select>
+        <select id="newRole">
+            <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
+        </select>
+        <button click.delegate="addMember()">Add member</button>
+    </p>
 </template>

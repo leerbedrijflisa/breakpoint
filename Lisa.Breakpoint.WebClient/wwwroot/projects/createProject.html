@@ -3,12 +3,6 @@
         <label>Project name: </label>
         <input value.bind="name" name="name" type="text" required />
         <br />
-        <label for="members">Members: </label>
-        <select multiple id="membersSelect" value.bind="members" name="members" type="text">
-            <option value="">-</option>
-            <option repeat.for="orgMember of orgMembers" value="${orgMember}">${orgMember}</option>
-        </select>
-        <br />
         <label>Browsers: </label>
         <select multiple id="browserSelect" value.bind="browsers" name="browser" type="text">
             <option value="Internet Explorer 9">Internet Explorer 9</option>
