@@ -46,12 +46,14 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public void PostOrganization(Organization organization)
+        public Organization PostOrganization(Organization organization)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(organization);
                 session.SaveChanges();
+
+                return organization;
             }
         }
 
@@ -88,11 +90,11 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public void DeleteOrganization(int id)
+        public void DeleteOrganization(string organizationSlug)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                Organization organization = session.Load<Organization>(id);
+                Organization organization = session.Query<Organization>().Where(o => o.Slug == organizationSlug).SingleOrDefault();
                 session.Delete(organization);
                 session.SaveChanges();
             }

@@ -47,7 +47,7 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpPost("{userName}")]
-        public IActionResult Insert([FromBody]Project project, string userName)
+        public IActionResult Post([FromBody]Project project, string userName)
         {
             if (project == null)
             {
