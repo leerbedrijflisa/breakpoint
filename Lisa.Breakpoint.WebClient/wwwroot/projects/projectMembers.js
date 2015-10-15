@@ -12,10 +12,9 @@ export class project {
     activate(params) {
         this.params = params;
 
-        // this (in the API) gets 2 member lists; Organization- and Projectmembers.
+        // (in the API) this gets 2 member lists; Organization- and Projectmembers.
         // then it compares those and returns only those not already in the project
         // so you can only add new members to the project
-        // but it seems a bit unnecesary to do another call for this so maybe this can be refactored?
         this.http.get('organizations/members/new/'+params.organization+'/'+params.project).then(response => {
             this.orgMembers = response.content;
         });
