@@ -1,6 +1,6 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
-using Microsoft.AspNet.Mvc;
 using Lisa.Breakpoint.WebApi.Models;
+using Microsoft.AspNet.Mvc;
 
 namespace Lisa.Breakpoint.WebApi
 {
