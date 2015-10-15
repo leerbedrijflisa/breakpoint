@@ -22,7 +22,7 @@ namespace Lisa.Breakpoint.WebApi
 
             var organizations = _db.GetAllOrganizations(userName);
 
-            if (organizations != null)
+            if (organizations == null)
             {
                 return new HttpNotFoundResult();
             }

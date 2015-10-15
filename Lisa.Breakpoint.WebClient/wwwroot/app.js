@@ -3,7 +3,6 @@ import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 
 // TODO: implement injection of HttpClient in all modules
-
 export class App {
     static inject() {
         return [ HttpClient ];
