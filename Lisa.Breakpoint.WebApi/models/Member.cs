@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Lisa.Breakpoint.WebApi.Models
+﻿namespace Lisa.Breakpoint.WebApi.Models
 {
     public class Member
     {

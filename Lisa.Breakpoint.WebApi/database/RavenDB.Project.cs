@@ -34,6 +34,9 @@ namespace Lisa.Breakpoint.WebApi.database
                     return null;
                 }
 
+                // check the role (level) of the userName
+                // manager = 3; developer = 2; tester = 1;
+                // You can see those equal and lower than your level
                 foreach (var member in project.Members)
                 {
                     if (member.UserName == userName)
