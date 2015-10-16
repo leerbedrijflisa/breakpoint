@@ -21,11 +21,11 @@ export class Create {
     submit() {
         var data = {
             name: this.name,
-            slug: this.slug,
+            slug: toSlug(this.name),
             members: getSelectValues(document.getElementById("membersSelect"))
         };
 
-        this.http.post('organizations/post', data).then(response => {
+        this.http.post('organizations', data).then(response => {
             this.router.navigateToRoute("organizations");
         });
     }

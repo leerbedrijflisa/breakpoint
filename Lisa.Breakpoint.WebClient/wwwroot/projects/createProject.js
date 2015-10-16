@@ -19,7 +19,7 @@ export class createProject {
     create() {
         var data = {
             name: this.name,
-            slug: this.name.replace(/\s+/g, '-').toLowerCase(),
+            slug: toSlug(this.name),
             organization: this.params.organization,
             members: [
                 {

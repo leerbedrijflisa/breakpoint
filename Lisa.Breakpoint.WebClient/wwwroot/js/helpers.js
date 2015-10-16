@@ -43,3 +43,8 @@ function getSelectValues(select) {
     }
     return result;
 }
+
+
+function toSlug(value) {
+    return value.replace(/\s+/g, '-').toLowerCase()
+}
