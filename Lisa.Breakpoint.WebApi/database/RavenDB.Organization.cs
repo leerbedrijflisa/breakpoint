@@ -85,30 +85,23 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 Organization Organization = session.Load<Organization>(id);
 
-                try
+                foreach (PropertyInfo propertyInfo in Organization.GetType().GetProperties())
                 {
-                    foreach (PropertyInfo propertyInfo in Organization.GetType().GetProperties())
+                    var newVal = patchedOrganization.GetType().GetProperty(propertyInfo.Name).GetValue(patchedOrganization, null);
+
+                    if (newVal != null)
                     {
-                        var newVal = patchedOrganization.GetType().GetProperty(propertyInfo.Name).GetValue(patchedOrganization, null);
-
-                        if (newVal != null)
+                        var patchRequest = new PatchRequest()
                         {
-                            var patchRequest = new PatchRequest()
-                            {
-                                Name = propertyInfo.Name,
-                                Type = PatchCommandType.Set,
-                                Value = newVal.ToString()
-                            };
-                            documentStore.DatabaseCommands.Patch("organizations/" + id, new[] { patchRequest });
-                        }
+                            Name = propertyInfo.Name,
+                            Type = PatchCommandType.Set,
+                            Value = newVal.ToString()
+                        };
+                        documentStore.DatabaseCommands.Patch("organizations/" + id, new[] { patchRequest });
                     }
+                }
 
-                    return Organization;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                return Organization;
             }
         }
 
