@@ -1,27 +1,11 @@
 ﻿<template>
+    <link rel="stylesheet" href="css/projects/projectMembers.css" />
     <style>
-        p {
-            margin: 0px;
-        }
-
-        .li-item {
-            background-color: #D8D8D8;
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-
-        .list {
-            background-color: white;
-            margin-left: 20px;
-        }
-
-        .label {
-            font-weight: bold;
-        }
+        
     </style>
-    <h2>Project leden: ${params.project}</h2>
-    <ul>
-        <li repeat.for="member of members" class="li-item">
+    <h2>Project members: ${params.project}</h2>
+    <ul class="members">
+        <li repeat.for="member of members" class="li-item member">
             <p>${member.userName}
                 <select id="role_${member.userName}" value.bind="member.role" change.trigger="$parent.saveChanges(member.userName)">
                     <option repeat.for="group of $parent.groups" value.bind="$parent.role.name" value="${group.name}">${group.name}</option>

@@ -52,6 +52,7 @@ export class project {
         //});
 
     }
+    
     saveChanges(member) {
         var sel = document.getElementById("role_"+member);
         var role = sel.options[sel.selectedIndex].value;
