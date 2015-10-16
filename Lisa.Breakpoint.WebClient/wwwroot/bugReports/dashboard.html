@@ -3,7 +3,7 @@
     <h2>List of reports: </h2>
     <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <ul>
-        <li repeat.for="report of reports" class="li-item" onload="alert('hallo')">
+        <li repeat.for="report of reports" class="li-item">
             <h3>
                 <a route-href="route: edit-report; params.bind: { organization: $parent.params.organization, project: $parent.params.project, id: report.number }">
                     Report ${report.number} - ${report.title}
@@ -26,7 +26,6 @@
                     <button type="submit" name="submit">Edit Status</button>
             </form>
             <p><span class="label">priority:</span> ${report.priority}</p>
-            <br />
             <p><span>assigned to a </span> <span class="label">${report.assignedTo.type}</span>: ${report.assignedTo.value}</p>
             <p><span class="label">Browsers:</span> <span class="browsers" repeat.for="browser of report.browsers">${browser}, </span></p>
         </li>

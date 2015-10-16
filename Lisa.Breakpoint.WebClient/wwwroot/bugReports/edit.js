@@ -25,7 +25,6 @@ export class report {
         });
         return this.http.get("reports/"+params.id).then( response => {
             this.report = response.content;
-            console.log(this.report.type);
         });
     }
 
