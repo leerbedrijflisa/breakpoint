@@ -30,10 +30,7 @@ export class dashboard {
         if (this.status[index] == null) {
             this.status[index] = document.getElementById("status"+id).options[0].value; 
         }
-        var data = {
-                status: this.status[index]
-        };
-        console.log(data.status);
+        var data = { status: this.status[index] };
         this.http.patch('reports/' + id, data).then( response => {
             window.location.reload();
         });
