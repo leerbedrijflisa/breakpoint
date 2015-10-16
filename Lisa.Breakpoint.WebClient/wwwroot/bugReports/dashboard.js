@@ -28,6 +28,9 @@ export class dashboard {
     }
 
     patchStatus(id, index) {
+        if (this.status[index] == null) {
+            this.status[index] = document.getElementById("status"+id).options[0].value; 
+        }
         var data = {
             status: this.status[index]
         };

@@ -62,7 +62,6 @@ namespace Lisa.Breakpoint.WebApi.database
                 {
                     project.Groups = null;
                 }
-
                 return project;
             }
         }

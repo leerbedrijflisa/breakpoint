@@ -22,6 +22,9 @@ export class Create {
             this.projMembers = response.content.members;
             this.groups = response.content.groups;
         });
+        this.http.get('projects/' + params.project).then(response => {
+            this.browsers = response.content.browsers;
+        });
 
         this.report = {
             title: "",
@@ -32,6 +35,7 @@ export class Create {
             reporter: readCookie("userName"),
             status: "Open",
             priority: "fix immediately",
+            browsers: null,
             assignedTo: {
                 type: "",
                 value: ""
