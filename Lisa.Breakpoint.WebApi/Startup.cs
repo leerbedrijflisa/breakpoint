@@ -17,7 +17,7 @@ namespace Lisa.Breakpoint.WebApi
                 opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
 
-            services.ConfigureCors(options =>
+            services.AddCors(options =>
             {
                 options.AddPolicy("Breakpoint", builder => 
                 {
