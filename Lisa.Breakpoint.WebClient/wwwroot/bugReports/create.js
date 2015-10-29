@@ -21,8 +21,6 @@ export class Create {
         this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
             this.projMembers = response.content.members;
             this.groups = response.content.groups;
-        });
-        this.http.get('projects/' + params.project).then(response => {
             this.browsers = response.content.browsers;
         });
 

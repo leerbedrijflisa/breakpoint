@@ -6,6 +6,7 @@
             <p>${member.userName}
                 <select id="role_${member.userName}" value.bind="member.role" change.trigger="$parent.saveChanges(member.userName)">
                     <option repeat.for="group of $parent.groups" value.bind="$parent.role.name" value="${group.name}">${group.name}</option>
+                    <option repeat.for="group of $parent.disabled"  value.bind="$parent.role.name" disabled="disabled" value="${group.name}">${group.name}</option>
                 </select>
             </p>
         </li>
@@ -13,13 +14,15 @@
 
     <hr />
 
-    <p>New member: </p>
+    <p>Add a member from your organization to this project: </p>
+    <br />
     <p>
         <select id="newMember">
             <option repeat.for="member of orgMembers" value="${member}">${member}</option>
         </select>
         <select id="newRole">
             <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
+            <option repeat.for="group of disabled" disabled="disabled" value="${group.level}">${group.name}</option>
         </select>
         <button click.delegate="addMember()">Add member</button>
     </p>

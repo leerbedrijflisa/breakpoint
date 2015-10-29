@@ -1,21 +1,21 @@
 {
   "commands": {
-    "web": "Microsoft.AspNet.Hosting --config hosting.ini"
+    "web": "Microsoft.AspNet.Server.Kestrel"
   },
   "dependencies": {
-    "EntityFramework.Relational": "7.0.0-beta7",
-    "Microsoft.AspNet.Cors": "1.0.0-beta7",
-    "Microsoft.AspNet.Hosting.Abstractions": "1.0.0-beta7",
-    "Microsoft.AspNet.Http.Abstractions": "1.0.0-beta7",
-    "Microsoft.AspNet.Mvc": "6.0.0-beta7",
-    "Microsoft.AspNet.Mvc.Core": "6.0.0-beta7",
-    "Microsoft.AspNet.Server.IIS": "1.0.0-beta7",
-    "Microsoft.AspNet.Server.WebListener": "1.0.0-beta7",
-    "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta7",
-    "Microsoft.Net.Http.Server": "1.0.0-beta7",
+    "EntityFramework.Relational": "7.0.0-beta8",
+    "Microsoft.AspNet.Cors": "6.0.0-beta8",
+    "Microsoft.AspNet.Hosting.Abstractions": "1.0.0-beta8",
+    "Microsoft.AspNet.Http.Abstractions": "1.0.0-beta8",
+    "Microsoft.AspNet.IISPlatformHandler": "1.0.0-beta8",
+    "Microsoft.AspNet.Mvc": "6.0.0-beta8",
+    "Microsoft.AspNet.Mvc.Core": "6.0.0-beta8",
+    "Microsoft.AspNet.Server.Kestrel": "1.0.0-beta8",
+    "Microsoft.CodeAnalysis.CSharp": "1.1.0-beta1-20150812-01",
+    "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8",
+    "Microsoft.Net.Http.Server": "1.0.0-beta8",
     "RavenDB.Client": "3.0.3785",
     "RavenDB.Server": "3.0.3785",
-    "Microsoft.CodeAnalysis.CSharp": "1.1.0-beta1-20150812-01",
     "System.Collections.Immutable": "1.1.36"
   },
   "exclude": [

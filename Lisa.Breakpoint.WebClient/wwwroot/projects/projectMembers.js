@@ -19,9 +19,11 @@ export class project {
             this.orgMembers = response.content;
         });
         return this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
-            this.groups = response.content.groups;
             this.members = response.content.members;
-            this.params = params;
+            var filteredGroups = this.filterGroups(response.content.groups, this.members);
+            this.groups  = filteredGroups[0]; // list of groups
+            this.disabled  = filteredGroups[1]; // groups for which you have no permission
+            this.params  = params;
         });
     }
 
@@ -32,23 +34,8 @@ export class project {
         var roleSel = document.getElementById("newRole");
         var role = roleSel.options[roleSel.selectedIndex].value;
 
-        var patch = {
-            type: "add",
-            key: "username",
-            value: userName
-        };
-
-        var patch2 = {
-            type: "update",
-            key: "role",
-            value: role,
-            where: "username",
-            whereVal: userName
-        };
-
         //this.http.patch('projects/member/'+this.params.project, patch).then(response => {
-        console.log(patch);
-        console.log(patch2);
+            console.log("add: '"+userName+"' role: '"+role+"'");
         //});
 
     }
@@ -57,16 +44,54 @@ export class project {
         var sel = document.getElementById("role_"+member);
         var role = sel.options[sel.selectedIndex].value;
 
-        var patch = {
-            type: "update",
-            field: "username",
-            key: member,
-            value: role
-        };
-
         //this.http.patch('projects/member/'+this.params.project, patch).then(response => {
-        console.log(member+": "+role);
-        console.log(patch);
+            console.log("set: '"+member+"' to: '"+role+"'");
         //});
+    }
+
+    filterGroups(groups, members) {
+        var options = "";
+        var disabled = [];
+        
+        groups.forEach(function(group, i) {
+            if (group.name.indexOf("[n/a]") >= 1) {
+                group.name = group.name.replace("[n/a]", "");
+                var dGroup = {
+                    name: group.name,
+                    level: -1
+                }
+                disabled.push(dGroup);
+                groups.splice(i,1);
+            }
+        });
+
+        return [groups, disabled];
+    }
+
+    generateOptions(groups, disabled, members) {
+        var options = "";
+        var memberLength= 0;
+        for(var key in members) {
+            if(members.hasOwnProperty(key)){
+                memberLength++;
+            }
+        }
+        var groupLength= 0;
+        for(var key in groups) {
+            if(groups.hasOwnProperty(key)){
+                groupLength++;
+            }
+        }
+        for (var i = 0; i < memberLength; i++) {
+            for (var j = 0; j < groupLength; j++) {
+                var opt = document.createElement('option');
+                opt.value = groups[j].name;
+                opt.innerHTML = groups[j].name;
+
+                options += opt;
+            }
+        }
+
+        return options;
     }
 }
