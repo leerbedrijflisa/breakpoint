@@ -21,8 +21,6 @@ export class Create {
         this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
             this.projMembers = response.content.members;
             this.groups = response.content.groups;
-        });
-        this.http.get('projects/' + params.project).then(response => {
             this.browsers = response.content.browsers;
         });
 
@@ -35,7 +33,7 @@ export class Create {
             reporter: readCookie("userName"),
             status: "Open",
             priority: "fix immediately",
-            browsers: null,
+            browsers: [],
             assignedTo: {
                 type: "",
                 value: ""
@@ -46,8 +44,8 @@ export class Create {
     submit() {
         var select = document.getElementById("assignedTo");
         this.report.assignedTo.type = select.options[select.selectedIndex].parentNode.label;
-
-        this.http.post('reports/'+this.params.project, this.report).then(response => {
+        this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
+        this.http.post('reports/'+this.params.project, JSON.stringify(this.report)).then(response => {
             var organization = this.params.organization;
             var project = this.params.project;
 
