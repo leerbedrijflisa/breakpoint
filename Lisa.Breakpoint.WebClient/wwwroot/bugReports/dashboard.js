@@ -14,7 +14,6 @@ export class dashboard {
     }
 
     activate(params) {
-        this.status = [];
         this.userName = readCookie("userName");
         this.params = params;
 
@@ -28,12 +27,13 @@ export class dashboard {
     }
 
     patchStatus(id, index) {
-        if (this.status[index] == null) {
-            this.status[index] = document.getElementById("status"+id).options[0].value; 
-        }
+        if (this.reports[index].status == null) {
+            this.reports[index].status = document.getElementById("status"+id).options[0].value; 
+        };
+        var data = {
+            status: this.reports[index].status
+        };
 
-        var data = { status: this.status[index] };
-        
         this.http.patch('reports/' + id, data).then( response => {
             window.location.reload();
         });
