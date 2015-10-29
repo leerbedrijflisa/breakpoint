@@ -101,30 +101,23 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 User user = session.Load<User>(id);
 
-                try
+                foreach (PropertyInfo propertyInfo in user.GetType().GetProperties())
                 {
-                    foreach (PropertyInfo propertyInfo in user.GetType().GetProperties())
+                    var newVal = patchedUser.GetType().GetProperty(propertyInfo.Name).GetValue(patchedUser, null);
+
+                    if (newVal != null)
                     {
-                        var newVal = patchedUser.GetType().GetProperty(propertyInfo.Name).GetValue(patchedUser, null);
-
-                        if (newVal != null)
+                        var patchRequest = new PatchRequest()
                         {
-                            var patchRequest = new PatchRequest()
-                            {
-                                Name = propertyInfo.Name,
-                                Type = PatchCommandType.Set,
-                                Value = newVal.ToString()
-                            };
-                            documentStore.DatabaseCommands.Patch("users/" + id, new[] { patchRequest });
-                        }
+                            Name = propertyInfo.Name,
+                            Type = PatchCommandType.Set,
+                            Value = newVal.ToString()
+                        };
+                        documentStore.DatabaseCommands.Patch("users/" + id, new[] { patchRequest });
                     }
+                }
 
-                    return user;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                return user;
             }
         }
 

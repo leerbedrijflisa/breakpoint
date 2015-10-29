@@ -8,9 +8,7 @@ namespace Lisa.Breakpoint.WebApi
         [HttpGet]
         public string Get()
         {
-            string VersionNumber = "v2";
-
-            return VersionNumber;
+            return "v2";
         }
     }
 }
