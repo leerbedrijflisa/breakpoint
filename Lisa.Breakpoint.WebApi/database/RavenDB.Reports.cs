@@ -10,12 +10,23 @@ namespace Lisa.Breakpoint.WebApi.database
 {
     public partial class RavenDB
     {
-        public IList<Report> GetAllReports(string project, string userName, string group)
+        public IList<Report> GetAllReports(string projectSlug, string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
+                string group = "";
+
+                var project = session.Query<Project>()
+                    .Where(p => p.Members.Any(m => m.UserName == userName))
+                    .ToList();
+
+                if (project.Count != 0)
+                    group = project[0].Members.Where(m => m.UserName == userName).ToList()[0].Role;
+                else
+                    group = "no group";
+
                 return session.Query<Report>()
-                    .Where(r => r.Project == project && (r.AssignedTo.Value == userName || r.AssignedTo.Value == group))
+                    .Where(r => r.Project == projectSlug && (r.AssignedTo.Value == userName || r.AssignedTo.Value == group))
                     .ToList();
             }
         }
@@ -57,10 +68,6 @@ namespace Lisa.Breakpoint.WebApi.database
                     {
                         if (newVal != null)
                         {
-                            //if (newVal.GetType() == typeof(AssignedTo))
-                            //{
-                            //    newVal = newVal.ToString(); // make object from this
-                            //}
                             var patchRequest = new PatchRequest()
                             {
                                 Name = propertyInfo.Name,
