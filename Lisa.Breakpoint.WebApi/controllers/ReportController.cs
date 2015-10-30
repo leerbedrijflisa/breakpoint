@@ -61,6 +61,14 @@ namespace Lisa.Breakpoint.WebApi
             {
                 return new HttpNotFoundResult();
             }
+            //Project project = _db.GetProject(report.Project);
+            //if (!project.Version.Contains(report.Version))
+            //{
+            //    Project patchedProject = project;
+            //    patchedProject.Version.Add(report.Version);
+            //    //TODO: finish patch project function
+            //    _db.PatchProject(project.Id, patchedProject);
+            //}
 
             //report.Project = projectSlug;
             _db.PostReport(report);
