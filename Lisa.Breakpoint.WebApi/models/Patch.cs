@@ -1,4 +1,4 @@
-﻿namespace Lisa.Breakpoint.WebApi.models
+﻿namespace Lisa.Breakpoint.WebApi.Models
 {
     // temporary for patching the members in a project
     public class Patch

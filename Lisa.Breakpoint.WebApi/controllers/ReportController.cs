@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Mvc;
 using System.Diagnostics;
 using Lisa.Breakpoint.WebApi.Models;
+using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
@@ -26,7 +27,7 @@ namespace Lisa.Breakpoint.WebApi
                 return new HttpNotFoundResult();
             }
 
-            var reports  = _db.GetAllReports(project, userName);
+            IList<Report> reports = _db.GetAllReports(project, userName);
 
             if (reports == null)
             {
@@ -38,7 +39,7 @@ namespace Lisa.Breakpoint.WebApi
         [HttpGet("{id}", Name = "report")]
         public IActionResult Get(int id)
         {
-            var report = _db.GetReport(id);
+            Report report = _db.GetReport(id);
 
             if (report == null)
             {
@@ -55,23 +56,6 @@ namespace Lisa.Breakpoint.WebApi
             {
                 return new BadRequestResult();
             }
-
-
-            //if (_db.GetProject(project, "") == null)
-            //{
-            //    return new HttpNotFoundResult();
-            //}
-
-            Debug.WriteLine(report.Version);
-
-            //Project project = _db.GetProject(report.Project);
-            //if (!project.Version.Contains(report.Version))
-            //{
-            //    Project patchedProject = project;
-            //    patchedProject.Version.Add(report.Version);
-            //    //TODO: finish patch project function
-            //    _db.PatchProject(project.Id, patchedProject);
-            //}
 
             _db.PostReport(report);
 

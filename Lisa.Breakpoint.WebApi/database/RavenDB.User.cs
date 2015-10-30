@@ -1,7 +1,6 @@
 ﻿using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
 using Raven.Client;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -62,7 +61,6 @@ namespace Lisa.Breakpoint.WebApi.database
                 {
                     return "no group";
                 }
-
             }
         }
 
@@ -78,7 +76,6 @@ namespace Lisa.Breakpoint.WebApi.database
                 {
                     return user.First();
                 }
-
                 return null;
             }
         }
@@ -88,7 +85,6 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(user);
-
                 session.SaveChanges();
 
                 return user;
@@ -100,11 +96,9 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 User user = session.Load<User>(id);
-
                 foreach (PropertyInfo propertyInfo in user.GetType().GetProperties())
                 {
                     var newVal = patchedUser.GetType().GetProperty(propertyInfo.Name).GetValue(patchedUser, null);
-
                     if (newVal != null)
                     {
                         var patchRequest = new PatchRequest()
@@ -116,7 +110,6 @@ namespace Lisa.Breakpoint.WebApi.database
                         documentStore.DatabaseCommands.Patch("users/" + id, new[] { patchRequest });
                     }
                 }
-
                 return user;
             }
         }
