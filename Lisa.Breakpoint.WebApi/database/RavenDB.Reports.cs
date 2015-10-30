@@ -16,11 +16,13 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 string group = "";
 
-                var project = session.Query<Project>()
+                group = session.Query<Project>()
                     .Where(p => p.Slug == projectSlug && p.Members.Any(m => m.UserName == userName))
-                    .SingleOrDefault();
-
-                group = project.Members.Where(m => m.UserName == userName).SingleOrDefault().Role;
+                    .SingleOrDefault()
+                    .Members
+                        .Where(m => m.UserName == userName)
+                        .SingleOrDefault()
+                        .Role;
 
                 return session.Query<Report>()
                     .Where(r => r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == group))

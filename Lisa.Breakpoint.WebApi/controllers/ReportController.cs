@@ -1,6 +1,5 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
 using Microsoft.AspNet.Mvc;
-using System.Diagnostics;
 using Lisa.Breakpoint.WebApi.Models;
 using System.Collections.Generic;
 
