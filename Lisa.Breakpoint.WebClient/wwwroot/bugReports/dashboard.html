@@ -1,7 +1,7 @@
 ﻿<template>
     <link rel="stylesheet" href="css/Dashboard.css" />
-    <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <h2>List of reports: </h2>
+    <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <ul>
         <li repeat.for="report of reports" class="li-item">
             <h3>
@@ -14,29 +14,25 @@
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
             <p><span class="label">reporter:</span> ${report.reporter}</p>
             <p><span class="label">reported:</span> ${report.reported}</p>
-            <p><span class="label">status:</span> ${report.status}</p>
-            <p><span class="label">version:</span> ${report.version}</p>
-            <form submit.delegate="$parent.submit(report.number, $index )">
-                <select value.bind="$parent.status[$index]" name="status">
-                    <option value="open" selected>Open</option>
-                    <option value="fixed">Fixed</option>
-                    <option value="wont fix">Won't Fix</option>
-                    <option value="wont fix approved">Won't Fix (Approved)</option>
-                    <option value="closed">Closed</option>
-                </select>
-                <button type="submit" name="submit">Edit Status</button>
+            <form submit.delegate="$parent.patchStatus(report.number, $index)">
+                   <span class="label">status:</span>
+                    <select value.bind="report.status" name="status" id="status${report.number}">
+                        <option value="Open">Open</option>
+                        <option value="Fixed">Fixed</option>
+                        <option value="Won't Fix">Won't Fix</option>
+                        <option value="Won't Fix (Approved)">Won't Fix (Approved)</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                    <button type="submit">Edit Status</button>
             </form>
             <p><span class="label">priority:</span> ${report.priority}</p>
-            <br />
-            <p><span>assigned to a</span> <span class="label">${report.assignedTo}</span>: ${report.assignedToGroup}${report.assignedToPerson}</p>
+            <p><span>assigned to a </span> <span class="label">${report.assignedTo.type}</span>: ${report.assignedTo.value}</p>
+            <p><span class="label">Browsers:</span> <span class="browsers" repeat.for="browser of report.browsers">${browser}, </span></p>
         </li>
     </ul>
-
     <hr />
-
-    <h4>Members in this project</h4>
-
+    <h4>Supported browsers</h4>
     <ul>
-        <li repeat.for="member of members">${member}</li>
+        <li repeat.for="browser of browsers">${browser}</li>
     </ul>
 </template>

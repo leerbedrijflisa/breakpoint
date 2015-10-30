@@ -10,36 +10,32 @@ namespace Lisa.Breakpoint.WebApi.database
 {
     public partial class RavenDB
     {
-        public IList<Report> GetAllReports(string project, string userName, string group)
+        public IList<Report> GetAllReports(string projectSlug, string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
+                string group = "";
+
+                var project = session.Query<Project>()
+                    .Where(p => p.Members.Any(m => m.UserName == userName))
+                    .ToList();
+
+                if (project.Count != 0)
+                    group = project[0].Members.Where(m => m.UserName == userName).ToList()[0].Role;
+                else
+                    group = "no group";
+
                 return session.Query<Report>()
-                    .Where(r => r.Project == project && r.AssignedToPerson == userName || r.Project == project && r.AssignedToGroup == group)
+                    .Where(r => r.Project == projectSlug && (r.AssignedTo.Value == userName || r.AssignedTo.Value == group))
                     .ToList();
             }
         }
 
-        public Report GetReport(string id)
+        public Report GetReport(int id)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Load<Report>(id);
-            }
-        }
-
-        public IList<string> GetOrganizationMembers(string organization)
-        {
-            using (IDocumentSession session = documentStore.Initialize().OpenSession())
-            {
-                var list = session.Query<Organization>()
-                    .Where(o => o.Slug == organization)
-                    .ToList();
-                if(list == null)
-                {
-                    return null;
-                }
-                return list[0].Members;
             }
         }
 
@@ -63,12 +59,12 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                Report report = session.Load<Report>("reports/"+id);
+                Report report = session.Load<Report>(id);
 
                 foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
                 {
                     var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
-                    if (propertyInfo.Name != "Reported" )
+                    if (propertyInfo.Name != "Reported")
                     {
                         if (newVal != null)
                         {
@@ -82,7 +78,7 @@ namespace Lisa.Breakpoint.WebApi.database
                         }
                     }
                 }
-                return session.Load<Report>("reports/" + id);
+                return session.Load<Report>(id);
             }
         }
 

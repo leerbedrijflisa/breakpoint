@@ -1,65 +1,109 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
 using Lisa.Breakpoint.WebApi.Models;
 using Microsoft.AspNet.Mvc;
-using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("organizations")]
-    public class OrganizationController
+    public class OrganizationController : Controller
     {
-        private readonly RavenDB _db;
-
         public OrganizationController(RavenDB db)
         {
             _db = db;
         }
 
-        [HttpGet]
-        [Route("{username}")]
-        public IList<Organization> Get(string userName)
+        [HttpGet("{username}")]
+        public IActionResult GetAll(string userName)
         {
-            return _db.GetAllOrganizations(userName);
-        }
-
-        [HttpGet]
-        [Route("members/{organization}")]
-        public IList<string> GetOrganizationMembers(string organization)
-        {
-            return _db.GetOrganizationMembers(organization);
-        }
-
-        [HttpGet]
-        [Route("get/{id}")]
-        public Organization Get(int id)
-        {
-            return _db.GetOrganization(id);
-        }
-
-        [HttpPost]
-        [Route("post")]
-        public void Post([FromBody]Organization organization)
-        {
-            _db.PostOrganization(organization);
-        }
-
-        [HttpPost]
-        [Route("patch/{id}")]
-        public void Patch(int id)
-        {
-            Organization patchedOrganization = new Organization
+            if (_db.GetUser(userName) == null)
             {
-                Slug = "patched-slug"
-            };
+                return new HttpNotFoundResult();
+            }
 
-            _db.PatchOrganization(id, patchedOrganization);
+            var organizations = _db.GetAllOrganizations(userName);
+
+            if (organizations == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new HttpOkObjectResult(organizations);
+        }
+
+        [HttpGet("members/{organization}")]
+        public IActionResult GetOrganizationMembers(string organization)
+        {
+            if (_db.GetOrganization(organization) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var members = _db.GetOrganizationMembers(organization);
+
+            return new HttpOkObjectResult(members);
+        }
+
+        [HttpGet("members/new/{organization}/{project}")]
+        public IActionResult GetMembersNotInProject(string organization, string project)
+        {
+            if (_db.GetOrganization(organization) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var members = _db.GetMembersNotInProject(organization, project);
+
+            return new HttpOkObjectResult(members);
+        }
+
+        [HttpGet("get/{organization}", Name = "organization")]
+        public IActionResult Get(string organizationSlug)
+        {
+            var organization = _db.GetOrganization(organizationSlug);
+
+            if (organization == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new HttpOkObjectResult(organization);
         }
 
         [HttpPost]
-        [Route("delete/{id}")]
-        public void Delete(int id)
+        public IActionResult Post([FromBody]Organization organization)
         {
-            _db.DeleteOrganization(id);
+            if (organization == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var postedOrganization = _db.PostOrganization(organization);
+
+            string location = Url.RouteUrl("organization", new { organization = organization }, Request.Scheme);
+            return new CreatedResult(location, postedOrganization);
         }
+
+        [HttpPatch("{id}")]
+        public IActionResult Patch(int id, Organization organization)
+        {
+            var patchedOrganization = _db.PatchOrganization(id, organization);
+
+            return new HttpOkObjectResult(patchedOrganization);
+        }
+
+        [HttpDelete("{organization}")]
+        public IActionResult Delete(string organization)
+        {
+            if (_db.GetOrganization(organization) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            _db.DeleteOrganization(organization);
+
+            return new HttpStatusCodeResult(204);
+        }
+
+        private readonly RavenDB _db;
     }
 }

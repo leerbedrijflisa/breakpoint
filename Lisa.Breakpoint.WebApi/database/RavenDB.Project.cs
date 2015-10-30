@@ -15,39 +15,65 @@ namespace Lisa.Breakpoint.WebApi.database
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 return session.Query<Project>()
-                    .Where(p => p.Members.Any(m => m == userName) && p.Organization == organizationName)
+                    .Where(p => p.Members.Any(m => m.UserName == userName) && p.Organization == organizationName)
                     .ToList();
             }
         }
 
-        public Project GetProject(string project)
+        public Project GetProject(string projectSlug, string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                return session.Query<Project>()
-                    .Where(p => p.Slug == project)
-                    .ToList().First();
+                var filter = false;
+                var project = session.Query<Project>()
+                    .Where(p => p.Slug == projectSlug)
+                    .SingleOrDefault();
+
+                if (project == null)
+                {
+                    return null;
+                }
+
+                // check the role (level) of the userName
+                // manager = 3; developer = 2; tester = 1;
+                // You can see those equal and lower than your level
+                foreach (var member in project.Members)
+                {
+                    if (member.UserName == userName)
+                    {
+                        var role  = member.Role;
+                        if (role != "")
+                        {
+                            int level = project.Groups
+                                .Where(g => g.Name == role)
+                                .Select(g => g.Level)
+                                .SingleOrDefault();
+
+                            project.Groups.Where(g => g.Level > level)
+                                .ToList()
+                                .ForEach(gg => gg.Name += "[n/a]");
+
+                            filter = true;
+                        }
+                    }
+                }
+
+                if (!filter)
+                {
+                    project.Groups = null;
+                }
+                return project;
             }
         }
 
-        public IList<string> GetProjectMembers(string project)
-        {
-            using (IDocumentSession session = documentStore.Initialize().OpenSession())
-            {
-                var list = session.Query<Project>()
-                    .Where(p => p.Slug == project)
-                    .ToList();
-
-                return list[0].Members;
-            }
-        }
-
-        public void PostProject(Project project)
+        public Project PostProject(Project project)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(project);
                 session.SaveChanges();
+
+                return project;
             }
         }
 
@@ -57,38 +83,43 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 Project project = session.Load<Project>(id);
 
-                try
+                foreach (PropertyInfo propertyInfo in project.GetType().GetProperties())
                 {
-                    foreach (PropertyInfo propertyInfo in project.GetType().GetProperties())
+                    var newVal = patchedProject.GetType().GetProperty(propertyInfo.Name).GetValue(patchedProject, null);
+
+                    if (newVal != null)
                     {
-                        var newVal = patchedProject.GetType().GetProperty(propertyInfo.Name).GetValue(patchedProject, null);
-
-                        if (newVal != null)
+                        var patchRequest = new PatchRequest()
                         {
-                            var patchRequest = new PatchRequest()
-                            {
-                                Name = propertyInfo.Name,
-                                Type = PatchCommandType.Add,
-                                Value = newVal.ToString()
-                            };
-                            documentStore.DatabaseCommands.Patch("Projects/" + id, new[] { patchRequest });
-                        }
+                            Name = propertyInfo.Name,
+                            Type = PatchCommandType.Add,
+                            Value = newVal.ToString()
+                        };
+                        documentStore.DatabaseCommands.Patch("Projects/" + id, new[] { patchRequest });
                     }
+                }
 
-                    return project;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                return project;
             }
         }
 
-        public void DeleteProject(int id)
+        public Project PatchMember(string projectName, Member patchedMember)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                Project organization = session.Load<Project>(id);
+                Project project = session.Query<Project>()
+                    .Where(p => p.Name == projectName)
+                    .SingleOrDefault();
+
+                return project;
+            }
+        }
+
+        public void DeleteProject(string projectSlug)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                Project organization = session.Query<Project>().Where(p => p.Slug == projectSlug).SingleOrDefault();
                 session.Delete(organization);
                 session.SaveChanges();
             }

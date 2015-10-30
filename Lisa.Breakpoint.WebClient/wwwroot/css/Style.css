@@ -2,12 +2,20 @@
     font-family: Verdana;
     width: 1000px;
     margin: 20px auto 0 auto;
+}
 
+p {
+    padding: 0;
+    margin: 0;
 }
 
 h1{
     float: right;
     font-family: Verdana;
+}
+
+textarea{
+    width: 167px;
 }
 
 table {

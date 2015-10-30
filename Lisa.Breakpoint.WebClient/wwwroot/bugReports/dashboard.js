@@ -4,36 +4,37 @@ import {HttpClient} from 'aurelia-http-client';
 
 export class dashboard {
     static inject() {
-        return [ Router ];
+        return [ Router, HttpClient ];
     }
 
-
-    constructor(router) {
+    constructor(router, http) {
         this.router = router;
         this.isVisible = false;
-        this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/');      
-            x.withHeader('Content-Type', 'application/json')});
+        this.http = http;
     }
 
     activate(params) {
-        this.status = [];
-        this.http.get('projects/members/'+params.project).then(response => {
-            this.members = response.content;
+        this.userName = readCookie("userName");
+        this.params = params;
+
+        this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
+            this.members = response.content.members;
+            this.browsers = response.content.browsers;
         });
         return this.http.get("reports/"+params.project+"/"+readCookie("userName")).then( response => {
             this.reports = response.content;
-            this.params = params;
-            this.userName = readCookie("userName");
         });
     }
 
-    submit(id, index) {
-        var data = {
-            status: this.status[index]
+    patchStatus(id, index) {
+        if (this.reports[index].status == null) {
+            this.reports[index].status = document.getElementById("status"+id).options[0].value; 
         };
-        console.log(data.status);
-        this.http.post('reports/patch/'+id, data).then( response => {
+        var data = {
+            status: this.reports[index].status
+        };
+
+        this.http.patch('reports/' + id, data).then( response => {
             window.location.reload();
         });
     }

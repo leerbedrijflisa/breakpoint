@@ -1,37 +1,11 @@
 ﻿<template>
-    <style>
-        p {
-            margin: 0px;
-        }
-
-        .li-item {
-            background-color: #D8D8D8;
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-
-        .list {
-            background-color: white;
-            margin-left: 20px;
-        }
-
-        .label {
-            font-weight: bold;
-        }
-    </style>
-    <h2>${organization}</h2>
+    <link rel="stylesheet" href="css/project.css" />
+    <h2>Projecten van: ${organization}</h2>
     <a route-href="route: create-project; params.bind: { organization: organization }">Create project</a>
     <ul>
         <li repeat.for="project of projects" class="li-item">
             <h2><a route-href="route: reports; params.bind: { organization: project.organization, project: project.slug }">${project.name}</a></h2>
+            <a route-href="route: project-members; params.bind: { organization: project.organization, project: project.slug }">Rollen</a>
         </li>
-    </ul>
-
-    <hr />
-
-    <h4>Members in this organization</h4>
-
-    <ul>
-        <li repeat.for="member of members">${member}</li>
     </ul>
 </template>

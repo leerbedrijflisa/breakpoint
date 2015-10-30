@@ -1,66 +1,85 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
 using Lisa.Breakpoint.WebApi.Models;
 using Microsoft.AspNet.Mvc;
-using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi.controllers
 {
     [Route("users")]
-    public class UserController
+    public class UserController : Controller
     {
-        private readonly RavenDB _db;
-
         public UserController(RavenDB db)
         {
             _db = db;
         }
 
-        [HttpPost]
-        [Route("post")]
-        public User Post([FromBody] User user)
+        [HttpGet("", Name = "users")]
+        public IActionResult Get()
         {
-            return _db.PostUser(user);
-        }
+            var users = _db.GetAllUsers();
 
-        [HttpGet]
-        [Route("users")]
-        public IList<User> Get()
-        {
-            return _db.GetAllUsers();
-        }
+            if (users == null)
+            {
+                return new HttpNotFoundResult();
+            }
 
-        [HttpGet]
-        [Route("groups")]
-        public IList<Group> GetGroups()
-        {
-            return _db.GetAllGroups();
-        }
-
-        [HttpGet]
-        [Route("groups/{group}")]
-        public IList<Member> GetGroupMembers(string group)
-        {
-            return _db.GetGroupMembers(group);
+            return new HttpOkObjectResult(users);
         }
 
         [HttpPost]
-        [Route("groups")]
-        public Group PostGroup([FromBody] Group group)
+        public IActionResult Post([FromBody] User user)
         {
-            return _db.PostGroup(group);
+            if (user == null)
+            {
+                return new BadRequestResult();
+
+            }
+
+            var postedUser = _db.PostUser(user);
+
+            string location = Url.RouteUrl("users", new {  }, Request.Scheme);
+            return new CreatedResult(location, postedUser);
         }
 
+        [HttpGet("groups", Name = "groups")]
+        public IActionResult GetGroups()
+        {
+            var groups = _db.GetAllGroups();
 
-        [HttpGet]
-        [Route("login/{userName}")]
+            if (groups == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new HttpOkObjectResult(groups);
+        }
+
+        [HttpPost("groups")]
+        public IActionResult PostGroup([FromBody] Group group)
+        {
+            if (group == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var postedGroup = _db.PostGroup(group);
+
+            string location = Url.RouteUrl("groups", new {  }, Request.Scheme);
+            return new CreatedResult(location, postedGroup);
+        }
+
+        [HttpGet("login/{userName}")]
         public IActionResult LogIn(string userName)
         {
             var user = _db.UserExists(userName);
+
             if (user != null)
             {
                 return new HttpOkObjectResult(_db.UserExists(userName));
             }
+
             return new HttpNotFoundObjectResult(_db.UserExists(userName));
         }
+
+        private readonly RavenDB _db;
     }
 }

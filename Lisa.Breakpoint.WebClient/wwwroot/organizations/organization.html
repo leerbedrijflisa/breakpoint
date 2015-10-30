@@ -19,12 +19,12 @@
           font-weight: bold;
       }
     </style>
-    <a route-href="route: create-organization">Create organization</a>
     <h2>List of organizations: </h2>
+    <a route-href="route: create-organization">Create organization</a>
     <br />
     <ul>
         <li repeat.for="organization of organizations" class="li-item">
-            <h3><a route-href="route: projects; params.bind: { organization: organization.name }">${organization.name}</a></h3>
+            <h3><a route-href="route: projects; params.bind: { organization: organization.slug }">${organization.name}</a></h3>
         </li>
     </ul>
 </template>

@@ -37,23 +37,13 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public User GetUser(int id)
+        public User GetUser(string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                return session.Load<User>(id);
-            }
-        }
-
-        public IList<Member> GetGroupMembers(string group)
-        {
-            using (IDocumentSession session = documentStore.Initialize().OpenSession())
-            {
-                var list = session.Query<Group>()
-                    .Where(g => g.Name == group)
-                    .ToList();
-
-                return list[0].Members;
+                return session.Query<User>()
+                    .Where(u => u.Username == userName)
+                    .SingleOrDefault();
             }
         }
 
@@ -61,13 +51,13 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                var user = session.Query<User>()
-                    .Where(u => u.Username == userName)
+                var project = session.Query<Project>()
+                    .Where(p => p.Members.Any(m => m.UserName == userName))
                     .ToList();
 
-                if (user.Count != 0)
+                if (project.Count != 0)
                 {
-                    return user[0].Role;
+                    return project[0].Members.Where(m => m.UserName == userName).ToList()[0].Role;
                 } else
                 {
                     return "no group";
@@ -93,17 +83,15 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-
         public User PostUser(User user)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 session.Store(user);
-                string userId = user.Id;
 
                 session.SaveChanges();
 
-                return session.Load<User>(userId);
+                return user;
             }
         }
 
@@ -113,30 +101,23 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 User user = session.Load<User>(id);
 
-                try
+                foreach (PropertyInfo propertyInfo in user.GetType().GetProperties())
                 {
-                    foreach (PropertyInfo propertyInfo in user.GetType().GetProperties())
+                    var newVal = patchedUser.GetType().GetProperty(propertyInfo.Name).GetValue(patchedUser, null);
+
+                    if (newVal != null)
                     {
-                        var newVal = patchedUser.GetType().GetProperty(propertyInfo.Name).GetValue(patchedUser, null);
-
-                        if (newVal != null)
+                        var patchRequest = new PatchRequest()
                         {
-                            var patchRequest = new PatchRequest()
-                            {
-                                Name = propertyInfo.Name,
-                                Type = PatchCommandType.Set,
-                                Value = newVal.ToString()
-                            };
-                            documentStore.DatabaseCommands.Patch("users/" + id, new[] { patchRequest });
-                        }
+                            Name = propertyInfo.Name,
+                            Type = PatchCommandType.Set,
+                            Value = newVal.ToString()
+                        };
+                        documentStore.DatabaseCommands.Patch("users/" + id, new[] { patchRequest });
                     }
+                }
 
-                    return user;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                return user;
             }
         }
 

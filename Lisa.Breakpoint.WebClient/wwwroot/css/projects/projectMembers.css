@@ -1,0 +1,18 @@
+﻿ul.members {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+li.member {
+    background-color: #e1e1e1;
+    padding: 6px;
+}
+
+li.member label {
+
+}
+
+li.member select {
+
+}

@@ -1,66 +1,91 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
 using Lisa.Breakpoint.WebApi.Models;
 using Microsoft.AspNet.Mvc;
-using System.Collections.Generic;
 
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("projects")]
-    public class ProjectController
+    public class ProjectController : Controller
     {
-        private readonly RavenDB _db;
-
         public ProjectController(RavenDB db)
         {
             _db = db;
         }
 
-        [HttpGet]
-        [Route("{organization}/{username}")]
-        public IList<Project> Get(string organization, string userName)
+        [HttpGet("{organization}/{username}")]
+        public IActionResult GetAll(string organization, string userName)
         {
-            return _db.GetAllProjects(organization, userName);
+            if (_db.GetOrganization(organization) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            if (_db.GetUser(userName) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var organizations = _db.GetAllProjects(organization, userName);
+            if (organizations == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            return new HttpOkObjectResult(organizations);
         }
 
-        [HttpGet]
-        [Route("{project}")]
-        public Project Get(string project)
+        [HttpGet("get/{project}/{userName}", Name = "project")]
+        public IActionResult Get(string project, string userName)
         {
-            return _db.GetProject(project);
+            if (project == null || userName == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var organization = _db.GetProject(project, userName);
+
+            if (organization == null)
+            {
+                return new HttpNotFoundResult();
+            }
+            return new HttpOkObjectResult(organization);
         }
 
-        [HttpGet]
-        [Route("members/{project}")]
-        public IList<string> GetProjectMembers(string project)
+        [HttpPost("{userName}")]
+        public IActionResult Post([FromBody]Project project, string userName)
         {
-            return _db.GetProjectMembers(project);
+            if (project == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var postedProject = _db.PostProject(project);
+
+            string location = Url.RouteUrl("project", new { project = project.Slug, userName = userName }, Request.Scheme);
+            return new CreatedResult(location, postedProject);
         }
 
-        [HttpPost]
-        public void insert([FromBody]Project project)
+        [HttpPatch("{id}")]
+        public IActionResult Patch(int id, Project project)
         {
-            _db.PostProject(project);
+            var patchedProject = _db.PatchProject(id, project);
+
+            return new HttpOkObjectResult(patchedProject);
         }
 
-        [HttpPost]
-        [Route("patch/{id}")]
-        public void Patch(int id, Project patchedProject)
+        [HttpDelete("{project}/{userName}")]
+        public IActionResult Delete(string project, string userName)
         {
-            //Project patchedProject = new Project
-            //{
-            //    Slug = "patched-slug"
-            //};
+            if (_db.GetProject(project, userName) == null)
+            {
+                return new HttpNotFoundResult();
+            }
 
-            _db.PatchProject(id, patchedProject);
+            _db.DeleteProject(project);
+
+            return new HttpStatusCodeResult(204);
         }
 
-        [HttpPost]
-        [Route("delete/{id}")]
-        public void Delete(int id)
-        {
-            _db.DeleteProject(id);
-        }
-
-        //public void CheckVersion() { }
+        private readonly RavenDB _db;
     }
 }

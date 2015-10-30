@@ -17,26 +17,19 @@ export class report {
 
     activate(params) {
         this.params = params;
-        var path = "reports/get/"+params.id;
-        return this.http.get(path).then( response => {
+        this.http.get('users').then(response => {
+            this.users = response.content;
+        });
+        this.http.get('users/groups').then(response => {
+            this.groups = response.content;
+        });
+        return this.http.get("reports/"+params.id).then( response => {
             this.report = response.content;
         });
     }
 
     submit() {
-        var data = {
-            title: this.title,
-            project: this.project,
-            stepByStep: this.stepbystep,
-            expectation: this.expectation,
-            whatHappened: this.whathappened,
-            reporter: this.reporter,
-            status: this.status,
-            priority: this.priority,
-            assignedTo: this.assignedTo
-        }
-
-        this.http.post('reports/patch/'+this.params.id, data).then( response => {
+        this.http.patch('reports/'+this.params.id, this.report).then( response => {
             this.router.navigateToRoute("reports", { organization: this.params.organization, project: this.params.project });
         });
     }

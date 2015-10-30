@@ -12,10 +12,12 @@
     "Microsoft.AspNet.Mvc.Core": "6.0.0-beta8",
     "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-beta8",
     "Microsoft.AspNet.Server.Kestrel": "1.0.0-beta8",
+    "Microsoft.CodeAnalysis.CSharp": "1.1.0-beta1-20150812-01",
     "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8",
     "Microsoft.Net.Http.Server": "1.0.0-beta8",
     "RavenDB.Client": "3.0.3785",
-    "RavenDB.Server": "3.0.3785"
+    "RavenDB.Server": "3.0.3785",
+    "System.Collections.Immutable": "1.1.36"
   },
   "exclude": [
     "wwwroot",

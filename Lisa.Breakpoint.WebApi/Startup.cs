@@ -16,7 +16,6 @@ namespace Lisa.Breakpoint.WebApi
             {
                 opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
-
             services.AddCors(options =>
             {
                 options.AddPolicy("Breakpoint", builder => 
@@ -24,13 +23,13 @@ namespace Lisa.Breakpoint.WebApi
                     builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
                 });
             });
-
             services.AddInstance<IDocumentStore>(new DocumentStore() { Url = "http://localhost:8080", DefaultDatabase = "breakpoint" });
             services.AddSingleton<RavenDB>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseIISPlatformHandler();
             app.UseCors("Breakpoint");
             app.UseMvcWithDefaultRoute();
         }

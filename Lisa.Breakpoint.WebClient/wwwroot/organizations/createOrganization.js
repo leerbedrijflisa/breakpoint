@@ -1,21 +1,19 @@
-﻿import {Router} from 'aurelia-router';
+﻿import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 
 export class Create {
     static inject() {
-        return [ Router ];
+        return [ Router, HttpClient ];
     }
 
-    constructor(router) {
+    constructor(router, http) {
         this.router = router;
-        this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/');      
-            x.withHeader('Content-Type', 'application/json')
-        });
+        this.http = http;
     }
 
     activate() {
-        this.http.get('users/users').then(response => {
+        return this.http.get('users').then(response => {
             this.users = response.content;
         });
     }
@@ -23,11 +21,11 @@ export class Create {
     submit() {
         var data = {
             name: this.name,
-            slug: this.slug,
+            slug: toSlug(this.name),
             members: getSelectValues(document.getElementById("membersSelect"))
         };
 
-        this.http.post('organizations/post', data).then(response => {
+        this.http.post('organizations', data).then(response => {
             this.router.navigateToRoute("organizations");
         });
     }

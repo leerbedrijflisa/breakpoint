@@ -1,40 +1,48 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
+<<<<<<< HEAD
 using Microsoft.AspNet.Mvc;
 using System.Diagnostics;
+=======
+>>>>>>> develop
 using Lisa.Breakpoint.WebApi.Models;
+using Microsoft.AspNet.Mvc;
 
 namespace Lisa.Breakpoint.WebApi
 {
     [Route("reports")]
     public class ReportController : Controller
     {
-        private readonly RavenDB _db;
-
         public ReportController(RavenDB db)
         {
             _db = db;
         }
 
-        [HttpGet]
-        [Route("{project}/{username}")]
+        [HttpGet("{project}/{username}")]
         public IActionResult Get(string project, string userName)
         {
-            string group = _db.GetGroupFromUser(userName);
-            var reports  = _db.GetAllReports(project, userName, group);
+            if (_db.GetProject(project, userName) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            if (_db.GetUser(userName) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            var reports  = _db.GetAllReports(project, userName);
 
             if (reports == null)
             {
                 return new HttpNotFoundResult();
             }
-
             return new HttpOkObjectResult(reports);
         }
 
-        [HttpGet]
-        [Route("get/{id}")]
-        public IActionResult Get(string id)
+        [HttpGet("{id}", Name = "report")]
+        public IActionResult Get(int id)
         {
-            var report = _db.GetReport("reports/"+id);
+            var report = _db.GetReport(id);
 
             if (report == null)
             {
@@ -44,14 +52,14 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(report);
         }
 
-        [HttpPost]
-        [Route("", Name = "report")]
-        public IActionResult Post([FromBody] Report report)
+        [HttpPost("{project}")]
+        public IActionResult Post([FromBody] Report report, string project)
         {
             if (report == null)
             {
                 return new BadRequestResult();
             }
+
 
             //if (_db.GetProject(project, "") == null)
             //{
@@ -71,26 +79,31 @@ namespace Lisa.Breakpoint.WebApi
 
             _db.PostReport(report);
 
-            string location = Url.RouteUrl("report", new {  }, Request.Scheme);
+            string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
             return new CreatedResult(location, report);
         }
 
-        [HttpPost]
-        [Route("patch/{id}")]
-        public IActionResult Patch(int id, [FromBody]Report report)
+        [HttpPatch("{id}")]
+        public IActionResult Patch(int id, [FromBody] Report report)
         {
             Report patchedReport = _db.PatchReport(id, report);
 
             return new HttpOkObjectResult(patchedReport);
         }
 
-        [HttpPost]
-        [Route("delete/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            if (_db.GetReport(id) == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             _db.DeleteReport(id);
 
-            return new HttpOkResult();
+            return new HttpStatusCodeResult(204);
         }
+
+        private readonly RavenDB _db;
     }
 }

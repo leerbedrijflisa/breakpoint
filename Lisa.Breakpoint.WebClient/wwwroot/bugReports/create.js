@@ -3,68 +3,50 @@ import {HttpClient} from 'aurelia-http-client';
 
 export class Create {
     static inject() {
-        return [ Router ];
+        return [ Router, HttpClient ];
     }
 
-    constructor(router) {
+    constructor(router, http) {
         this.router = router;
-        this.http = new HttpClient().configure(x => {
-            x.withBaseUrl('http://localhost:10791/');      
-            x.withHeader('Content-Type', 'application/json')
-        });
+        this.http = http;
     }
     
     activate(params) {
         this.params = params;
-        console.log(params.project);
-        this.http.get('users/users').then(response => {
-            this.users = response.content;
+
+        // TODO: pass entire project object to this module, so we don't have to request
+        // users and groups if we already know everything about the project. Note, that
+        // if you go directly to the URL for creating a report, you still need to request
+        // the project from the Web API, since you don't have it yet.
+        this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
+            this.projMembers = response.content.members;
+            this.groups = response.content.groups;
+            this.browsers = response.content.browsers;
         });
-        this.http.get('users/groups').then(response => {
-            this.groups = response.content;
-        });
-        this.http.get('projects/' + params.project).then(response => {
-            this.project = response.content;
-            console.log(this.project.version);
-        });
+
+        this.report = {
+            title: "",
+            project: params.project,
+            stepByStep: "",
+            expectation: "",
+            whatHappened: "",
+            reporter: readCookie("userName"),
+            status: "Open",
+            priority: "fix immediately",
+            browsers: [],
+            version: "",
+            assignedTo: {
+                type: "",
+                value: ""
+            }
+        };
     }
 
     submit() {
-        if (this.priority == null) {
-            this.priority = document.getElementById("priority").options[0].value; // if the first option is selected it wont register the value so i have to get the first option myself
-        }
-
-        if (document.getElementById('personRadioButton').checked == true) {
-            var data = {
-                title: this.title,
-                project: this.params.project,
-                stepByStep: this.stepbystep,
-                expectation: this.expectation,
-                whatHappened: this.whathappened,
-                reporter: readCookie("userName"),
-                status: "Open",
-                priority: this.priority,
-                assignedTo: "person",
-                assignedToPerson: this.assignedtoperson,
-                version: this.version
-            }
-        } else {
-            var data = {
-                title: this.title,
-                project: this.params.project,
-                stepByStep: this.stepbystep,
-                expectation: this.expectation,
-                whatHappened: this.whathappened,
-                reporter: this.reporter,
-                status: "Open",
-                priority: this.priority,
-                assignedTo: "group",
-                assignedToGroup: this.assignedtogroup,
-                version: this.version
-            }
-        }
-
-        this.http.post('reports', data).then(response => {
+        var select = document.getElementById("assignedTo");
+        this.report.assignedTo.type = select.options[select.selectedIndex].parentNode.label;
+        this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
+        this.http.post('reports/'+this.params.project, JSON.stringify(this.report)).then(response => {
             var organization = this.params.organization;
             var project = this.params.project;
 
