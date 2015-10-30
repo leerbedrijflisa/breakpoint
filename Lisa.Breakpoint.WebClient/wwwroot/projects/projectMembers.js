@@ -16,7 +16,19 @@ export class project {
         // then it compares those and returns only those not already in the project
         // so you can only add new members to the project
         this.http.get('organizations/members/new/'+params.organization+'/'+params.project).then(response => {
-            this.orgMembers = response.content;
+            var orgMembers = response.content;
+            var orgMembersLength= 0;
+            for(var key in orgMembers) {
+                if(orgMembers.hasOwnProperty(key)){
+                    orgMembersLength++;
+                }
+            }
+            if (orgMembersLength > 0) {
+                this.usersLeft = true;
+                this.orgMembers = orgMembers;
+            } else {
+                this.usersLeft = false;
+            }
         });
         return this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
             this.members = response.content.members;
@@ -29,24 +41,51 @@ export class project {
 
     addMember(member) {
         var userSel = document.getElementById("newMember");
-        var userName = userSel.options[userSel.selectedIndex].value;
+        var member = userSel.options[userSel.selectedIndex].value;
 
         var roleSel = document.getElementById("newRole");
         var role = roleSel.options[roleSel.selectedIndex].value;
 
-        //this.http.patch('projects/member/'+this.params.project, patch).then(response => {
-            console.log("add: '"+userName+"' role: '"+role+"'");
-        //});
+        var patch = {
+            type: "add",
+            member: member,
+            role: role
+        };
 
+        this.http.patch('projects/'+this.params.project+'/members', patch).then(response => {
+            window.location.reload();
+        });
+    }
+
+    removeMember(member) {
+        if (readCookie("userName") != member) {
+            var patch = {
+                type: "remove",
+                member: member,
+                role: ""
+            };
+
+            this.http.patch('projects/'+this.params.project+'/members', patch).then(response => {
+                window.location.reload();
+            });
+        }
     }
     
-    saveChanges(member) {
-        var sel = document.getElementById("role_"+member);
-        var role = sel.options[sel.selectedIndex].value;
+    saveMember(member) {
+        if (readCookie("userName") != member) {
+            var sel = document.getElementById("role_"+member);
+            var role = sel.options[sel.selectedIndex].value;
 
-        //this.http.patch('projects/member/'+this.params.project, patch).then(response => {
-            console.log("set: '"+member+"' to: '"+role+"'");
-        //});
+            var patch = {
+                type: "update",
+                member: member,
+                role: role
+            };
+
+            this.http.patch('projects/'+this.params.project+'/members', patch).then(response => {
+                window.location.reload();
+            });
+        }
     }
 
     filterGroups(groups, members) {

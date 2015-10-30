@@ -1,4 +1,5 @@
-﻿using Lisa.Breakpoint.WebApi.Models;
+﻿using Lisa.Breakpoint.WebApi.models;
+using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using System;
@@ -103,14 +104,53 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public Project PatchMember(string projectName, Member patchedMember)
+        public Project PatchProjectMembers(string projectSlug, Patch patch)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Project project = session.Query<Project>()
-                    .Where(p => p.Name == projectName)
+                    .Where(p => p.Slug == projectSlug)
                     .SingleOrDefault();
 
+                IList<Member> members = project.Members;
+
+                if (patch.Type == "add")
+                {
+                    Member newMember = new Member();
+
+                    newMember.UserName = patch.Member;
+                    newMember.Role = patch.Role;
+
+                    members.Add(newMember);
+                }
+                else if (patch.Type == "remove")
+                {
+                    Member newMember = new Member();
+
+                    for (int i = 0; i < members.Count; i++)
+                    {
+                        if (members[i].UserName == patch.Member)
+                        {
+                            members.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
+                else if (patch.Type == "update")
+                {
+                    foreach (var m in members)
+                    {
+                        if (m.UserName == patch.Member)
+                        {
+                            m.Role = patch.Role;
+                            break;
+                        }
+                    }
+                }
+
+                project.Members = members;
+
+                session.SaveChanges();
                 return project;
             }
         }

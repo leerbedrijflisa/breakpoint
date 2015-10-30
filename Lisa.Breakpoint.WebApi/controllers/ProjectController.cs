@@ -1,4 +1,5 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
+using Lisa.Breakpoint.WebApi.models;
 using Lisa.Breakpoint.WebApi.Models;
 using Microsoft.AspNet.Mvc;
 
@@ -71,6 +72,14 @@ namespace Lisa.Breakpoint.WebApi
             var patchedProject = _db.PatchProject(id, project);
 
             return new HttpOkObjectResult(patchedProject);
+        }
+
+        [HttpPatch("{projectSlug}/members")]
+        public IActionResult PatchMembers(string projectSlug, [FromBody] Patch patch)
+        {
+            var patchedProjectMembers = _db.PatchProjectMembers(projectSlug, patch);
+
+            return new HttpOkObjectResult(patchedProjectMembers);
         }
 
         [HttpDelete("{project}/{userName}")]
