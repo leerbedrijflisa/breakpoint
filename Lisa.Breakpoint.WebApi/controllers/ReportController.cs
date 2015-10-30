@@ -1,11 +1,7 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
-<<<<<<< HEAD
 using Microsoft.AspNet.Mvc;
 using System.Diagnostics;
-=======
->>>>>>> develop
 using Lisa.Breakpoint.WebApi.Models;
-using Microsoft.AspNet.Mvc;
 
 namespace Lisa.Breakpoint.WebApi
 {
