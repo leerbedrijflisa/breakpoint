@@ -25,9 +25,7 @@ namespace Lisa.Breakpoint.WebApi
                 return new HttpNotFoundResult();
             }
 
-            // TODO: put these two queries in one function
-            string group = _db.GetGroupFromUser(userName);
-            var reports  = _db.GetAllReports(project, userName, group);
+            var reports  = _db.GetAllReports(project, userName);
 
             if (reports == null)
             {
@@ -70,7 +68,6 @@ namespace Lisa.Breakpoint.WebApi
             //    _db.PatchProject(project.Id, patchedProject);
             //}
 
-            //report.Project = projectSlug;
             _db.PostReport(report);
 
             string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);
