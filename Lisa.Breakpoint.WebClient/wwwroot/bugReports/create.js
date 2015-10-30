@@ -34,6 +34,7 @@ export class Create {
             status: "Open",
             priority: "fix immediately",
             browsers: [],
+            version: "",
             assignedTo: {
                 type: "",
                 value: ""

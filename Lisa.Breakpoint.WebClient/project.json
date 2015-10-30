@@ -1,31 +1,27 @@
 {
-    "webroot": "wwwroot",
-    "version": "1.0.0-*",
-
-    "dependencies": {
-        "Microsoft.AspNet.IISPlatformHandler": "1.0.0-beta8",
-        "Microsoft.AspNet.Server.Kestrel": "1.0.0-beta8",
-        "Microsoft.AspNet.StaticFiles": "1.0.0-beta8"
-    },
-
-    "commands": {
-      "web": "Microsoft.AspNet.Server.Kestrel"
-    },
-
-    "frameworks": {
-        "dnxcore50": { }
-    },
-
-    "publishExclude": [
-        "node_modules",
-        "bower_components",
-        "**.xproj",
-        "**.user",
-        "**.vspscc"
-    ],
-    "exclude": [
-        "wwwroot",
-        "node_modules",
-        "bower_components"
-    ]
+  "commands": {
+    "web": "Microsoft.AspNet.Server.Kestrel"
+  },
+  "dependencies": {
+    "Microsoft.AspNet.IISPlatformHandler": "1.0.0-beta8",
+    "Microsoft.AspNet.Server.Kestrel": "1.0.0-beta8",
+    "Microsoft.AspNet.StaticFiles": "1.0.0-beta8"
+  },
+  "exclude": [
+    "wwwroot",
+    "node_modules",
+    "bower_components"
+  ],
+  "frameworks": {
+    "dnxcore50": { }
+  },
+  "publishExclude": [
+    "node_modules",
+    "bower_components",
+    "**.xproj",
+    "**.user",
+    "**.vspscc"
+  ],
+  "version": "1.0.0-*",
+  "webroot": "wwwroot"
 }

@@ -14,7 +14,8 @@
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
             <p><span class="label">reporter:</span> ${report.reporter}</p>
             <p><span class="label">reported:</span> ${report.reported}</p>
-            <form submit.delegate="$parent.patchStatus(report.number, $index )">
+            <p><span class="label">version:</span> ${report.version}</p>
+            <form submit.delegate="$parent.patchStatus(report.number, $index)">
                    <span class="label">status:</span>
                     <select value.bind="report.status" name="status" id="status${report.number}">
                         <option value="Open">Open</option>
@@ -23,7 +24,7 @@
                         <option value="Won't Fix (Approved)">Won't Fix (Approved)</option>
                         <option value="Closed">Closed</option>
                     </select>
-                    <button type="submit" name="submit">Edit Status</button>
+                    <button type="submit">Edit Status</button>
             </form>
             <p><span class="label">priority:</span> ${report.priority}</p>
             <p><span>assigned to a </span> <span class="label">${report.assignedTo.type}</span>: ${report.assignedTo.value}</p>
