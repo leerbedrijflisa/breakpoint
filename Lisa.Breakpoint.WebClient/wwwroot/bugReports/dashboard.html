@@ -14,6 +14,7 @@
             <p><span class="label">whatHappened:</span> ${report.whatHappened}</p>
             <p><span class="label">reporter:</span> ${report.reporter}</p>
             <p><span class="label">reported:</span> ${report.reported}</p>
+            <p><span class="label">version:</span> ${report.version}</p>
             <form submit.delegate="$parent.patchStatus(report.number, $index)">
                    <span class="label">status:</span>
                     <select value.bind="report.status" name="status" id="status${report.number}">
