@@ -43,11 +43,7 @@
         <br /><br />
 
         <label for="version">Test version: </label>
-        <select value.bind="version">
-            <option value="" model.bind="empty">-</option>
-            <option repeat.for="version of project.version" model.bind="version">${version}</option>
-        </select>
-        <!--<input type="text" value.bind="version"/>-->
+        <input type="text" value.bind="report.version"/>
 
         <br />
         <button type="submit" name="submit">Report bug</button>

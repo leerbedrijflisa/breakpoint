@@ -1,5 +1,6 @@
 ﻿using Lisa.Breakpoint.WebApi.database;
 using Microsoft.AspNet.Mvc;
+using System.Diagnostics;
 using Lisa.Breakpoint.WebApi.Models;
 
 namespace Lisa.Breakpoint.WebApi
@@ -51,6 +52,13 @@ namespace Lisa.Breakpoint.WebApi
             {
                 return new BadRequestResult();
             }
+
+            //if (_db.GetProject(project, "") == null)
+            //{
+            //    return new HttpNotFoundResult();
+            //}
+
+            Debug.WriteLine(report.Version);
 
             //Project project = _db.GetProject(report.Project);
             //if (!project.Version.Contains(report.Version))
