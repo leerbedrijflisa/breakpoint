@@ -24,6 +24,14 @@ namespace Lisa.Breakpoint.WebApi.database
                         .SingleOrDefault()
                         .Role;
 
+                if(group == "tester")
+                {
+                    return session.Query<Report>()
+                        .Where(r => r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName && r.Status == "Fixed" || r.AssignedTo.Type == "group" && r.AssignedTo.Value == group && r.Status == "Fixed"))
+                        .ToList();
+
+                }
+
                 return session.Query<Report>()
                     .Where(r => r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == group))
                     .ToList();
