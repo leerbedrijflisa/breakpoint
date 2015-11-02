@@ -25,7 +25,7 @@ namespace Lisa.Breakpoint.WebApi.database
                         .Role;
 
                 return session.Query<Report>()
-                    .Where(r => r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == group))
+                    .Where(r => r.Project == projectSlug && (r.AssignedTo.Type.ToLower() == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type.ToLower() == "group" && r.AssignedTo.Value == group))
                     .ToList();
             }
         }
