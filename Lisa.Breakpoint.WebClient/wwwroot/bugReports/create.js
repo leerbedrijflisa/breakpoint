@@ -14,7 +14,7 @@ export class Create {
     activate(params) {
         this.params = params;
 
-        this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
+        this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
             this.projMembers = response.content.members;
             this.groups = response.content.groups;
             this.browsers = response.content.browsers;
@@ -43,7 +43,7 @@ export class Create {
         this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));;
         this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
 
-        this.http.post('reports/'+this.params.project, JSON.stringify(this.report)).then(response => {
+        this.http.post('reports/'+this.params.organization+'/'+this.params.project, JSON.stringify(this.report)).then(response => {
             var organization = this.params.organization;
             var project = this.params.project;
 

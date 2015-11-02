@@ -19,13 +19,13 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public Project GetProject(string projectSlug, string userName)
+        public Project GetProject(string organizationSlug, string projectSlug, string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 var filter = false;
                 var project = session.Query<Project>()
-                    .Where(p => p.Slug == projectSlug)
+                    .Where(p => p.Organization == organizationSlug && p.Slug == projectSlug)
                     .SingleOrDefault();
 
                 if (project == null)
@@ -50,9 +50,12 @@ namespace Lisa.Breakpoint.WebApi.database
                                 .Select(g => g.Level)
                                 .SingleOrDefault();
 
-                            project.Groups.Where(g => g.Level > level)
-                                .ToList()
-                                .ForEach(gg => gg.Name += "[n/a]");
+                            //project.Groups.Where(g => g.Level > level)
+                            //    .ToList()
+                            //    .ForEach(gg => gg.Name += "[n/a]");
+
+                            project.Groups.Where(g => g.Level <= level)
+                                .ToList();
 
                             filter = true;
                         }
@@ -71,10 +74,16 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                session.Store(project);
-                session.SaveChanges();
+                if (session.Query<Project>().Where(p => p.Organization == project.Organization && p.Slug == project.Slug).ToList().Count == 0)
+                {
+                    session.Store(project);
+                    session.SaveChanges();
 
-                return project;
+                    return project;
+                } else
+                {
+                    return null;
+                }
             }
         }
 

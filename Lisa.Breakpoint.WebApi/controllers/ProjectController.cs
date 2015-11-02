@@ -34,15 +34,15 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(organizations);
         }
 
-        [HttpGet("get/{projectSlug}/{userName}", Name = "project")]
-        public IActionResult Get(string projectSlug, string userName)
+        [HttpGet("{organizationSlug}/{projectSlug}/{userName}", Name = "project")]
+        public IActionResult Get(string organizationSlug, string projectSlug, string userName)
         {
             if (projectSlug == null || userName == null)
             {
                 return new HttpNotFoundResult();
             }
 
-            var project = _db.GetProject(projectSlug, userName);
+            var project = _db.GetProject(organizationSlug, projectSlug, userName);
 
             if (project == null)
             {
@@ -61,8 +61,14 @@ namespace Lisa.Breakpoint.WebApi
 
             var postedProject = _db.PostProject(project);
 
-            string location = Url.RouteUrl("project", new { project = project.Slug, userName = userName }, Request.Scheme);
-            return new CreatedResult(location, postedProject);
+            if (postedProject != null)
+            {
+                string location = Url.RouteUrl("project", new { organizationSlug = project.Organization, projectSlug = project.Slug, userName = userName }, Request.Scheme);
+                return new CreatedResult(location, postedProject);
+            } else
+            {
+                return new NoContentResult();
+            }
         }
 
         [HttpPatch("{id}")]
@@ -81,10 +87,10 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(patchedProjectMembers);
         }
 
-        [HttpDelete("{project}/{userName}")]
-        public IActionResult Delete(string project, string userName)
+        [HttpDelete("{organization}/{project}/{userName}")]
+        public IActionResult Delete(string organizationSlug, string project, string userName)
         {
-            if (_db.GetProject(project, userName) == null)
+            if (_db.GetProject(organizationSlug, project, userName) == null)
             {
                 return new HttpNotFoundResult();
             }

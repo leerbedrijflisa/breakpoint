@@ -30,12 +30,11 @@ export class project {
                 this.usersLeft = false;
             }
         });
-        return this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
+        return this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
             this.members = response.content.members;
             var filteredGroups = this.filterGroups(response.content.groups, this.members);
             this.groups  = filteredGroups[0];
             this.disabled  = filteredGroups[1];
-            this.params  = params;
         });
     }
 

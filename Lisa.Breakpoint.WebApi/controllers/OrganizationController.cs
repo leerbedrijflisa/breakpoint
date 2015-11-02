@@ -56,7 +56,7 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(members);
         }
 
-        [HttpGet("get/{organization}", Name = "organization")]
+        [HttpGet("get/{organizationSlug}", Name = "organization")]
         public IActionResult Get(string organizationSlug)
         {
             var organization = _db.GetOrganization(organizationSlug);
@@ -79,8 +79,15 @@ namespace Lisa.Breakpoint.WebApi
 
             var postedOrganization = _db.PostOrganization(organization);
 
-            string location = Url.RouteUrl("organization", new { organization = organization }, Request.Scheme);
-            return new CreatedResult(location, postedOrganization);
+            if (postedOrganization != null)
+            {
+                string location = Url.RouteUrl("organization", new { organizationSlug = organization }, Request.Scheme);
+                return new CreatedResult(location, postedOrganization);
+            } else
+            {
+                return new NoContentResult();
+            }
+
         }
 
         [HttpPatch("{id}")]

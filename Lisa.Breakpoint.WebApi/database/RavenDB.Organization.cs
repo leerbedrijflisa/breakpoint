@@ -72,10 +72,17 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                session.Store(organization);
-                session.SaveChanges();
+                if (session.Query<Organization>().Where(o => o.Slug == organization.Slug).ToList().Count == 0)
+                {
+                    session.Store(organization);
+                    session.SaveChanges();
 
-                return organization;
+                    return organization;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
