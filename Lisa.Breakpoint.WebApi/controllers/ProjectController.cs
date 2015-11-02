@@ -34,21 +34,21 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(organizations);
         }
 
-        [HttpGet("get/{project}/{userName}", Name = "project")]
-        public IActionResult Get(string project, string userName)
+        [HttpGet("get/{projectSlug}/{userName}", Name = "project")]
+        public IActionResult Get(string projectSlug, string userName)
         {
-            if (project == null || userName == null)
+            if (projectSlug == null || userName == null)
             {
                 return new HttpNotFoundResult();
             }
 
-            var organization = _db.GetProject(project, userName);
+            var project = _db.GetProject(projectSlug, userName);
 
-            if (organization == null)
+            if (project == null)
             {
                 return new HttpNotFoundResult();
             }
-            return new HttpOkObjectResult(organization);
+            return new HttpOkObjectResult(project);
         }
 
         [HttpPost("{userName}")]
