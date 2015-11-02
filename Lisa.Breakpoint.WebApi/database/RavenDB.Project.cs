@@ -35,8 +35,10 @@ namespace Lisa.Breakpoint.WebApi.database
 
                 // check the role (level) of the userName
                 // manager = 3; developer = 2; tester = 1;
-                // You can see those equal and lower than your level
-                foreach (var member in project.Members)
+                // adds [n/a] to roles yo are not supposed to edit
+                // you can search for [n/a] in your javascript
+                // and disble those options
+                foreach (Member member in project.Members)
                 {
                     if (member.UserName == userName)
                     {
