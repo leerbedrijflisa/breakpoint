@@ -44,7 +44,11 @@ export class Create {
 
     submit() {
         var select = document.getElementById("assignedTo");
-        this.report.assignedTo.type = select.options[select.selectedIndex].parentNode.label;
+        if (select.options[select.selectedIndex].parentNode.label == "Groups") {
+            this.report.assignedTo.type = "group";
+        } else if (select.options[select.selectedIndex].parentNode.label == "Members") {
+            this.report.assignedTo.type = "person";
+        }
         this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
         this.http.post('reports/'+this.params.project, JSON.stringify(this.report)).then(response => {
             var organization = this.params.organization;

@@ -76,7 +76,7 @@ export class project {
             var sel = document.getElementById("role_"+member);
             var role = sel.options[sel.selectedIndex].value;
 
-            var patch = {
+            var patch = { 
                 type: "update",
                 member: member,
                 role: role
@@ -88,6 +88,9 @@ export class project {
         }
     }
 
+    // returns the groups an array
+    // arr[0] = Groups lower than and equal to the logged-in user's role
+    // arr[1] = Groups higher than the logged-in user's role
     filterGroups(groups, members) {
         var options = "";
         var disabled = [];
@@ -105,32 +108,5 @@ export class project {
         });
 
         return [groups, disabled];
-    }
-
-    generateOptions(groups, disabled, members) {
-        var options = "";
-        var memberLength= 0;
-        for(var key in members) {
-            if(members.hasOwnProperty(key)){
-                memberLength++;
-            }
-        }
-        var groupLength= 0;
-        for(var key in groups) {
-            if(groups.hasOwnProperty(key)){
-                groupLength++;
-            }
-        }
-        for (var i = 0; i < memberLength; i++) {
-            for (var j = 0; j < groupLength; j++) {
-                var opt = document.createElement('option');
-                opt.value = groups[j].name;
-                opt.innerHTML = groups[j].name;
-
-                options += opt;
-            }
-        }
-
-        return options;
     }
 }
