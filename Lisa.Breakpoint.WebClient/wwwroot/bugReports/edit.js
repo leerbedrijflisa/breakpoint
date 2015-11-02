@@ -25,12 +25,7 @@ export class report {
     }
 
     submit() {
-        var select = document.getElementById("assignedTo");
-        if (select.options[select.selectedIndex].parentNode.label == "Groups") {
-            this.report.assignedTo.type = "group";
-        } else if (select.options[select.selectedIndex].parentNode.label == "Members") {
-            this.report.assignedTo.type = "person";
-        }
+        this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));;
         this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
 
         this.http.patch('reports/'+this.params.id, this.report).then( response => {

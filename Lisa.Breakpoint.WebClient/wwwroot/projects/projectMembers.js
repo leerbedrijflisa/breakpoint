@@ -33,8 +33,8 @@ export class project {
         return this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
             this.members = response.content.members;
             var filteredGroups = this.filterGroups(response.content.groups, this.members);
-            this.groups  = filteredGroups[0]; // list of groups
-            this.disabled  = filteredGroups[1]; // groups for which you have no permission
+            this.groups  = filteredGroups[0];
+            this.disabled  = filteredGroups[1];
             this.params  = params;
         });
     }
