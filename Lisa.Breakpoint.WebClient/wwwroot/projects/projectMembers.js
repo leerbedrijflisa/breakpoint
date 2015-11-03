@@ -95,7 +95,19 @@ export class project {
         var disabled = [];
         
         groups.forEach(function(group, i) {
-            if (group.name.indexOf("[n/a]") >= 1) {
+            if (group.name.indexOf("[n/a]") != -1) {
+                group.name = group.name.replace("[n/a]", "");
+                var dGroup = {
+                    name: group.name,
+                    level: -1
+                }
+                disabled.push(dGroup);
+                groups.splice(i,1);
+            }
+        });
+
+        groups.forEach(function(group, i) {
+            if (group.name.indexOf("[n/a]") != -1) {
                 group.name = group.name.replace("[n/a]", "");
                 var dGroup = {
                     name: group.name,

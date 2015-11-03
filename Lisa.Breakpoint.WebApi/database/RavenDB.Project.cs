@@ -50,12 +50,16 @@ namespace Lisa.Breakpoint.WebApi.database
                                 .Select(g => g.Level)
                                 .SingleOrDefault();
 
-                            //project.Groups.Where(g => g.Level > level)
-                            //    .ToList()
-                            //    .ForEach(gg => gg.Name += "[n/a]");
+                            var groups = project.Groups.ToList();
 
-                            project.Groups.Where(g => g.Level <= level)
-                                .ToList();
+                            groups.ForEach(g => {
+                                if (g.Level > level)
+                                {
+                                    g.Name += "[n/a]";
+                                }
+                            });
+
+                            project.Groups = groups;
 
                             filter = true;
                         }
