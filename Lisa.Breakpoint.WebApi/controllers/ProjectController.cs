@@ -72,17 +72,17 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Patch(int id, Project project)
+        public IActionResult Patch(int id, string organization, Project project)
         {
             var patchedProject = _db.PatchProject(id, project);
 
             return new HttpOkObjectResult(patchedProject);
         }
 
-        [HttpPatch("{projectSlug}/members")]
-        public IActionResult PatchMembers(string projectSlug, [FromBody] Patch patch)
+        [HttpPatch("{organization}/{projectSlug}/members")]
+        public IActionResult PatchMembers(string organization, string projectSlug, [FromBody] Patch patch)
         {
-            var patchedProjectMembers = _db.PatchProjectMembers(projectSlug, patch);
+            var patchedProjectMembers = _db.PatchProjectMembers(organization, projectSlug, patch);
 
             return new HttpOkObjectResult(patchedProjectMembers);
         }

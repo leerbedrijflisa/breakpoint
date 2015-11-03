@@ -26,7 +26,7 @@ namespace Lisa.Breakpoint.WebApi
                 return new HttpNotFoundResult();
             }
 
-            IList<Report> reports = _db.GetAllReports(project, userName);
+            IList<Report> reports = _db.GetAllReports(organization, project, userName);
 
             if (reports == null)
             {

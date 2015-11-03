@@ -23,6 +23,7 @@ export class Create {
         this.report = {
             title: "",
             project: params.project,
+            organization: params.organization,
             stepByStep: "",
             expectation: "",
             whatHappened: "",

@@ -113,12 +113,12 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public Project PatchProjectMembers(string projectSlug, Patch patch)
+        public Project PatchProjectMembers(string organizationSlug, string projectSlug, Patch patch)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 Project project = session.Query<Project>()
-                    .Where(p => p.Slug == projectSlug)
+                    .Where(p => p.Organization == organizationSlug && p.Slug == projectSlug)
                     .SingleOrDefault();
 
                 IList<Member> members = project.Members;

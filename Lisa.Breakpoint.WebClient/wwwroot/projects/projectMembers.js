@@ -51,7 +51,7 @@ export class project {
             role: role
         };
 
-        this.http.patch('projects/'+this.params.project+'/members', patch).then(response => {
+        this.http.patch('projects/'+this.params.organization+'/'+this.params.project+'/members', patch).then(response => {
             window.location.reload();
         });
     }
@@ -64,7 +64,7 @@ export class project {
                 role: ""
             };
 
-            this.http.patch('projects/'+this.params.project+'/members', patch).then(response => {
+            this.http.patch('projects/'+this.params.organization+'/'+this.params.project+'/members', patch).then(response => {
                 window.location.reload();
             });
         }
@@ -81,7 +81,7 @@ export class project {
                 role: role
             };
 
-            this.http.patch('projects/'+this.params.project+'/members', patch).then(response => {
+            this.http.patch('projects/'+this.params.organization+'/'+this.params.project+'/members', patch).then(response => {
                 window.location.reload();
             });
         }
