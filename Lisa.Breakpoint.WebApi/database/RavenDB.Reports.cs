@@ -11,31 +11,33 @@ namespace Lisa.Breakpoint.WebApi.database
 {
     public partial class RavenDB
     {
-        public IList<Report> GetAllReports(string projectSlug, string userName)
+        public IList<Report> GetAllReports(string organizationSlug, string projectSlug, string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                string group = "";
 
-                group = session.Query<Project>()
-                    .Where(p => p.Slug == projectSlug && p.Members.Any(m => m.UserName == userName))
-                    .SingleOrDefault()
-                    .Members
-                        .Where(m => m.UserName == userName)
-                        .SingleOrDefault()
-                        .Role;
+                IList<Report> reports;
 
-                if(group == "tester")
+                var group = session.Query<Project>()
+                    .Where(p => p.Organization == organizationSlug && p.Slug == projectSlug && p.Members.Any(m => m.UserName == userName))
+                    .SingleOrDefault().Members
+                    .Where(m => m.UserName == userName)
+                    .SingleOrDefault();
+
+                var role = group.Role;
+
+                if (role == "manager")
                 {
-                    return session.Query<Report>()
-                        .Where(r => r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName && r.Status == "Fixed" || r.AssignedTo.Type == "group" && r.AssignedTo.Value == group && r.Status == "Fixed"))
+                    reports = session.Query<Report>()
+                        .Where(r => r.Organization == organizationSlug && r.Project == projectSlug)
                         .ToList();
-
+                } else
+                {
+                    reports = session.Query<Report>()
+                        .Where(r => r.Organization == organizationSlug && r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == role))
+                        .ToList();
                 }
-
-                return session.Query<Report>()
-                    .Where(r => r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == group))
-                    .ToList();
+                return reports;
             }
         }
 

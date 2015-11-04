@@ -17,11 +17,11 @@ export class dashboard {
         this.userName = readCookie("userName");
         this.params = params;
 
-        this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
+        this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
             this.members = response.content.members;
             this.browsers = response.content.browsers;
         });
-        return this.http.get("reports/"+params.project+"/"+readCookie("userName")).then( response => {
+        return this.http.get("reports/"+params.organization+"/"+params.project+"/"+readCookie("userName")).then( response => {
             this.reports = response.content;
         });
     }

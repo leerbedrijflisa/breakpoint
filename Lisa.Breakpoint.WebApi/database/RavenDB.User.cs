@@ -29,10 +29,17 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                session.Store(group);
-                session.SaveChanges();
+                if (session.Query<Group>().Where(g => g.Name == group.Name).ToList().Count == 0)
+                {
+                    session.Store(group);
+                    session.SaveChanges();
 
-                return group;
+                    return group;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -84,10 +91,17 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                session.Store(user);
-                session.SaveChanges();
+                if (session.Query<User>().Where(u => u.Username == user.Username).ToList().Count == 0)
+                {
+                    session.Store(user);
+                    session.SaveChanges();
 
-                return user;
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

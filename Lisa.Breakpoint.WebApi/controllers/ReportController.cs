@@ -13,10 +13,10 @@ namespace Lisa.Breakpoint.WebApi
             _db = db;
         }
 
-        [HttpGet("{project}/{username}")]
-        public IActionResult Get(string project, string userName)
+        [HttpGet("{organization}/{project}/{username}")]
+        public IActionResult Get(string organization, string project, string userName)
         {
-            if (_db.GetProject(project, userName) == null)
+            if (_db.GetProject(organization, project, userName) == null)
             {
                 return new HttpNotFoundResult();
             }
@@ -26,7 +26,7 @@ namespace Lisa.Breakpoint.WebApi
                 return new HttpNotFoundResult();
             }
 
-            IList<Report> reports = _db.GetAllReports(project, userName);
+            IList<Report> reports = _db.GetAllReports(organization, project, userName);
 
             if (reports == null)
             {
@@ -48,9 +48,14 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(report);
         }
 
-        [HttpPost("{project}")]
-        public IActionResult Post([FromBody] Report report, string project)
+        [HttpPost("{organization}/{project}")]
+        public IActionResult Post([FromBody] Report report, string organization, string project)
         {
+            if (report.Browsers.Count == 0)
+            {
+                report.Browsers.Add("n.a.");
+            }
+
             if (report == null)
             {
                 return new BadRequestResult();

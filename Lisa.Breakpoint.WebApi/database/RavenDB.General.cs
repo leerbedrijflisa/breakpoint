@@ -11,10 +11,5 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             this.documentStore = documentStore;
         }
-
-        internal object GetProject(object project, string v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

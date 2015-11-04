@@ -28,7 +28,7 @@ function deleteCookie(key) {
 
 
 
-// recieves an object containing the values of a multiple select box
+// returns an object containing the values of a multiple select box
 function getSelectValues(select) {
     var result = [];
     var options = select && select.options;
@@ -42,6 +42,15 @@ function getSelectValues(select) {
         }
     }
     return result;
+}
+
+// returns the type of the selected value
+function getAssignedToType(select) {
+    if (select.options[select.selectedIndex].parentNode.label == "Groups") {
+        return "group";
+    } else if (select.options[select.selectedIndex].parentNode.label == "Members") {
+        return "person";
+    }
 }
 
 

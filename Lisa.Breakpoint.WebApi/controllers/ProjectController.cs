@@ -34,21 +34,21 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(organizations);
         }
 
-        [HttpGet("get/{project}/{userName}", Name = "project")]
-        public IActionResult Get(string project, string userName)
+        [HttpGet("{organizationSlug}/{projectSlug}/{userName}", Name = "project")]
+        public IActionResult Get(string organizationSlug, string projectSlug, string userName)
         {
-            if (project == null || userName == null)
+            if (projectSlug == null || userName == null)
             {
                 return new HttpNotFoundResult();
             }
 
-            var organization = _db.GetProject(project, userName);
+            var project = _db.GetProject(organizationSlug, projectSlug, userName);
 
-            if (organization == null)
+            if (project == null)
             {
                 return new HttpNotFoundResult();
             }
-            return new HttpOkObjectResult(organization);
+            return new HttpOkObjectResult(project);
         }
 
         [HttpPost("{userName}")]
@@ -61,30 +61,36 @@ namespace Lisa.Breakpoint.WebApi
 
             var postedProject = _db.PostProject(project);
 
-            string location = Url.RouteUrl("project", new { project = project.Slug, userName = userName }, Request.Scheme);
-            return new CreatedResult(location, postedProject);
+            if (postedProject != null)
+            {
+                string location = Url.RouteUrl("project", new { organizationSlug = project.Organization, projectSlug = project.Slug, userName = userName }, Request.Scheme);
+                return new CreatedResult(location, postedProject);
+            } else
+            {
+                return new NoContentResult();
+            }
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Patch(int id, Project project)
+        public IActionResult Patch(int id, string organization, Project project)
         {
             var patchedProject = _db.PatchProject(id, project);
 
             return new HttpOkObjectResult(patchedProject);
         }
 
-        [HttpPatch("{projectSlug}/members")]
-        public IActionResult PatchMembers(string projectSlug, [FromBody] Patch patch)
+        [HttpPatch("{organization}/{projectSlug}/members")]
+        public IActionResult PatchMembers(string organization, string projectSlug, [FromBody] Patch patch)
         {
-            var patchedProjectMembers = _db.PatchProjectMembers(projectSlug, patch);
+            var patchedProjectMembers = _db.PatchProjectMembers(organization, projectSlug, patch);
 
             return new HttpOkObjectResult(patchedProjectMembers);
         }
 
-        [HttpDelete("{project}/{userName}")]
-        public IActionResult Delete(string project, string userName)
+        [HttpDelete("{organization}/{project}/{userName}")]
+        public IActionResult Delete(string organizationSlug, string project, string userName)
         {
-            if (_db.GetProject(project, userName) == null)
+            if (_db.GetProject(organizationSlug, project, userName) == null)
             {
                 return new HttpNotFoundResult();
             }

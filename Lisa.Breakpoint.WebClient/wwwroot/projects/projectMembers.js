@@ -30,12 +30,11 @@ export class project {
                 this.usersLeft = false;
             }
         });
-        return this.http.get('projects/get/'+params.project+'/'+readCookie("userName")).then(response => {
+        return this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
             this.members = response.content.members;
             var filteredGroups = this.filterGroups(response.content.groups, this.members);
-            this.groups  = filteredGroups[0]; // list of groups
-            this.disabled  = filteredGroups[1]; // groups for which you have no permission
-            this.params  = params;
+            this.groups  = filteredGroups[0];
+            this.disabled  = filteredGroups[1];
         });
     }
 
@@ -52,7 +51,7 @@ export class project {
             role: role
         };
 
-        this.http.patch('projects/'+this.params.project+'/members', patch).then(response => {
+        this.http.patch('projects/'+this.params.organization+'/'+this.params.project+'/members', patch).then(response => {
             window.location.reload();
         });
     }
@@ -65,7 +64,7 @@ export class project {
                 role: ""
             };
 
-            this.http.patch('projects/'+this.params.project+'/members', patch).then(response => {
+            this.http.patch('projects/'+this.params.organization+'/'+this.params.project+'/members', patch).then(response => {
                 window.location.reload();
             });
         }
@@ -82,7 +81,7 @@ export class project {
                 role: role
             };
 
-            this.http.patch('projects/'+this.params.project+'/members', patch).then(response => {
+            this.http.patch('projects/'+this.params.organization+'/'+this.params.project+'/members', patch).then(response => {
                 window.location.reload();
             });
         }
@@ -96,7 +95,19 @@ export class project {
         var disabled = [];
         
         groups.forEach(function(group, i) {
-            if (group.name.indexOf("[n/a]") >= 1) {
+            if (group.name.indexOf("[n/a]") != -1) {
+                group.name = group.name.replace("[n/a]", "");
+                var dGroup = {
+                    name: group.name,
+                    level: -1
+                }
+                disabled.push(dGroup);
+                groups.splice(i,1);
+            }
+        });
+
+        groups.forEach(function(group, i) {
+            if (group.name.indexOf("[n/a]") != -1) {
                 group.name = group.name.replace("[n/a]", "");
                 var dGroup = {
                     name: group.name,
