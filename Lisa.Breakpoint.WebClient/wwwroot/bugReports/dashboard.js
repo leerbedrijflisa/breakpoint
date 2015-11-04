@@ -30,9 +30,19 @@ export class dashboard {
         if (this.reports[index].status == null) {
             this.reports[index].status = document.getElementById("status"+id).options[0].value; 
         };
-        var data = {
-            status: this.reports[index].status
-        };
+        if (this.reports[index].status == "Fixed"){
+            var data = {
+                status: this.reports[index].status,
+                assignedTo: {
+                    type: "group",
+                    value: "tester"
+                }
+            }
+            } else {
+            var data = {
+                status: this.reports[index].status
+            };
+        }
 
         this.http.patch('reports/' + id, data).then( response => {
             window.location.reload();
