@@ -1,6 +1,7 @@
 ﻿using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
 using Raven.Client;
+using Raven.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,18 +72,32 @@ namespace Lisa.Breakpoint.WebApi.database
                 foreach (PropertyInfo propertyInfo in report.GetType().GetProperties())
                 {
                     var newVal = patchedReport.GetType().GetProperty(propertyInfo.Name).GetValue(patchedReport, null);
+
                     if (propertyInfo.Name != "Reported")
                     {
                         if (newVal != null)
                         {
-                            var patchRequest = new PatchRequest()
+                            if (newVal is string)
                             {
-                                Name = propertyInfo.Name,
-                                Type = PatchCommandType.Set,
-                                Value = newVal.ToString()
-                            };
-                            documentStore.DatabaseCommands.Patch("reports/"+id, new[] { patchRequest });
-                        }
+                                var patchRequest = new PatchRequest()
+                                {
+                                    Name = propertyInfo.Name,
+                                    Type = PatchCommandType.Set,
+                                    Value = newVal.ToString()
+                                };
+                                documentStore.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+                            }
+                            else
+                            {
+                                var patchRequest = new PatchRequest()
+                                {
+                                    Name = propertyInfo.Name,
+                                    Type = PatchCommandType.Set,
+                                    Value = RavenJObject.FromObject((AssignedTo) newVal)
+                                };
+                                documentStore.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+                            }
+                         }
                     }
                 }
                 return session.Load<Report>(id);
