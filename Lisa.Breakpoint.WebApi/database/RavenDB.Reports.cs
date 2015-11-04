@@ -29,14 +29,17 @@ namespace Lisa.Breakpoint.WebApi.database
                 {
                     reports = session.Query<Report>()
                         .Where(r => r.Organization == organizationSlug && r.Project == projectSlug)
+                        .OrderBy(r => r.Priority)
+                        .ThenBy(r => r.Reported)
                         .ToList();
                 } else
                 {
                     reports = session.Query<Report>()
                         .Where(r => r.Organization == organizationSlug && r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == role))
+                        .OrderBy(r => r.Priority)
+                        .ThenBy(r => r.Reported)
                         .ToList();
                 }
-
 
                 return reports;
             }

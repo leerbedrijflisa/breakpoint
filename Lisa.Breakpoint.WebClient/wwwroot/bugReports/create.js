@@ -29,7 +29,7 @@ export class Create {
             whatHappened: "",
             reporter: readCookie("userName"),
             status: "Open",
-            priority: "fix immediately",
+            priority: 0,
             browsers: [],
             version: "",
             assignedTo: {
