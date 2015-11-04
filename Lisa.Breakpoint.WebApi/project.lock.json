@@ -867,7 +867,7 @@
           "lib/dnx451/Microsoft.AspNet.Server.Kestrel.dll": {}
         }
       },
-      "Microsoft.AspNet.WebApi.Client/5.2.2": {
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "6.0.4"
@@ -2497,7 +2497,7 @@
           "lib/dnx451/Microsoft.AspNet.Server.Kestrel.dll": {}
         }
       },
-      "Microsoft.AspNet.WebApi.Client/5.2.2": {
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "6.0.4"
@@ -3985,7 +3985,7 @@
           "runtimes/win7-x86/native/libuv.dll": {}
         }
       },
-      "Microsoft.AspNet.WebApi.Client/5.2.2": {
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "6.0.4"
@@ -5618,7 +5618,7 @@
           "runtimes/win7-x64/native/libuv.dll": {}
         }
       },
-      "Microsoft.AspNet.WebApi.Client/5.2.2": {
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "6.0.4"
@@ -7251,7 +7251,7 @@
           "runtimes/win7-x86/native/libuv.dll": {}
         }
       },
-      "Microsoft.AspNet.WebApi.Client/5.2.2": {
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "6.0.4"
@@ -8739,7 +8739,7 @@
           "runtimes/win7-x64/native/libuv.dll": {}
         }
       },
-      "Microsoft.AspNet.WebApi.Client/5.2.2": {
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "6.0.4"
@@ -9978,17 +9978,17 @@
         "thirdpartynotices.txt"
       ]
     },
-    "Microsoft.AspNet.WebApi.Client/5.2.2": {
+    "Microsoft.AspNet.WebApi.Client/5.2.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "YVq+s0WeXrPxJk57CoElbtMYf95j76uJcW6nue3Cs4eIer9sgUp4rasSo0gALX3ls1Zf2jMceOLik9X/sJyrwA==",
+      "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
       "files": [
         "lib/net45/System.Net.Http.Formatting.dll",
         "lib/net45/System.Net.Http.Formatting.xml",
         "lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.dll",
         "lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.xml",
-        "Microsoft.AspNet.WebApi.Client.5.2.2.nupkg",
-        "Microsoft.AspNet.WebApi.Client.5.2.2.nupkg.sha512",
+        "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg",
+        "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg.sha512",
         "Microsoft.AspNet.WebApi.Client.nuspec"
       ]
     },
@@ -11272,6 +11272,7 @@
       "Microsoft.AspNet.Mvc >= 6.0.0-beta8",
       "Microsoft.AspNet.Mvc.Core >= 6.0.0-beta8",
       "Microsoft.AspNet.Mvc.WebApiCompatShim >= 6.0.0-beta8",
+      "Microsoft.AspNet.WebApi.Client >= 5.2.3",
       "Microsoft.AspNet.Server.Kestrel >= 1.0.0-beta8",
       "Microsoft.CodeAnalysis.CSharp >= 1.1.0-beta1-20150812-01",
       "Microsoft.Framework.DependencyInjection.Abstractions >= 1.0.0-beta8",
