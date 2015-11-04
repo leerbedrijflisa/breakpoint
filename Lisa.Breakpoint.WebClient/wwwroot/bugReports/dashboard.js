@@ -37,7 +37,7 @@ export class dashboard {
                     type: "group",
                     value: "tester"
                 }
-            }
+            };
             } else {
             var data = {
                 status: this.reports[index].status
