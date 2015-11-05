@@ -14,6 +14,7 @@ export class dashboard {
     }
 
     activate(params) {
+        this.showAssignedTo = [];
         this.userName = readCookie("userName");
         this.params = params;
 
@@ -22,9 +23,28 @@ export class dashboard {
             this.browsers = response.content.browsers;
         });
         return this.http.get("reports/"+params.organization+"/"+params.project+"/"+readCookie("userName")).then( response => {
-            this.reports = response.content;
+            this.reports = this.showAssigned(response.content);
         });
     }
+
+    showAssigned(reports) {
+            var reportsLength= 0;
+            for(var key in reports) {
+                if(reports.hasOwnProperty(key)){
+                    reportsLength++;
+                }
+            }
+
+            var i;
+            for (i = 0; i < reportsLength; i++) {
+                if (reports[i].assignedTo.type == "") {
+                    this.showAssignedTo[i] = false;
+                } else {
+                    this.showAssignedTo[i] = true;
+                }
+            }
+            return reports;
+        }
 
     patchStatus(id, index) {
         if (this.reports[index].status == null) {
