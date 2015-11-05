@@ -16,10 +16,10 @@
 
     <hr />
 
-    <div show.bind="!usersLeft">
+    <div if.bind="!usersLeft">
         <p>All organization members are in this project</p>
     </div>
-    <div show.bind="usersLeft">
+    <div if.bind="usersLeft">
         <p>Add a member from your organization to this project: </p>
         <br />
         <p>

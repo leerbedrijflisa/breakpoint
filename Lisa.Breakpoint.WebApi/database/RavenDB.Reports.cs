@@ -1,5 +1,7 @@
 ﻿using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
+using Raven.Abstractions.Extensions;
+using Raven.Abstractions.Json;
 using Raven.Client;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,6 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-
                 IList<Report> reports;
 
                 var group = session.Query<Project>()
@@ -30,17 +31,21 @@ namespace Lisa.Breakpoint.WebApi.database
                     reports = session.Query<Report>()
                         .Where(r => r.Organization == organizationSlug && r.Project == projectSlug)
                         .OrderBy(r => r.Priority)
-                        .ThenBy(r => r.Reported)
+                        .ThenByDescending(r => r.Reported.Date)
+                        .ThenBy(r => r.Reported.TimeOfDay)
                         .ToList();
                 } else
                 {
                     reports = session.Query<Report>()
                         .Where(r => r.Organization == organizationSlug && r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == role))
                         .OrderBy(r => r.Priority)
-                        .ThenBy(r => r.Reported)
+                        .ThenByDescending(r => r.Reported.Date)
+                        .ThenBy(r => r.Reported.TimeOfDay)
                         .ToList();
                 }
 
+                reports.ForEach(r => r.PriorityString = r.Priority.ToString());
+                
                 return reports;
             }
         }
@@ -57,6 +62,8 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
+                documentStore.Conventions.SaveEnumsAsIntegers = true;
+
                 session.Store(report);
 
                 string reportId = session.Advanced.GetDocumentId(report);

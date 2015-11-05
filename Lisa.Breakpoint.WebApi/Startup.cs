@@ -16,7 +16,7 @@ namespace Lisa.Breakpoint.WebApi
             services.AddMvc().AddJsonOptions(opts =>
             {
                 opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                opts.SerializerSettings.Converters.Add(new StringEnumConverter());
+                //opts.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
             services.AddCors(options =>
             {

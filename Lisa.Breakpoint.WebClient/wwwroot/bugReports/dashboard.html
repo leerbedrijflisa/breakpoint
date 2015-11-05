@@ -26,7 +26,7 @@
                     </select>
                     <button type="submit">Edit Status</button>
             </form>
-            <p><span class="label">priority:</span> ${report.priority}</p>
+            <p><span class="label">priority:</span> ${report.priorityString}</p>
             <p><span>assigned to a </span> <span class="label">${report.assignedTo.type}</span>: ${report.assignedTo.value}</p>
             <p><span class="label">Browsers:</span> <span class="browsers" repeat.for="browser of report.browsers">${browser}, </span></p>
         </li>
