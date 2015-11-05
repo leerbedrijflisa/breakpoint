@@ -20,7 +20,7 @@ namespace Lisa.Breakpoint.WebApi.Models
         public string   Version { get; set; }
         public AssignedTo AssignedTo { get; set; }
         public IList<Comment> Comments { get; set; }
-        public IList<string> Browsers { get; set; }
+        public string Browsers { get; set; }
     }
 
     public enum Priority
