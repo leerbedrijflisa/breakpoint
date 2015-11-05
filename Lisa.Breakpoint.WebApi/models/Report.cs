@@ -15,17 +15,26 @@ namespace Lisa.Breakpoint.WebApi.Models
         public string   Reporter { get; set; }
         public DateTime Reported { get; set; }
         public string   Status { get; set; }
-        public string   Priority { get; set; }
+        public Priority Priority { get; set; }
+        public string   PriorityString { get; set; }
         public string   Version { get; set; }
         public AssignedTo AssignedTo { get; set; }
         public IList<Comment> Comments { get; set; }
         public IList<string> Browsers { get; set; }
     }
 
+    public enum Priority
+    {
+        FixImmediately,
+        FixBeforeRelease,
+        FixForNextRelease,
+        FixWhenever
+    }
+
     public class AssignedTo
     {
-        public string Type { get; set; } // person OR group
-        public string Value { get; set; } // personUserName OR groupName
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 
     public class Comment

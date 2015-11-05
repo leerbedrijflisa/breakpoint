@@ -11,6 +11,8 @@ export class project {
 
     activate(params) {
         this.params = params;
+        this.canEditMember = [];
+        this.isLoggedInUser = [];
 
         // (in the API) this gets 2 member lists; Organization- and Projectmembers.
         // then it compares those and returns only those not already in the project
@@ -31,7 +33,7 @@ export class project {
             }
         });
         return this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
-            this.members = response.content.members;
+            this.members = this.filterMembers(response.content.members);
             var filteredGroups = this.filterGroups(response.content.groups, this.members);
             this.groups  = filteredGroups[0];
             this.disabled  = filteredGroups[1];
@@ -119,5 +121,68 @@ export class project {
         });
 
         return [groups, disabled];
+    }
+
+    filterMembers(members) {
+        var membersLength= 0;
+        for(var key in members) {
+            if(members.hasOwnProperty(key)){
+                membersLength++;
+            }
+        }
+
+        var i;
+        var loggedInUserRole;
+        var loggedInUserRoleLevel;
+        for (i = 0; i < membersLength; i++) {
+            if (members[i].userName == readCookie("userName")) {
+                loggedInUserRole = members[i].role;
+                this.isLoggedInUser[i] = true;
+            } else {
+                this.isLoggedInUser[i] = false;
+            }
+        }
+
+
+        switch (loggedInUserRole) {
+            case "manager":
+                loggedInUserRoleLevel = 0;
+                break;
+            case "developer":
+                loggedInUserRoleLevel = 1;
+                break;
+            case "tester":
+                loggedInUserRoleLevel = 2;
+                break;
+            default:
+                loggedInUserRoleLevel = 2;
+                break;
+        }
+
+        var memberRoleLevel
+        for (i = 0; i < membersLength; i++) {
+            switch (members[i].role) {
+                case "manager":
+                    memberRoleLevel = 0;
+                    break;
+                case "developer":
+                    memberRoleLevel = 1;
+                    break;
+                case "tester":
+                    memberRoleLevel = 2;
+                    break;
+                default:
+                    memberRoleLevel = 2;
+                    break;
+            }
+
+            if (memberRoleLevel < loggedInUserRoleLevel) {
+                this.canEditMember[i] = false;
+            } else {
+                this.canEditMember[i] = true;
+            }            
+        }
+
+        return members;
     }
 }

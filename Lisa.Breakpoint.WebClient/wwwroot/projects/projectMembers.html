@@ -2,10 +2,19 @@
     <link rel="stylesheet" href="css/project.css" />
     <h2>Leden van project: ${params.project}</h2>
     <ul>
-        <li repeat.for="member of members" class="li-item">
-            <p><span>${member.userName}</span>
+        <li repeat.for="member of members"  class="li-item">
+            <p if.bind="!$parent.canEditMember[$index]">
+                <span>${member.userName}: </span>
+                <span>${member.role}</span>
+            </p>
+            <p if.bind="$parent.isLoggedInUser[$index]">
+                <span>${member.userName}(jij): </span>
+                <span>${member.role}</span>
+            </p>
+            <p if.bind="$parent.canEditMember[$index] && !$parent.isLoggedInUser[$index]">
+                <span>${member.userName}</span>
                 <select id="role_${member.userName}" value.bind="member.role">
-                    <option repeat.for="group of $parent.groups" value.bind="$parent.role.name" value="${group.name}">${group.name}</option>
+                    <option repeat.for="group of $parent.groups"    value.bind="$parent.role.name" value="${group.name}">${group.name}</option>
                     <option repeat.for="group of $parent.disabled"  value.bind="$parent.role.name" disabled="disabled" value="${group.name}">${group.name}</option>
                 </select>
                 <button click.delegate="$parent.saveMember(member.userName)">Save role</button>
@@ -16,10 +25,10 @@
 
     <hr />
 
-    <div show.bind="!usersLeft">
+    <div if.bind="!usersLeft">
         <p>All organization members are in this project</p>
     </div>
-    <div show.bind="usersLeft">
+    <div if.bind="usersLeft">
         <p>Add a member from your organization to this project: </p>
         <br />
         <p>

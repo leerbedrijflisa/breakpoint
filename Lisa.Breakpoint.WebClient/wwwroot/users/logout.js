@@ -19,7 +19,6 @@ export class user {
         deleteCookie("userName");
         deleteCookie("role");
         document.getElementById("user_userName").innerHTML = "";
-        document.getElementById("user_role").innerHTML = "";
         this.router.navigateToRoute("login");
     }
 }
