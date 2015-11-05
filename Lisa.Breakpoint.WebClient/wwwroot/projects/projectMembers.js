@@ -33,7 +33,6 @@ export class project {
             }
         });
         return this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
-            console.log(response.content.members);
             this.members = this.filterMembers(response.content.members);
             var filteredGroups = this.filterGroups(response.content.groups, this.members);
             this.groups  = filteredGroups[0];
