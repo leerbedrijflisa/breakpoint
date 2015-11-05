@@ -30,18 +30,29 @@ export class dashboard {
         if (this.reports[index].status == null) {
             this.reports[index].status = document.getElementById("status"+id).options[0].value; 
         };
-        if (this.reports[index].status == "Fixed"){
-            var data = {
-                status: this.reports[index].status,
-                assignedTo: {
-                    type: "group",
-                    value: "tester"
-                }
-            };
-            } else {
-            var data = {
-                status: this.reports[index].status
-            };
+        switch (this.reports[index].status) {
+            case "Fixed":
+                var data = {
+                    status: this.reports[index].status,
+                    assignedTo: {
+                        type: "group",
+                        value: "tester"
+                    }
+                };
+                break;
+            case "Closed":
+                var data = {
+                    status: this.reports[index].status,
+                    assignedTo: {
+                        type: "",
+                        value: ""
+                    }
+                };
+                break;
+            default:
+                var data = {
+                    status: this.reports[index].status
+                };
         }
 
         this.http.patch('reports/' + id, data).then( response => {
