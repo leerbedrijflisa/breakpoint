@@ -56,6 +56,17 @@ namespace Lisa.Breakpoint.WebApi
                 report.Browsers.Add("n.a.");
             }
 
+            Project fullProject = _db.GetProject(organization, project, report.Reporter);
+
+            foreach (string browser in report.Browsers)
+            {
+                if (!fullProject.Browsers.Contains(browser))
+                {
+                    return new BadRequestResult();
+                }
+            }
+
+
             if (report == null)
             {
                 return new BadRequestResult();
