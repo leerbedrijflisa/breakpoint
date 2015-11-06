@@ -28,23 +28,22 @@ export class dashboard {
     }
 
     showAssigned(reports) {
-            var reportsLength= 0;
-            for(var key in reports) {
-                if(reports.hasOwnProperty(key)){
-                    reportsLength++;
-                }
+        var reportsLength= 0;
+        var i;
+        for(var key in reports) {
+            if(reports.hasOwnProperty(key)){
+                reportsLength++;
             }
-
-            var i;
-            for (i = 0; i < reportsLength; i++) {
-                if (reports[i].assignedTo.type == "") {
-                    this.showAssignedTo[i] = false;
-                } else {
-                    this.showAssignedTo[i] = true;
-                }
-            }
-            return reports;
         }
+        for (i = 0; i < reportsLength; i++) {
+            if (reports[i].assignedTo.type == "") {
+                this.showAssignedTo[i] = false;
+            } else {
+                this.showAssignedTo[i] = true;
+            }
+        }
+        return reports;
+    }
 
     patchStatus(id, index) {
         if (this.reports[index].status == null) {
@@ -73,6 +72,7 @@ export class dashboard {
                 var data = {
                     status: this.reports[index].status
                 };
+                break;
         }
 
         this.http.patch('reports/' + id, data).then( response => {
