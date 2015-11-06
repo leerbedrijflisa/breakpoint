@@ -29,7 +29,7 @@ export class Create {
             reporter: readCookie("userName"),
             status: "Open",
             priority: 0,
-            browsers: [],
+            platform: "",
             version: "",
             assignedTo: {
                 type: "",
@@ -40,8 +40,7 @@ export class Create {
 
     submit() {
         
-        this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));;
-        this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
+        this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));
 
         this.http.post('reports/'+this.params.organization+'/'+this.params.project, JSON.stringify(this.report)).then(response => {
             var organization = this.params.organization;

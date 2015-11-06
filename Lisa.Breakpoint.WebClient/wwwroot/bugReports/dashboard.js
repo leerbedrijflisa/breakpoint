@@ -19,7 +19,6 @@ export class dashboard {
 
         this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
             this.members = response.content.members;
-            this.browsers = response.content.browsers;
         });
         return this.http.get("reports/"+params.organization+"/"+params.project+"/"+readCookie("userName")).then( response => {
             this.reports = response.content;

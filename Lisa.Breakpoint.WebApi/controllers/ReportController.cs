@@ -57,6 +57,11 @@ namespace Lisa.Breakpoint.WebApi
                 return new BadRequestResult();
             }
 
+            if (report.Platform == "" || report.Platform == null)
+            {
+                report.Platform = "n.a.";
+            }
+
             _db.PostReport(report);
 
             string location = Url.RouteUrl("report", new { id = report.Number }, Request.Scheme);

@@ -28,12 +28,7 @@
             </form>
             <p><span class="label">priority:</span> ${report.priorityString}</p>
             <p><span>assigned to a </span> <span class="label">${report.assignedTo.type}</span>: ${report.assignedTo.value}</p>
-            <p><span class="label">Browsers:</span> <span class="browsers" repeat.for="browser of report.browsers">${browser}, </span></p>
+            <p><span class="label">Platform:</span> ${report.platform} </p>
         </li>
-    </ul>
-    <hr />
-    <h4>Supported browsers</h4>
-    <ul>
-        <li repeat.for="browser of browsers">${browser}</li>
     </ul>
 </template>
