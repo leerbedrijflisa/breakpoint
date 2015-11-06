@@ -1,25 +1,18 @@
-﻿import {Router} from 'aurelia-router';
-import {HttpClient} from 'aurelia-http-client';
+﻿import {HttpClient} from 'aurelia-http-client';
+import {ReportData} from './reportData';
 
 export class Create {
     static inject() {
-        return [ Router, HttpClient ];
+        return [ HttpClient, ReportData ];
     }
 
-    constructor(router, http) {
-        this.router = router;
+    constructor(http, reportData) {
         this.http = http;
+        this.data = reportData;
     }
     
     activate(params) {
-        this.params = params;
-
-        this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
-            this.projMembers = response.content.members;
-            this.groups = response.content.groups;
-            this.browsers = response.content.browsers;
-        });
-
+        this.data.getAllProjects(params, readCookie("userName"));
         this.report = {
             title: "",
             project: params.project,
