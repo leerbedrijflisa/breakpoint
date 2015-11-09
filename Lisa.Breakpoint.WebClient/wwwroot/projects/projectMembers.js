@@ -48,6 +48,7 @@ export class project {
         var role = roleSel.options[roleSel.selectedIndex].value;
 
         var patch = {
+            sender: readCookie("userName"),
             type: "add",
             member: member,
             role: role
@@ -59,11 +60,14 @@ export class project {
     }
 
     removeMember(member) {
+        var sel = document.getElementById("role_"+member);
+        var role = sel.options[sel.selectedIndex].value;
         if (readCookie("userName") != member) {
             var patch = {
+                sender: readCookie("userName"),
                 type: "remove",
                 member: member,
-                role: ""
+                role: role
             };
 
             this.http.patch('projects/'+this.params.organization+'/'+this.params.project+'/members', patch).then(response => {
@@ -78,6 +82,7 @@ export class project {
             var role = sel.options[sel.selectedIndex].value;
 
             var patch = { 
+                sender: readCookie("userName"),
                 type: "update",
                 member: member,
                 role: role
