@@ -67,6 +67,7 @@ namespace Lisa.Breakpoint.WebApi.database
                 string reportId = session.Advanced.GetDocumentId(report);
                 report.Number = reportId.Split('/').Last();
                 report.Reported = DateTime.Now;
+                report.PriorityString = report.Priority.ToString();
 
                 session.SaveChanges();
 

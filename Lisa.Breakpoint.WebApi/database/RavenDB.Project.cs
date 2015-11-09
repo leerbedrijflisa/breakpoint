@@ -220,7 +220,6 @@ namespace Lisa.Breakpoint.WebApi.database
                 {
                     return null;
                 }
-
             }
         }
 
