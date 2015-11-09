@@ -12,7 +12,12 @@ export class Create {
     }
     
     activate(params) {
-        this.data.getAllProjects(params, readCookie("userName"));
+        this.data.getAllProjects(params, readCookie("userName"))
+            .then(response => {
+                this.projMembers = response.content.members;
+                this.groups = response.content.groups;
+                this.browsers = response.content.browsers;
+            });
         this.report = {
             title: "",
             project: params.project,
