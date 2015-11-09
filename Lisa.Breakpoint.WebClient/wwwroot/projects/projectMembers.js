@@ -151,16 +151,16 @@ export class project {
 
         switch (loggedInUserRole) {
             case "manager":
-                loggedInUserRoleLevel = 0;
+                loggedInUserRoleLevel = 2;
                 break;
             case "developer":
                 loggedInUserRoleLevel = 1;
                 break;
             case "tester":
-                loggedInUserRoleLevel = 2;
+                loggedInUserRoleLevel = 0;
                 break;
             default:
-                loggedInUserRoleLevel = 2;
+                loggedInUserRoleLevel = 0;
                 break;
         }
 
@@ -168,20 +168,20 @@ export class project {
         for (i = 0; i < membersLength; i++) {
             switch (members[i].role) {
                 case "manager":
-                    memberRoleLevel = 0;
+                    memberRoleLevel = 2;
                     break;
                 case "developer":
                     memberRoleLevel = 1;
                     break;
                 case "tester":
-                    memberRoleLevel = 2;
+                    memberRoleLevel = 0;
                     break;
                 default:
-                    memberRoleLevel = 2;
+                    memberRoleLevel = 0;
                     break;
             }
 
-            if (memberRoleLevel < loggedInUserRoleLevel) {
+            if (memberRoleLevel > loggedInUserRoleLevel) {
                 this.canEditMember[i] = false;
             } else {
                 this.canEditMember[i] = true;
