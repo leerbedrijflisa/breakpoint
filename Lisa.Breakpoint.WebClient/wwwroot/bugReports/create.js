@@ -1,23 +1,24 @@
 ﻿import {HttpClient} from 'aurelia-http-client';
 import {ReportData} from './reportData';
+import {Router} from "aurelia-router";
 
 export class Create {
     static inject() {
-        return [ HttpClient, ReportData ];
+        return [ HttpClient, ReportData, Router ];
     }
 
-    constructor(http, reportData) {
+    constructor(http, reportData, router) {
         this.http = http;
         this.data = reportData;
+        this.router = router;
     }
     
     activate(params) {
-        this.data.getAllProjects(params, readCookie("userName"))
-            .then(response => {
-                this.projMembers = response.content.members;
-                this.groups = response.content.groups;
-                this.browsers = response.content.browsers;
-            });
+        this.data.getAllProjects(params, readCookie("userName")).then(response => {
+            this.projMembers = response.content.members;
+            this.groups = response.content.groups;
+            this.browsers = response.content.browsers;
+        });
         this.report = {
             title: "",
             project: params.project,
@@ -38,15 +39,10 @@ export class Create {
     }
 
     submit() {
-        
         this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));;
         this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
-
-        this.http.post('reports/'+this.params.organization+'/'+this.params.project, JSON.stringify(this.report)).then(response => {
-            var organization = this.params.organization;
-            var project = this.params.project;
-
-            this.router.navigateToRoute("reports", { organization: organization, project, project });
+        this.data.postReport(this.report).then(response => {
+            this.router.navigateToRoute("reports", { organization: this.report.organization, project: this.report.project });
         });
     }
 }
