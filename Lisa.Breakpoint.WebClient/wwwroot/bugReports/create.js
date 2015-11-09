@@ -1,14 +1,12 @@
-﻿import {HttpClient} from 'aurelia-http-client';
-import {ReportData} from './reportData';
+﻿import {ReportData} from './reportData';
 import {Router} from "aurelia-router";
 
 export class Create {
     static inject() {
-        return [ HttpClient, ReportData, Router ];
+        return [ReportData, Router ];
     }
 
-    constructor(http, reportData, router) {
-        this.http = http;
+    constructor(reportData, router) {
         this.data = reportData;
         this.router = router;
     }
