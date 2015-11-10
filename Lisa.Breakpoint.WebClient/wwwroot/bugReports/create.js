@@ -15,7 +15,6 @@ export class Create {
         this.data.getAllProjects(params, readCookie("userName")).then(response => {
             this.projMembers = response.content.members;
             this.groups = response.content.groups;
-            this.browsers = response.content.browsers;
         });
         this.report = {
             title: "",
@@ -27,7 +26,7 @@ export class Create {
             reporter: readCookie("userName"),
             status: "Open",
             priority: 0,
-            browsers: [],
+            platform: "",
             version: "",
             assignedTo: {
                 type: "",
@@ -38,7 +37,6 @@ export class Create {
 
     submit() {
         this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));;
-        this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
         this.data.postReport(this.report).then(response => {
             this.router.navigateToRoute("reports", { organization: this.report.organization, project: this.report.project });
         });

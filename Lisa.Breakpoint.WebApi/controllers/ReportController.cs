@@ -51,14 +51,15 @@ namespace Lisa.Breakpoint.WebApi
         [HttpPost("{organization}/{project}")]
         public IActionResult Post([FromBody] Report report, string organization, string project)
         {
-            if (report.Browsers.Count == 0)
-            {
-                report.Browsers.Add("n.a.");
-            }
 
             if (report == null)
             {
                 return new BadRequestResult();
+            }
+
+            if (report.Platform == "" || report.Platform == null)
+            {
+                report.Platform = "n.a.";
             }
 
             _db.PostReport(report);

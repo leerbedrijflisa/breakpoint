@@ -27,7 +27,6 @@ export class createProject {
                     userName: readCookie("userName")
                 }
             ],
-            browsers: getSelectValues(document.getElementById("browserSelect")),
             groups: [
                 {
                     "Level": 0,

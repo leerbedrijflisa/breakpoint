@@ -32,10 +32,8 @@
             </optgroup>
         </select>
         <br />
-        <label>Browsers: </label>
-        <select multiple id="browserSelect" value.bind="report.browsers" name="browser" type="text">
-            <option repeat.for="browser of browsers" value="${browser}">${browser}</option>
-        </select>
+        <label>Platform: </label>
+        <input value.bind="report.platform" name="platform" type="text" />
 
         <br /><br />
 
