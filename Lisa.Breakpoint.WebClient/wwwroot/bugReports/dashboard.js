@@ -1,28 +1,24 @@
-﻿﻿import {inject} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
-import {HttpClient} from 'aurelia-http-client';
+﻿import {Router} from 'aurelia-router';
+import {ReportData} from './reportData';
 
 export class dashboard {
     static inject() {
-        return [ Router, HttpClient ];
+        return [ReportData, Router ];
     }
 
-    constructor(router, http) {
+    constructor(reportData, router) {
+        this.data = reportData;
         this.router = router;
-        this.isVisible = false;
-        this.http = http;
     }
 
     activate(params) {
-        this.showAssignedTo = [];
-        this.userName = readCookie("userName");
         this.params = params;
-
-        this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
+        this.showAssignedTo = [];
+        this.data.getAllProjects(params, readCookie("userName")).then(response => {
             this.members = response.content.members;
             this.browsers = response.content.browsers;
         });
-        return this.http.get("reports/"+params.organization+"/"+params.project+"/"+readCookie("userName")).then( response => {
+        return this.data.getAllReports(params, readCookie("userName")).then( response => {
             this.reports = this.showAssigned(response.content);
         });
     }
@@ -49,6 +45,7 @@ export class dashboard {
         if (this.reports[index].status == null) {
             this.reports[index].status = document.getElementById("status"+id).options[0].value; 
         };
+        //A switch function that checks if the chosen status has any special attributes, more can be added in the same way as these below.
         switch (this.reports[index].status) {
             case "Fixed":
                 var data = {
@@ -74,8 +71,7 @@ export class dashboard {
                 };
                 break;
         }
-
-        this.http.patch('reports/' + id, data).then( response => {
+        this.data.patchReport(id, data).then( response => {
             window.location.reload();
         });
     }
