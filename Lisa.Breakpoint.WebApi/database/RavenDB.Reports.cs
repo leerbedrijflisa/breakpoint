@@ -106,6 +106,16 @@ namespace Lisa.Breakpoint.WebApi.database
                                 };
                                 documentStore.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
                             }
+                            else if (newVal is Enum)
+                            {
+                                var patchRequest = new PatchRequest()
+                                {
+                                    Name = propertyInfo.Name,
+                                    Type = PatchCommandType.Set,
+                                    Value = newVal.ToString()
+                                };
+                                documentStore.DatabaseCommands.Patch("reports/" + id, new[] { patchRequest });
+                            }
                             else
                             {
                                 var patchRequest = new PatchRequest()

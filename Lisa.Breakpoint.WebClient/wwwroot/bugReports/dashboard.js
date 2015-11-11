@@ -1,29 +1,26 @@
-﻿﻿import {inject} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
-import {HttpClient} from 'aurelia-http-client';
+﻿import {Router} from 'aurelia-router';
+import {ReportData} from './reportData';
 
 export class dashboard {
     static inject() {
-        return [ Router, HttpClient ];
+        return [ ReportData, Router ];
     }
 
-    constructor(router, http) {
+    constructor(reportData, router) {
+        this.data = reportData;
         this.router = router;
-        this.isVisible = false;
-        this.http = http;
     }
 
     activate(params) {
-        this.showAssignedTo = [];
-        this.userName = readCookie("userName");
         this.params = params;
+        this.showAssignedTo = [];
 
         return Promise.all([
-            this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
+            this.data.getAllProjects(params, readCookie("userName")).then(response => {
                 this.members = response.content.members;
                 this.browsers = response.content.browsers;
             }),
-            this.http.get("reports/"+params.organization+"/"+params.project+"/"+readCookie("userName")).then( response => {
+            this.data.getAllReports(params, readCookie("userName")).then( response => {
                 this.reports = this.showAssigned(response.content);
                 this.versions = this.getTestVersions(this.reports);
             })
@@ -50,8 +47,9 @@ export class dashboard {
     }
 
     getTestVersions(reports) {
-        var reportsLength= 0;
+        var reportsLength = 0;
         var versions = [];
+
         for(var key in reports) {
             if(reports.hasOwnProperty(key)){
                 reportsLength++;
@@ -76,7 +74,8 @@ export class dashboard {
         var el = document.getElementById("version")
         if (typeof(el) != 'undefined' && el != null) {
             var version = getSelectValue("version");
-            this.http.get("reports/"+this.params.organization+"/"+this.params.project+"/"+readCookie("userName")+"/version/"+version)
+            console.log(version);
+            this.data.getFilteredReports(this.params, readCookie("userName"), "version", version)
                 .then(response => this.reports = response.content);
         }
     }
@@ -85,6 +84,7 @@ export class dashboard {
         if (this.reports[index].status == null) {
             this.reports[index].status = document.getElementById("status"+id).options[0].value; 
         };
+        //A switch function that checks if the chosen status has any special attributes, more can be added in the same way as these below.
         switch (this.reports[index].status) {
             case "Fixed":
                 var data = {
@@ -108,9 +108,9 @@ export class dashboard {
                 var data = {
                     status: this.reports[index].status
                 };
+                break;
         }
-
-        this.http.patch('reports/' + id, data).then( response => {
+        this.data.patchReport(id, data).then( response => {
             window.location.reload();
         });
     }
