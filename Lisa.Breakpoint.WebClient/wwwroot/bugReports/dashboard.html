@@ -1,9 +1,17 @@
 ﻿<template>
     <link rel="stylesheet" href="css/Dashboard.css" />
     <h2>List of reports: </h2>
+    <form>
+        <p>Filter by test version: </p>
+        <select change.bind="filterReports()" id="version">
+            <option value="">-</option>
+            <option repeat.for="version of versions" value="version">${version}</option>
+        </select>
+    </form>
     <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
+    <br />
     <ul>
-        <li repeat.for="report of reports" class="li-item">
+        <li repeat.for="report of reports" class="li-item report-item">
             <h3>
                 <a route-href="route: edit-report; params.bind: { organization: $parent.params.organization, project: $parent.params.project, id: report.number }">
                     Report ${report.number} - ${report.title}

@@ -38,11 +38,8 @@ export class project {
     }
 
     addMember(member) {
-        var userSel = document.getElementById("newMember");
-        var member = userSel.options[userSel.selectedIndex].value;
-
-        var roleSel = document.getElementById("newRole");
-        var role = roleSel.options[roleSel.selectedIndex].value;
+        var member = getSelectValue("newMember");
+        var role = getSelectValue("newRole");
 
         var patch = {
             sender: readCookie("userName"),
@@ -57,8 +54,8 @@ export class project {
     }
 
     removeMember(member) {
-        var sel = document.getElementById("role_"+member);
-        var role = sel.options[sel.selectedIndex].value;
+        var role = getSelectValue("role_"+member);
+
         if (readCookie("userName") != member) {
             var patch = {
                 sender: readCookie("userName"),
@@ -75,8 +72,7 @@ export class project {
     
     saveMember(member) {
         if (readCookie("userName") != member) {
-            var sel = document.getElementById("role_"+member);
-            var role = sel.options[sel.selectedIndex].value;
+            var role = getSelectValue("role_"+member);
 
             var patch = { 
                 sender: readCookie("userName"),
