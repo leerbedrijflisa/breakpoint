@@ -74,7 +74,6 @@ export class dashboard {
         var el = document.getElementById("version")
         if (typeof(el) != 'undefined' && el != null) {
             var version = getSelectValue("version");
-            console.log(version);
             this.data.getFilteredReports(this.params, readCookie("userName"), "version", version)
                 .then(response => this.reports = response.content);
         }
