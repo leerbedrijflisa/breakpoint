@@ -16,7 +16,6 @@ export class dashboard {
         this.showAssignedTo = [];
         this.data.getAllProjects(params, readCookie("userName")).then(response => {
             this.members = response.content.members;
-            this.browsers = response.content.browsers;
         });
         return this.data.getAllReports(params, readCookie("userName")).then( response => {
             this.reports = this.showAssigned(response.content);
