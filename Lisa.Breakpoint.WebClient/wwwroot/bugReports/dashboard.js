@@ -73,8 +73,12 @@ export class dashboard {
     }
 
     filterReports() {
-        this.http.get("reports/"+this.params.organization+"/"+this.params.project+"/"+readCookie("userName"))
-            .then(response => this.reports = response.content);
+        var el = document.getElementById("version")
+        if (typeof(el) != 'undefined' && el != null) {
+            var version = getSelectValue("version");
+            this.http.get("reports/"+this.params.organization+"/"+this.params.project+"/"+readCookie("userName")+"/version/"+version)
+                .then(response => this.reports = response.content);
+        }
     }
 
     patchStatus(id, index) {

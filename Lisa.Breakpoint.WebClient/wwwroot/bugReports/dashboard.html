@@ -1,13 +1,14 @@
 ﻿<template>
     <link rel="stylesheet" href="css/Dashboard.css" />
     <h2>List of reports: </h2>
-    <form>
-        <p>Filter by test version: </p>
-        <select change.bind="filterReports()" id="version">
-            <option value="">-</option>
-            <option repeat.for="version of versions" value="version">${version}</option>
+    <p>
+        <span>Filter by test version: </span>
+        <select change.delegate="filterReports()" id="version">
+            <option value="all">All versions</option>
+            <option value="">Empty versions</option>
+            <option repeat.for="version of versions" value="${version}">${version}</option>
         </select>
-    </form>
+    </p>
     <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <br />
     <ul>
