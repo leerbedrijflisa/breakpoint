@@ -13,9 +13,14 @@ export class dashboard {
 
     activate(params) {
         this.params = params;
+        this.disabled = "true";
         this.showAssignedTo = [];
         this.data.getAllProjects(params, readCookie("userName")).then(response => {
+            this.project = response.content;
             this.members = response.content.members;
+            if (readCookie("userName") == response.content.projectManager) {
+                this.disabled = null;
+            }
         });
         return this.data.getAllReports(params, readCookie("userName")).then( response => {
             this.reports = this.showAssigned(response.content);
