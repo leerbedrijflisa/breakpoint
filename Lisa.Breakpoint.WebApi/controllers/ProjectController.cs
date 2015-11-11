@@ -82,9 +82,22 @@ namespace Lisa.Breakpoint.WebApi
         [HttpPatch("{organization}/{projectSlug}/members")]
         public IActionResult PatchMembers(string organization, string projectSlug, [FromBody] Patch patch)
         {
+            if (organization == null || projectSlug == null)
+            {
+                return new BadRequestResult();
+            }
+
             var patchedProjectMembers = _db.PatchProjectMembers(organization, projectSlug, patch);
 
-            return new HttpOkObjectResult(patchedProjectMembers);
+            if (patchedProjectMembers != null)
+            {
+                string location = Url.RouteUrl("project", new { organizationSlug = organization, projectSlug = projectSlug, userName = patch.Sender }, Request.Scheme);
+                return new CreatedResult(location, patchedProjectMembers);
+            }
+            else
+            {
+                return new NoContentResult();
+            }
         }
 
         [HttpDelete("{organization}/{project}/{userName}")]

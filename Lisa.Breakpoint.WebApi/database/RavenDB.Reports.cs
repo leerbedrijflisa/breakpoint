@@ -1,7 +1,6 @@
 ﻿using Lisa.Breakpoint.WebApi.Models;
 using Raven.Abstractions.Data;
 using Raven.Abstractions.Extensions;
-using Raven.Abstractions.Json;
 using Raven.Client;
 using Raven.Json.Linq;
 using System;
@@ -13,12 +12,12 @@ namespace Lisa.Breakpoint.WebApi.database
 {
     public partial class RavenDB
     {
-        public IList<Report> GetAllReports(string organizationSlug, string projectSlug, string userName)
+        public IList<Report> GetAllReports(string organizationSlug, string projectSlug, string userName, Filter filter = null)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 IList<Report> reports;
-
+                IQueryable<Report> rList;
                 var group = session.Query<Project>()
                     .Where(p => p.Organization == organizationSlug && p.Slug == projectSlug && p.Members.Any(m => m.UserName == userName))
                     .SingleOrDefault().Members
@@ -29,21 +28,32 @@ namespace Lisa.Breakpoint.WebApi.database
 
                 if (role == "manager")
                 {
-                    reports = session.Query<Report>()
-                        .Where(r => r.Organization == organizationSlug && r.Project == projectSlug)
-                        .OrderBy(r => r.Priority)
-                        .ThenByDescending(r => r.Reported.Date)
-                        .ThenBy(r => r.Reported.TimeOfDay)
-                        .ToList();
+                    rList = session.Query<Report>()
+                        .Where(r => r.Organization == organizationSlug && r.Project == projectSlug);
                 } else
                 {
-                    reports = session.Query<Report>()
-                        .Where(r => r.Organization == organizationSlug && r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == role))
-                        .OrderBy(r => r.Priority)
+                    rList = session.Query<Report>()
+                        .Where(r => r.Organization == organizationSlug && r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == role));
+                }
+
+                if (filter != null)
+                {
+                    if (filter.Type == "version")
+                    {
+                        if (filter.Value != "all")
+                        {
+                            rList = rList.Where(r => r.Version == filter.Value);
+                        }
+                    }
+                }
+
+                reports = rList.OrderBy(r => r.Priority)
                         .ThenByDescending(r => r.Reported.Date)
                         .ThenBy(r => r.Reported.TimeOfDay)
                         .ToList();
-                }
+
+                reports.ForEach(r => r.PriorityString = r.Priority.ToString());
+
                 return reports;
             }
         }
@@ -60,8 +70,6 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                documentStore.Conventions.SaveEnumsAsIntegers = true;
-
                 session.Store(report);
 
                 string reportId = session.Advanced.GetDocumentId(report);

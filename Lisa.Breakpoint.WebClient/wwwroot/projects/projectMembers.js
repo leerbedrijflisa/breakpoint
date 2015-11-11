@@ -12,42 +12,37 @@ export class project {
     activate(params) {
         this.params = params;
         this.canEditMember = [];
-        this.isLoggedInUser = [];
+        this.loggedInUser = readCookie("userName");
 
-        // (in the API) this gets 2 member lists; Organization- and Projectmembers.
-        // then it compares those and returns only those not already in the project
-        // so you can only add new members to the project
-        this.http.get('organizations/members/new/'+params.organization+'/'+params.project).then(response => {
-            var orgMembers = response.content;
-            var orgMembersLength= 0;
-            for(var key in orgMembers) {
-                if(orgMembers.hasOwnProperty(key)){
-                    orgMembersLength++;
+        return Promise.all([
+            this.http.get('organizations/members/new/'+params.organization+'/'+params.project).then(response => {
+                var orgMembers = response.content;
+                var orgMembersLength = 0;
+                for(var key in orgMembers) {
+                    if(orgMembers.hasOwnProperty(key)){
+                        orgMembersLength++;
+                    }
                 }
-            }
-            if (orgMembersLength > 0) {
-                this.usersLeft = true;
-                this.orgMembers = orgMembers;
-            } else {
-                this.usersLeft = false;
-            }
-        });
-        return this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
-            this.members = this.filterMembers(response.content.members);
-            var filteredGroups = this.filterGroups(response.content.groups, this.members);
-            this.groups  = filteredGroups[0];
-            this.disabled  = filteredGroups[1];
-        });
+                if (orgMembersLength > 0) {
+                    this.usersLeft = true;
+                    this.orgMembers = orgMembers;
+                } else {
+                    this.usersLeft = false;
+                }
+            }),
+            this.http.get('projects/'+params.organization+'/'+params.project+'/'+readCookie("userName")).then(response => {
+                this.members = this.filterMembers(response.content.members);
+                this.groups  = response.content.groups;
+            })
+        ]);
     }
 
     addMember(member) {
-        var userSel = document.getElementById("newMember");
-        var member = userSel.options[userSel.selectedIndex].value;
-
-        var roleSel = document.getElementById("newRole");
-        var role = roleSel.options[roleSel.selectedIndex].value;
+        var member = getSelectValue("newMember");
+        var role = getSelectValue("newRole");
 
         var patch = {
+            sender: readCookie("userName"),
             type: "add",
             member: member,
             role: role
@@ -59,11 +54,14 @@ export class project {
     }
 
     removeMember(member) {
+        var role = getSelectValue("role_"+member);
+
         if (readCookie("userName") != member) {
             var patch = {
+                sender: readCookie("userName"),
                 type: "remove",
                 member: member,
-                role: ""
+                role: role
             };
 
             this.http.patch('projects/'+this.params.organization+'/'+this.params.project+'/members', patch).then(response => {
@@ -74,10 +72,10 @@ export class project {
     
     saveMember(member) {
         if (readCookie("userName") != member) {
-            var sel = document.getElementById("role_"+member);
-            var role = sel.options[sel.selectedIndex].value;
+            var role = getSelectValue("role_"+member);
 
             var patch = { 
+                sender: readCookie("userName"),
                 type: "update",
                 member: member,
                 role: role
@@ -89,94 +87,58 @@ export class project {
         }
     }
 
-    // returns the groups an array
-    // arr[0] = Groups lower than and equal to the logged-in user's role
-    // arr[1] = Groups higher than the logged-in user's role
-    filterGroups(groups, members) {
-        var options = "";
-        var disabled = [];
-        
-        groups.forEach(function(group, i) {
-            if (group.name.indexOf("[n/a]") != -1) {
-                group.name = group.name.replace("[n/a]", "");
-                var dGroup = {
-                    name: group.name,
-                    level: -1
-                }
-                disabled.push(dGroup);
-                groups.splice(i,1);
-            }
-        });
-
-        groups.forEach(function(group, i) {
-            if (group.name.indexOf("[n/a]") != -1) {
-                group.name = group.name.replace("[n/a]", "");
-                var dGroup = {
-                    name: group.name,
-                    level: -1
-                }
-                disabled.push(dGroup);
-                groups.splice(i,1);
-            }
-        });
-
-        return [groups, disabled];
-    }
-
     filterMembers(members) {
-        var membersLength= 0;
+        var membersLength = 0;
+        var i,
+            loggedInUserRole,
+            loggedInUserRoleLevel,
+            memberRoleLevel;
+
         for(var key in members) {
             if(members.hasOwnProperty(key)){
                 membersLength++;
             }
         }
 
-        var i;
-        var loggedInUserRole;
-        var loggedInUserRoleLevel;
         for (i = 0; i < membersLength; i++) {
             if (members[i].userName == readCookie("userName")) {
                 loggedInUserRole = members[i].role;
-                this.isLoggedInUser[i] = true;
-            } else {
-                this.isLoggedInUser[i] = false;
+                break;
             }
         }
 
-
         switch (loggedInUserRole) {
             case "manager":
-                loggedInUserRoleLevel = 0;
+                loggedInUserRoleLevel = 2;
                 break;
             case "developer":
                 loggedInUserRoleLevel = 1;
                 break;
             case "tester":
-                loggedInUserRoleLevel = 2;
+                loggedInUserRoleLevel = 0;
                 break;
             default:
-                loggedInUserRoleLevel = 2;
+                loggedInUserRoleLevel = 0;
                 break;
         }
 
-        var memberRoleLevel
         for (i = 0; i < membersLength; i++) {
             switch (members[i].role) {
                 case "manager":
-                    memberRoleLevel = 0;
+                    memberRoleLevel = 2;
                     break;
                 case "developer":
                     memberRoleLevel = 1;
                     break;
                 case "tester":
-                    memberRoleLevel = 2;
+                    memberRoleLevel = 0;
                     break;
                 default:
-                    memberRoleLevel = 2;
+                    memberRoleLevel = 0;
                     break;
             }
 
-            if (memberRoleLevel < loggedInUserRoleLevel) {
+            if (memberRoleLevel > loggedInUserRoleLevel) {
                 this.canEditMember[i] = false;
             } else {
                 this.canEditMember[i] = true;

@@ -53,6 +53,11 @@ function getAssignedToType(select) {
     }
 }
 
+function getSelectValue(id) {
+    var sel = document.getElementById(id);
+    return sel.options[sel.selectedIndex].value;
+}
+
 
 function toSlug(value) {
     return value.replace(/\s+/g, '-').toLowerCase()

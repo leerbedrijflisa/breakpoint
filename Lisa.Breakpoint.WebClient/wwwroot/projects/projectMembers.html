@@ -7,11 +7,11 @@
                 <span>${member.userName}: </span>
                 <span>${member.role}</span>
             </p>
-            <p if.bind="$parent.isLoggedInUser[$index]">
+            <p if.bind="$parent.loggedInUser == member.userName">
                 <span>${member.userName}(jij): </span>
                 <span>${member.role}</span>
             </p>
-            <p if.bind="$parent.canEditMember[$index] && !$parent.isLoggedInUser[$index]">
+            <p if.bind="$parent.canEditMember[$index] && $parent.loggedInUser != member.userName">
                 <span>${member.userName}</span>
                 <select id="role_${member.userName}" value.bind="member.role">
                     <option repeat.for="group of $parent.groups"    value.bind="$parent.role.name" value="${group.name}">${group.name}</option>

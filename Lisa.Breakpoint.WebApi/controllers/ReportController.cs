@@ -13,8 +13,8 @@ namespace Lisa.Breakpoint.WebApi
             _db = db;
         }
 
-        [HttpGet("{organization}/{project}/{username}")]
-        public IActionResult Get(string organization, string project, string userName)
+        [HttpGet("{organization}/{project}/{username}/{filter?}/{value?}")]
+        public IActionResult Get(string organization, string project, string userName, string filter = "", string value = "")
         {
             if (_db.GetProject(organization, project, userName) == null)
             {
@@ -26,7 +26,17 @@ namespace Lisa.Breakpoint.WebApi
                 return new HttpNotFoundResult();
             }
 
-            IList<Report> reports = _db.GetAllReports(organization, project, userName);
+            IList<Report> reports;
+            if (filter != "")
+            {
+                Filter f = new Filter();
+                f.Type = filter;
+                f.Value = value;
+
+                reports = _db.GetAllReports(organization, project, userName, f);
+            } else { 
+                reports = _db.GetAllReports(organization, project, userName);
+            }
 
             if (reports == null)
             {

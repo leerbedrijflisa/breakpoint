@@ -43,4 +43,10 @@ namespace Lisa.Breakpoint.WebApi.Models
         public string   Author { get; set; }
         public string   Text { get; set; }
     }
+
+    public class Filter
+    {
+        public string Type { get; set; }
+        public string Value { get; set; }
+    }
 }

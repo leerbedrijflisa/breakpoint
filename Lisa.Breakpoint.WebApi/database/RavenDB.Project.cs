@@ -52,12 +52,7 @@ namespace Lisa.Breakpoint.WebApi.database
 
                             var groups = project.Groups.ToList();
 
-                            groups.ForEach(g => {
-                                if (g.Level > level)
-                                {
-                                    g.Name += "[n/a]";
-                                }
-                            });
+                            groups.RemoveAll(g => g.Level > level);
 
                             project.Groups = groups;
 
@@ -71,6 +66,23 @@ namespace Lisa.Breakpoint.WebApi.database
                     project.Groups = null;
                 }
                 return project;
+            }
+        }
+
+        public IList<Group> GetGroupsFromProject(string projectSlug)
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                var project = session.Query<Project>()
+                    .Where(p => p.Slug == projectSlug)
+                    .SingleOrDefault();
+
+                if (project.Groups != null)
+                {
+                    return project.Groups;
+                }
+
+                return null;
             }
         }
 
@@ -125,46 +137,81 @@ namespace Lisa.Breakpoint.WebApi.database
                     .Where(p => p.Organization == organizationSlug && p.Slug == projectSlug)
                     .SingleOrDefault();
 
-                IList<Member> members = project.Members;
+                bool roleExist = false;
 
-                if (patch.Type == "add")
+                string sender      = patch.Sender;
+                string senderRole  = GetGroupFromUser(sender, project.Slug);
+                int    senderLevel = 0;
+
+                string type      = patch.Type;
+                string role      = patch.Role;
+                string member    = patch.Member;
+                int    roleLevel = 0;
+
+                IList<Group> groups = GetGroupsFromProject(project.Slug);
+
+                foreach (Group group in groups)
                 {
-                    Member newMember = new Member();
-
-                    newMember.UserName = patch.Member;
-                    newMember.Role = patch.Role;
-
-                    members.Add(newMember);
-                }
-                else if (patch.Type == "remove")
-                {
-                    Member newMember = new Member();
-
-                    for (int i = 0; i < members.Count; i++)
+                    if (group.Name == senderRole)
                     {
-                        if (members[i].UserName == patch.Member)
-                        {
-                            members.RemoveAt(i);
-                            break;
-                        }
+                        senderLevel = group.Level;
                     }
-                }
-                else if (patch.Type == "update")
-                {
-                    foreach (var m in members)
+                    if (group.Name == role)
                     {
-                        if (m.UserName == patch.Member)
-                        {
-                            m.Role = patch.Role;
-                            break;
-                        }
+                        roleLevel = group.Level;
+                        roleExist = true;
                     }
                 }
 
-                project.Members = members;
+                if (!roleExist)
+                {
+                    return null;
+                }
 
-                session.SaveChanges();
-                return project;
+                if (senderLevel >= roleLevel)
+                {
+                    IList<Member> members = project.Members;
+                    if (type == "add")
+                    {
+                        Member newMember = new Member();
+
+                        newMember.UserName = member;
+                        newMember.Role = role;
+
+                        members.Add(newMember);
+                    }
+                    else if (type == "remove")
+                    {
+                        Member newMember = new Member();
+
+                        for (int i = 0; i < members.Count; i++)
+                        {
+                            if (members[i].UserName == member)
+                            {
+                                members.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    else if (type == "update")
+                    {
+                        foreach (var m in members)
+                        {
+                            if (m.UserName == member)
+                            {
+                                m.Role = role;
+                                break;
+                            }
+                        }
+                    }
+                    project.Members = members;
+
+                    session.SaveChanges();
+                    return project;
+                } else
+                {
+                    return null;
+                }
             }
         }
 
