@@ -52,12 +52,7 @@ namespace Lisa.Breakpoint.WebApi.database
 
                             var groups = project.Groups.ToList();
 
-                            groups.ForEach(g => {
-                                if (g.Level > level)
-                                {
-                                    g.Name += "[n/a]";
-                                }
-                            });
+                            groups.RemoveAll(g => g.Level > level);
 
                             project.Groups = groups;
 
@@ -161,7 +156,6 @@ namespace Lisa.Breakpoint.WebApi.database
                     {
                         senderLevel = group.Level;
                     }
-
                     if (group.Name == role)
                     {
                         roleLevel = group.Level;
