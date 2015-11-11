@@ -210,7 +210,6 @@ namespace Lisa.Breakpoint.WebApi.database
                             }
                         }
                     }
-
                     project.Members = members;
 
                     session.SaveChanges();

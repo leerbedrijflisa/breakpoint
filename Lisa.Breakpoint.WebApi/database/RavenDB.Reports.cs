@@ -63,8 +63,6 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                documentStore.Conventions.SaveEnumsAsIntegers = true;
-
                 session.Store(report);
 
                 string reportId = session.Advanced.GetDocumentId(report);

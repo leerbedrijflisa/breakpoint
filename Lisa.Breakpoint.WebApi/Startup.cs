@@ -25,7 +25,9 @@ namespace Lisa.Breakpoint.WebApi
                     builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
                 });
             });
-            services.AddInstance<IDocumentStore>(new DocumentStore() { Url = "http://localhost:8080", DefaultDatabase = "breakpoint" });
+            var docStore = new DocumentStore() { Url = "http://localhost:8080", DefaultDatabase = "breakpoint" };
+            docStore.Conventions.SaveEnumsAsIntegers = true;
+            services.AddInstance<IDocumentStore>(docStore);
             services.AddSingleton<RavenDB>();
         }
 
