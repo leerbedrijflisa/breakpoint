@@ -2,10 +2,27 @@
     <link rel="stylesheet" href="css/Dashboard.css" />
     <h2>List of reports: </h2>
     <p>
+        <span>Filter by member: </span>
+        <select change.delegate="filterReports()" id="memberFilter" class="filterItem" value.bind="loggedUser">
+            <option value="all">All members</option>
+            <option disabled>──────────</option>
+            <option repeat.for="member of members" value="${member.userName}">${member.userName}</option>
+        </select>
+    </p>
+    <p>
+        <span>Filter by group: </span>
+        <select change.delegate="filterReports()" id="groupFilter" class="filterItem" value.bind="loggedUserRole">
+            <option value="all">All groups</option>
+            <option disabled>──────────</option>
+            <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
+        </select>
+    </p>
+    <p>
         <span>Filter by test version: </span>
-        <select change.delegate="filterReports()" id="version">
+        <select change.delegate="filterReports()" id="versionFilter" class="filterItem">
             <option value="all">All versions</option>
-            <option value="">Empty versions</option>
+            <option value="empty">Empty versions</option>
+            <option disabled>──────────</option>
             <option repeat.for="version of versions" value="${version}">${version}</option>
         </select>
     </p>

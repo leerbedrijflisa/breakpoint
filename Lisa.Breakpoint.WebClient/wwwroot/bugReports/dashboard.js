@@ -14,11 +14,16 @@ export class dashboard {
     activate(params) {
         this.params = params;
         this.showAssignedTo = [];
+        this.loggedUser = readCookie("userName");
+        this.data.getGroupFromUser(params, this.loggedUser).then(response => {
+            this.loggedUserRole = response.content;
+        });
 
         return Promise.all([
-            this.data.getAllProjects(params, readCookie("userName")).then(response => {
+            this.data.getProject(params, readCookie("userName")).then(response => {
                 this.members = response.content.members;
                 this.browsers = response.content.browsers;
+                this.groups = response.content.groups;
             }),
             this.data.getAllReports(params, readCookie("userName")).then( response => {
                 this.reports = this.showAssigned(response.content);
@@ -71,19 +76,28 @@ export class dashboard {
     }
 
     filterReports() {
-        var el = document.getElementById("version")
-        if (typeof(el) != 'undefined' && el != null) {
-            var version = getSelectValue("version");
-            this.data.getFilteredReports(this.params, readCookie("userName"), "version", version)
-                .then(response => this.reports = response.content);
+        var filters = document.getElementsByClassName('filterItem');
+        var filter = "";
+        var value = "";
+
+        for (var i = filters.length - 1; i >= 0; i--)
+        {
+            var filterType = filters[i].id;
+            filter += filters[i].id+"&";
+            value += getSelectValue(filterType)+"&";
         }
+
+        filter = filter.slice(0, -1);
+        value  = value.slice(0, -1);
+
+        this.data.getFilteredReports(this.params, readCookie("userName"), filter, value)
+            .then(response => this.reports = response.content);
     }
 
     patchStatus(id, index) {
         if (this.reports[index].status == null) {
             this.reports[index].status = document.getElementById("status"+id).options[0].value; 
         };
-        //A switch function that checks if the chosen status has any special attributes, more can be added in the same way as these below.
         switch (this.reports[index].status) {
             case "Fixed":
                 var data = {

@@ -16,33 +16,35 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
+                IQueryable<Report> rList = session.Query<Report>().Where(r => r.Organization == organizationSlug && r.Project == projectSlug);
+                IQueryable<Report> _rList = rList;
                 IList<Report> reports;
-                IQueryable<Report> rList;
-                var group = session.Query<Project>()
-                    .Where(p => p.Organization == organizationSlug && p.Slug == projectSlug && p.Members.Any(m => m.UserName == userName))
-                    .SingleOrDefault().Members
-                    .Where(m => m.UserName == userName)
-                    .SingleOrDefault();
-
-                var role = group.Role;
-
-                if (role == "manager")
-                {
-                    rList = session.Query<Report>()
-                        .Where(r => r.Organization == organizationSlug && r.Project == projectSlug);
-                } else
-                {
-                    rList = session.Query<Report>()
-                        .Where(r => r.Organization == organizationSlug && r.Project == projectSlug && (r.AssignedTo.Type == "person" && r.AssignedTo.Value == userName || r.AssignedTo.Type == "group" && r.AssignedTo.Value == role));
-                }
 
                 if (filter != null)
                 {
-                    if (filter.Type == "version")
+                    string[] types = { };
+                    string[] values = { };
+                    bool multipleFilters = false;
+
+                    if (filter.Type.IndexOf('&') != -1 && filter.Value.IndexOf('&') != -1)
                     {
-                        if (filter.Value != "all")
+                        types = filter.Type.Split('&');
+                        values = filter.Value.Split('&');
+
+                        multipleFilters = true;
+                    }
+
+                    if (!multipleFilters)
+                    {
+                        rList = _rList.ApplyFilter(filter);
+                    }
+                    else if (multipleFilters)
+                    {
+                        for (int i = 0; i < types.Length; i++)
                         {
-                            rList = rList.Where(r => r.Version == filter.Value);
+                            Filter tempFilter = new Filter(types[i], values[i]);
+
+                            rList = _rList.ApplyFilter(tempFilter);
                         }
                     }
                 }
@@ -141,6 +143,42 @@ namespace Lisa.Breakpoint.WebApi.database
                 session.Delete(report);
                 session.SaveChanges();
             }
+        }
+    }
+
+    public static class FilterHandler
+    {
+        public static IQueryable<Report> ApplyFilter(this IQueryable<Report> reports, Filter filter)
+        {
+            filter.Type = filter.Type.Replace("Filter", "").ToLower();
+
+            if (filter.Type == "version")
+            {
+                if (filter.Value != "all")
+                {
+                    if (filter.Value == "empty")
+                    {
+                        filter.Value = "";
+                    }
+                    return reports.Where(r => r.Version == filter.Value);
+                }
+            }
+            else if (filter.Type == "group")
+            {
+                if (filter.Value != "all")
+                {
+                    return reports.Where(r => r.AssignedTo.Type == "group" && r.AssignedTo.Value == filter.Value);
+                }
+            }
+            else if (filter.Type == "member")
+            {
+                if (filter.Value != "all")
+                {
+                    return reports.Where(r => r.AssignedTo.Type == "person" && r.AssignedTo.Value == filter.Value);
+                }
+            }
+
+            return reports;
         }
     }
 }

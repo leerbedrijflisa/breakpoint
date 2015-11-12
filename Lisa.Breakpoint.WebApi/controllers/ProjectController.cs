@@ -34,15 +34,15 @@ namespace Lisa.Breakpoint.WebApi
             return new HttpOkObjectResult(organizations);
         }
 
-        [HttpGet("{organizationSlug}/{projectSlug}/{userName}", Name = "project")]
-        public IActionResult Get(string organizationSlug, string projectSlug, string userName)
+        [HttpGet("{organizationSlug}/{projectSlug}/{userName}/{includeAllGroups?}", Name = "project")]
+        public IActionResult Get(string organizationSlug, string projectSlug, string userName, string includeAllGroups = "false")
         {
             if (projectSlug == null || userName == null)
             {
                 return new HttpNotFoundResult();
             }
 
-            var project = _db.GetProject(organizationSlug, projectSlug, userName);
+            var project = _db.GetProject(organizationSlug, projectSlug, userName, includeAllGroups);
 
             if (project == null)
             {
@@ -82,7 +82,7 @@ namespace Lisa.Breakpoint.WebApi
         [HttpPatch("{organization}/{projectSlug}/members")]
         public IActionResult PatchMembers(string organization, string projectSlug, [FromBody] Patch patch)
         {
-            if (organization == null || projectSlug == null)
+            if (organization == null || projectSlug == null || patch == null)
             {
                 return new BadRequestResult();
             }
