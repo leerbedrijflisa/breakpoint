@@ -156,7 +156,7 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 if (filter.Value != "all")
                 {
-                    if (filter.Value == "empty")
+                    if (filter.Value == "none")
                     {
                         filter.Value = "";
                     }
@@ -165,14 +165,22 @@ namespace Lisa.Breakpoint.WebApi.database
             }
             else if (filter.Type == "group")
             {
-                if (filter.Value != "all")
+                if (filter.Value == "none")
+                {
+                    return reports.Where(r => r.AssignedTo.Type != "group");
+                }
+                else if (filter.Value != "all")
                 {
                     return reports.Where(r => r.AssignedTo.Type == "group" && r.AssignedTo.Value == filter.Value);
                 }
             }
             else if (filter.Type == "member")
             {
-                if (filter.Value != "all")
+                if (filter.Value == "none")
+                {
+                    return reports.Where(r => r.AssignedTo.Type != "person");
+                }
+                else if (filter.Value != "all")
                 {
                     return reports.Where(r => r.AssignedTo.Type == "person" && r.AssignedTo.Value == filter.Value);
                 }

@@ -1,10 +1,28 @@
 ﻿<template>
     <link rel="stylesheet" href="css/Dashboard.css" />
     <h2>List of reports: </h2>
+    <!--<p>
+        <span>Filter by member or group: </span>
+        <select change.delegate="filterReports()" id="memberFilter" class="filterItem" value.bind="loggedUser">
+            <optgroup label="Members">
+                <option value="all">All members</option>
+                <option value="none">No members</option>
+                <option disabled>──────────</option>
+                <option repeat.for="member of members" value="${member.userName}">${member.userName}</option>
+            </optgroup>
+            <optgroup label="Groups">
+                <option value="all">All groups</option>
+                <option value="none">No groups</option>
+                <option disabled>──────────</option>
+                <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
+            </optgroup>
+        </select>
+    </p>-->
     <p>
         <span>Filter by member: </span>
         <select change.delegate="filterReports()" id="memberFilter" class="filterItem" value.bind="loggedUser">
             <option value="all">All members</option>
+            <option value="none">No members</option>
             <option disabled>──────────</option>
             <option repeat.for="member of members" value="${member.userName}">${member.userName}</option>
         </select>
@@ -13,6 +31,7 @@
         <span>Filter by group: </span>
         <select change.delegate="filterReports()" id="groupFilter" class="filterItem" value.bind="loggedUserRole">
             <option value="all">All groups</option>
+            <option value="none">No groups</option>
             <option disabled>──────────</option>
             <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
         </select>
@@ -21,7 +40,7 @@
         <span>Filter by test version: </span>
         <select change.delegate="filterReports()" id="versionFilter" class="filterItem">
             <option value="all">All versions</option>
-            <option value="empty">Empty versions</option>
+            <option value="none">No versions</option>
             <option disabled>──────────</option>
             <option repeat.for="version of versions" value="${version}">${version}</option>
         </select>
