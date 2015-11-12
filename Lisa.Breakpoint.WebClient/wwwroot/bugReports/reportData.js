@@ -26,7 +26,7 @@ export class ReportData {
     }
     //Sent the Id and the changed report
     patchReport(id, data) {
-        return this.http.patch('reports/' + id, data);
+        return this.http.patch('reports/' + id + "/" + readCookie("userName"), data);
     }
 
 }
