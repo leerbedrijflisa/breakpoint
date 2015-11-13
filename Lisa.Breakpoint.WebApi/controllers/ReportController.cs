@@ -74,11 +74,16 @@ namespace Lisa.Breakpoint.WebApi
             Report checkReport = _db.GetReport(id);
 
             Project checkProject = _db.GetProject(checkReport.Organization, checkReport.Project, userName);
+
             if (report.Status == "Won't Fix (Approved)")
             {
-                if (checkProject.ProjectManager != userName)
+                foreach (var members in checkProject.Members)
                 {
-                    return new BadRequestResult();
+                    if (members.UserName == userName && members.Role != "manager")
+                    {
+                        return new BadRequestResult();
+                    }
+                    break;
                 }
             }
             

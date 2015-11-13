@@ -13,14 +13,18 @@ export class dashboard {
 
     activate(params) {
         this.params = params;
-        this.disabled = "true";
+        this.disabled = true;
         this.showAssignedTo = [];
+        var thiss = this;
         this.data.getAllProjects(params, readCookie("userName")).then(response => {
             this.project = response.content;
             this.members = response.content.members;
-            if (readCookie("userName") == response.content.projectManager) {
-                this.disabled = null;
-            }
+            this.members.forEach(function(member, i) {
+                if (member.userName == readCookie("userName") && member.role == "manager") {
+                    thiss.disabled = null;
+                    return;
+                } 
+            });
         });
         return this.data.getAllReports(params, readCookie("userName")).then( response => {
             this.reports = this.showAssigned(response.content);
