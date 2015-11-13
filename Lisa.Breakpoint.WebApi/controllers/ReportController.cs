@@ -74,7 +74,8 @@ namespace Lisa.Breakpoint.WebApi
             Report checkReport = _db.GetReport(id);
 
             Project checkProject = _db.GetProject(checkReport.Organization, checkReport.Project, userName);
-
+            
+            //If the status is Won't fix (approved) than it will check if the user is a manager, if that is not the case then return badrequestresult.
             if (report.Status == "Won't Fix (Approved)")
             {
                 foreach (var members in checkProject.Members)
@@ -83,7 +84,6 @@ namespace Lisa.Breakpoint.WebApi
                     {
                         return new BadRequestResult();
                     }
-                    break;
                 }
             }
             
