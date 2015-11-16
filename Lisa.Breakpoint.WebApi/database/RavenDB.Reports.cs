@@ -2,6 +2,7 @@
 using Raven.Abstractions.Data;
 using Raven.Abstractions.Extensions;
 using Raven.Client;
+using Raven.Client.Linq;
 using Raven.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -49,8 +50,6 @@ namespace Lisa.Breakpoint.WebApi.database
                         rList = rList.ApplyFilters(tempFilters);
                     }
                 }
-
-                Console.WriteLine(rList);
 
                 reports = rList.OrderBy(r => r.Priority)
                         .ThenByDescending(r => r.Reported.Date)
@@ -155,6 +154,14 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             return r => r.Version == term;
         }
+        private static Expression<Func<Report, bool>> WhereTitleStartsWith(string term)
+        {
+            return r => r.Title.StartsWith(term.ToString());
+        }
+        private static Expression<Func<Report, bool>> WherePriority(Priority priority)
+        {
+            return r => r.Priority == priority;
+        }
         private static Expression<Func<Report, bool>> WhereGroup(string term)
         {
             return r => r.AssignedTo.Value == term && r.AssignedTo.Type == "group";
@@ -162,6 +169,10 @@ namespace Lisa.Breakpoint.WebApi.database
         private static Expression<Func<Report, bool>> WhereMember(string term)
         {
             return r => r.AssignedTo.Value == term && r.AssignedTo.Type == "person";
+        }
+        private static Expression<Func<Report, bool>> WhereReporter(string term)
+        {
+            return r => r.Reporter == term;
         }
         private static Expression<Func<Report, bool>> WhereNoGroups()
         {
@@ -178,6 +189,18 @@ namespace Lisa.Breakpoint.WebApi.database
         private static Expression<Func<Report, bool>> WhereAllMembers()
         {
             return r => r.AssignedTo.Type == "person";
+        }
+        private static Expression<Func<Report, bool>> WhereReportedAfter(DateTime dateTime)
+        {
+            return r => r.Reported > dateTime;
+        }
+        private static Expression<Func<Report, bool>> WhereReportedBefore(DateTime dateTime)
+        {
+            return r => r.Reported < dateTime;
+        }
+        private static Expression<Func<Report, bool>> WhereReportedOn(DateTime dateTime)
+        {
+            return r => r.Reported == dateTime;
         }
 
         public static IQueryable<Report> ApplyFilters(this IQueryable<Report> reports, params Filter[] filters)
@@ -198,6 +221,20 @@ namespace Lisa.Breakpoint.WebApi.database
                             filter.Value = "";
                         }
                         outerPredicate = outerPredicate.And(WhereVersion(filter.Value));
+                    }
+                }
+                else if (filter.Type == "title")
+                {
+                    if (filter.Value != "")
+                    {
+                        outerPredicate = outerPredicate.And(WhereTitleStartsWith(filter.Value));
+                    }
+                }
+                else if (filter.Type == "priority")
+                {
+                    if (filter.Value != "all")
+                    {
+                        outerPredicate = outerPredicate.And(WherePriority((Priority)Enum.Parse(typeof(Priority), filter.Value)));
                     }
                 }
                 else if (filter.Type == "group")
@@ -228,6 +265,13 @@ namespace Lisa.Breakpoint.WebApi.database
                     else
                     {
                         innerPredicate = innerPredicate.Or(WhereMember(filter.Value));
+                    }
+                }
+                else if (filter.Type == "reporter")
+                {
+                    if (filter.Value != "all")
+                    {
+                        outerPredicate = outerPredicate.And(WhereReporter(filter.Value));
                     }
                 }
             }

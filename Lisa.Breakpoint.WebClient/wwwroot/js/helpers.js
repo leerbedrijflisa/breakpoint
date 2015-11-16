@@ -59,6 +59,18 @@ function getSelectValue(id) {
 }
 
 
+function count(object) {
+    var count = 0;
+    for (var o in object) {
+        if (object.hasOwnProperty(o)) {
+            ++count;
+        }
+    }
+
+    return count;
+}
+
+
 function toSlug(value) {
     return value.replace(/\s+/g, '-').toLowerCase()
 }

@@ -15,7 +15,6 @@ export class dashboard {
         this.params = params;
         this.showAssignedTo = [];
         this.loggedUser = readCookie("userName");
-        
 
         return Promise.all([
             this.data.getGroupFromUser(params, this.loggedUser).then(response => {
@@ -26,6 +25,7 @@ export class dashboard {
                 this.data.getFilteredReports(params, readCookie("userName"), this.firstFilter, this.firstValues).then( response => {
                     this.reports = this.showAssigned(response.content);
                     this.versions = this.getTestVersions(this.reports);
+                    this.reportsCount = count(this.reports);
                 })
             }),
             this.data.getProject(params, readCookie("userName")).then(response => {
@@ -37,13 +37,7 @@ export class dashboard {
     }
 
     showAssigned(reports) {
-        var reportsLength= 0;
-        for(var key in reports) {
-            if(reports.hasOwnProperty(key)){
-                reportsLength++;
-            }
-        }
-
+        var reportsLength= count(reports);
         var i;
         for (i = 0; i < reportsLength; i++) {
             if (reports[i].assignedTo.type == "") {
@@ -56,14 +50,8 @@ export class dashboard {
     }
 
     getTestVersions(reports) {
-        var reportsLength = 0;
+        var reportsLength = count(reports);
         var versions = [];
-
-        for(var key in reports) {
-            if(reports.hasOwnProperty(key)){
-                reportsLength++;
-            }
-        }
 
         var i;
         for (i = 0; i < reportsLength; i++) {
@@ -87,15 +75,27 @@ export class dashboard {
         for (var i = filters.length - 1; i >= 0; i--)
         {
             var filterType = filters[i].id;
-            filter += filters[i].id+"&";
-            value += getSelectValue(filterType)+"&";
+            if (filterType == "titleFilter") {
+                if (filters[i].value == "") {
+                    continue;
+                } else {
+                    filter += filters[i].id+"&";
+                    value += filters[i].value+"&";
+                }
+            } else {
+                filter += filters[i].id+"&";
+                value += getSelectValue(filterType)+"&";
+            }
         }
 
         filter = filter.slice(0, -1);
         value  = value.slice(0, -1);
 
         this.data.getFilteredReports(this.params, readCookie("userName"), filter, value)
-            .then(response => this.reports = response.content);
+            .then(response => {
+                this.reports = response.content;
+                this.reportsCount = count(this.reports);
+            });
     }
 
     patchStatus(id, index) {

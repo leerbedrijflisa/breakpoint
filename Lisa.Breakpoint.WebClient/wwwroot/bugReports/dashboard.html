@@ -1,50 +1,67 @@
 ﻿<template>
     <link rel="stylesheet" href="css/Dashboard.css" />
-    <h2>List of reports: </h2>
-    <!--<p>
-        <span>Filter by member or group: </span>
-        <select change.delegate="filterReports()" id="memberFilter" class="filterItem" value.bind="loggedUser">
-            <optgroup label="Members">
+    <h2>List of reports (${reportsCount}): </h2>
+    <div class="filters">
+        <div class="sep">
+            <label for="titleFilter" class="flabel">Title: </label>
+            <input change.delegate="filterReports()" type="text" id="titleFilter" name="titleFilter" class="filterItem smaller" />
+        </div>
+
+        <!--<div class="sep">
+            <label for="reportedFilter" class="flabel">Reported: </label>
+            <input type="date" name="reportedFilter" value="${dateNow}" />
+        </div>-->
+
+        <div class="sep">
+            <label for="priorityFilter" class="flabel">Priority: </label>
+            <select change.delegate="filterReports()" id="priorityFilter" name="priorityFilter" class="filterItem">
+                <option value="all" selected="selected">All priorities</option>
+                <option value="0">Fix immediately</option>
+                <option value="1">Fix before release</option>
+                <option value="2">Fix for next release</option>
+                <option value="3">Fix whenever</option>
+            </select>
+        </div>
+
+        <div class="sep">
+            <label for="reporterFilter" class="flabel">Reporter: </label>
+            <select change.delegate="filterReports()" id="reporterFilter" name="reporterFilter" class="filterItem">
+                <option value="all">All reporters</option>
+                <option disabled>──────────</option>
+                <option repeat.for="member of members" value="${member.userName}">${member.userName}</option>
+            </select>
+        </div>
+
+        <div class="sep">
+            <label for="memberFilter" class="flabel">Member: </label>
+            <select change.delegate="filterReports()" id="memberFilter" name="memberFilter" class="filterItem" value.bind="loggedUser">
                 <option value="all">All members</option>
                 <option value="none">No members</option>
                 <option disabled>──────────</option>
                 <option repeat.for="member of members" value="${member.userName}">${member.userName}</option>
-            </optgroup>
-            <optgroup label="Groups">
+            </select>
+        </div>
+
+        <div class="sep">
+            <label for="groupFilter" class="flabel">Group: </label>
+            <select change.delegate="filterReports()" id="groupFilter" name="groupFilter" class="filterItem" value.bind="loggedUserRole">
                 <option value="all">All groups</option>
                 <option value="none">No groups</option>
                 <option disabled>──────────</option>
                 <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
-            </optgroup>
-        </select>
-    </p>-->
-    <p>
-        <span>Filter by member: </span>
-        <select change.delegate="filterReports()" id="memberFilter" class="filterItem" value.bind="loggedUser">
-            <option value="all">All members</option>
-            <option value="none">No members</option>
-            <option disabled>──────────</option>
-            <option repeat.for="member of members" value="${member.userName}">${member.userName}</option>
-        </select>
-    </p>
-    <p>
-        <span>Filter by group: </span>
-        <select change.delegate="filterReports()" id="groupFilter" class="filterItem" value.bind="loggedUserRole">
-            <option value="all">All groups</option>
-            <option value="none">No groups</option>
-            <option disabled>──────────</option>
-            <option repeat.for="group of groups" value="${group.name}">${group.name}</option>
-        </select>
-    </p>
-    <p>
-        <span>Filter by test version: </span>
-        <select change.delegate="filterReports()" id="versionFilter" class="filterItem">
-            <option value="all">All versions</option>
-            <option value="none">No versions</option>
-            <option disabled>──────────</option>
-            <option repeat.for="version of versions" value="${version}">${version}</option>
-        </select>
-    </p>
+            </select>
+        </div>
+
+        <div class="sep">
+            <label for="versionFilter" class="flabel">Version: </label>
+            <select change.delegate="filterReports()" id="versionFilter" name="versionFilter" class="filterItem">
+                <option value="all">All versions</option>
+                <option value="none">No versions</option>
+                <option disabled>──────────</option>
+                <option repeat.for="version of versions" value="${version}">${version}</option>
+            </select>
+        </div>
+    </div>
     <a route-href="route: create-report; params.bind: { organization: params.organization, project: params.project }">Create report</a>
     <br />
     <ul>

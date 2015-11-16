@@ -21,3 +21,28 @@ ul:not(.menu) {
 .label {
     font-weight: bold;
 }
+
+.filters {
+    width: 250px;
+    border-radius: 5px;
+    border: 1px solid #a1a1a1;
+    padding: 10px;
+}
+
+.filters .sep {
+    margin-bottom: 5px;
+}
+
+.filters .flabel {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.filters .filterItem {
+    width: 150px;
+    float: right;
+}
+
+.filters .filterItem.smaller {
+    width: 146px;
+}
