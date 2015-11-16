@@ -53,12 +53,12 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public string GetGroupFromUser(string userName, string projectslug)
+        public string GetGroupFromUser(string organization, string projectslug, string userName)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 var project = session.Query<Project>()
-                    .Where(p => p.Slug == projectslug && p.Members.Any(m => m.UserName == userName))
+                    .Where(p => p.Organization == organization && p.Slug == projectslug && p.Members.Any(m => m.UserName == userName))
                     .SingleOrDefault();
 
                 if (project != null)

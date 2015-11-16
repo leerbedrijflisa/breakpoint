@@ -19,7 +19,7 @@ namespace Lisa.Breakpoint.WebApi.database
             }
         }
 
-        public Project GetProject(string organizationSlug, string projectSlug, string userName)
+        public Project GetProject(string organizationSlug, string projectSlug, string userName, string includeAllGroups = "false")
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
@@ -35,46 +35,47 @@ namespace Lisa.Breakpoint.WebApi.database
 
                 // check the role (level) of the userName
                 // manager = 3; developer = 2; tester = 1;
-                // adds [n/a] to roles yo are not supposed to edit
-                // you can search for [n/a] in your javascript
-                // and disble those options
-                foreach (Member member in project.Members)
+                // remove the roles you may not use
+                if (includeAllGroups == "false")
                 {
-                    if (member.UserName == userName)
+                    foreach (Member member in project.Members)
                     {
-                        var role  = member.Role;
-                        if (role != "")
+                        if (member.UserName == userName)
                         {
-                            int level = project.Groups
-                                .Where(g => g.Name == role)
-                                .Select(g => g.Level)
-                                .SingleOrDefault();
+                            var role  = member.Role;
+                            if (role != "")
+                            {
+                                int level = project.Groups
+                                    .Where(g => g.Name == role)
+                                    .Select(g => g.Level)
+                                    .SingleOrDefault();
 
-                            var groups = project.Groups.ToList();
+                                var groups = project.Groups.ToList();
 
-                            groups.RemoveAll(g => g.Level > level);
+                                groups.RemoveAll(g => g.Level > level);
 
-                            project.Groups = groups;
+                                project.Groups = groups;
 
-                            filter = true;
+                                filter = true;
+                            }
                         }
+                    }
+                    if (!filter)
+                    {
+                        project.Groups = null;
                     }
                 }
 
-                if (!filter)
-                {
-                    project.Groups = null;
-                }
                 return project;
             }
         }
 
-        public IList<Group> GetGroupsFromProject(string projectSlug)
+        public IList<Group> GetGroupsFromProject(string organization, string projectSlug)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 var project = session.Query<Project>()
-                    .Where(p => p.Slug == projectSlug)
+                    .Where(p => p.Organization == organization && p.Slug == projectSlug)
                     .SingleOrDefault();
 
                 if (project.Groups != null)
@@ -140,7 +141,7 @@ namespace Lisa.Breakpoint.WebApi.database
                 bool roleExist = false;
 
                 string sender      = patch.Sender;
-                string senderRole  = GetGroupFromUser(sender, project.Slug);
+                string senderRole  = GetGroupFromUser(project.Organization, project.Slug, sender);
                 int    senderLevel = 0;
 
                 string type      = patch.Type;
@@ -148,7 +149,7 @@ namespace Lisa.Breakpoint.WebApi.database
                 string member    = patch.Member;
                 int    roleLevel = 0;
 
-                IList<Group> groups = GetGroupsFromProject(project.Slug);
+                IList<Group> groups = GetGroupsFromProject(project.Organization, project.Slug);
 
                 foreach (Group group in groups)
                 {
@@ -173,12 +174,25 @@ namespace Lisa.Breakpoint.WebApi.database
                     IList<Member> members = project.Members;
                     if (type == "add")
                     {
+                        bool isInProject = false;
                         Member newMember = new Member();
 
                         newMember.UserName = member;
                         newMember.Role = role;
 
-                        members.Add(newMember);
+                        foreach (var m in members)
+                        {
+                            if (m.UserName == newMember.UserName)
+                            {
+                                isInProject = true;
+                                break;
+                            }
+                        }
+
+                        if (!isInProject)
+                        {
+                            members.Add(newMember);
+                        }
                     }
                     else if (type == "remove")
                     {
