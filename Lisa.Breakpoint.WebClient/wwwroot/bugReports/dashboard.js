@@ -14,10 +14,11 @@ export class dashboard {
     activate(params) {
         this.params = params;
         this.showAssignedTo = [];
+        this.isDeveloper = true;
 
         return Promise.all([
-            this.data.getAllProjects(params, readCookie("userName")).then(response => {
-                this.members = response.content.members;
+            this.data.getProject(params, readCookie("userName")).then(response => {
+                this.members = this.getRole(response.content.members);
                 this.browsers = response.content.browsers;
             }),
             this.data.getAllReports(params, readCookie("userName")).then( response => {
@@ -25,6 +26,18 @@ export class dashboard {
                 this.versions = this.getTestVersions(this.reports);
             })
         ]);
+    }
+
+    getRole(members) {
+        for(var key in members) {
+            if (members[key].userName == readCookie("userName") && members[key].role == "developer") {
+                this.isDeveloper =  false;
+            }
+            else {
+                this.isDeveloper =  true;
+            }
+        }
+        return members;
     }
 
     showAssigned(reports) {

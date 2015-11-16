@@ -20,7 +20,7 @@ export class ReportData {
     }
 
     // Send the Params and the user
-    getAllProjects(params, user) {        
+    getProject(params, user) {        
         return this.http.get('projects/'+ params.organization+'/'+ params.project+'/'+user);
     }
 
