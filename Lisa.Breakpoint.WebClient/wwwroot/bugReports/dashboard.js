@@ -15,19 +15,23 @@ export class dashboard {
         this.params = params;
         this.showAssignedTo = [];
         this.loggedUser = readCookie("userName");
-        this.data.getGroupFromUser(params, this.loggedUser).then(response => {
-            this.loggedUserRole = response.content;
-        });
+        
 
         return Promise.all([
+            this.data.getGroupFromUser(params, this.loggedUser).then(response => {
+                this.loggedUserRole = response.content;
+                this.firstFilter = "member&group";
+                this.firstValues = this.loggedUser+"&"+this.loggedUserRole;
+
+                this.data.getFilteredReports(params, readCookie("userName"), this.firstFilter, this.firstValues).then( response => {
+                    this.reports = this.showAssigned(response.content);
+                    this.versions = this.getTestVersions(this.reports);
+                })
+            }),
             this.data.getProject(params, readCookie("userName")).then(response => {
                 this.members = response.content.members;
                 this.browsers = response.content.browsers;
                 this.groups = response.content.groups;
-            }),
-            this.data.getAllReports(params, readCookie("userName")).then( response => {
-                this.reports = this.showAssigned(response.content);
-                this.versions = this.getTestVersions(this.reports);
             })
         ]);
     }
