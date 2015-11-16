@@ -22,10 +22,11 @@
                         <option value="Fixed">Fixed</option>
                         <option value="Won't Fix">Won't Fix</option>
                         <option value="Won't Fix (Approved)">Won't Fix (Approved)</option>
-                        <option value="Closed">Closed</option>
+                        <option value="Closed" disabled="${$parent.authorized[$index]}">Closed</option>
                     </select>
                     <button type="submit">Edit Status</button>
             </form>
+            <p>debug: ${statusPermission.$index}</p>
             <p><span class="label">priority:</span> ${report.priority}</p>
             <p><span>assigned to a </span> <span class="label">${report.assignedTo.type}</span>: ${report.assignedTo.value}</p>
             <p><span class="label">Browsers:</span> <span class="browsers" repeat.for="browser of report.browsers">${browser}, </span></p>

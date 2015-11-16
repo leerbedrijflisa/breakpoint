@@ -23,6 +23,29 @@ export class dashboard {
         });
         return this.http.get("reports/"+params.organization+"/"+params.project+"/"+readCookie("userName")).then( response => {
             this.reports = response.content;
+            var members = this.members;
+            var userRole;
+            this.authorized = Array;
+            var thiss = this;
+
+            //checks if the users role in a variable to use
+            members.forEach(function(member){
+                if(readCookie("userName") == member.userName){
+                    var userRole = member.role;
+                    return;
+                }
+            });
+            
+            //if the user is a developer than it makes it so he'll be authorized to be able to close an report he made
+            if (userRole = "developer") {
+                this.reports.forEach(function(report, i){
+                    if (report.reporter == readCookie("userName")) {
+                        thiss.authorized[i] = null;
+                    } else {
+                        thiss.authorized[i] = true;
+                    }
+                });
+            }
         });
     }
 
