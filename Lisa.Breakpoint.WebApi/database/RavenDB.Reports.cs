@@ -158,10 +158,6 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             return r => r.Title.StartsWith(term.ToString());
         }
-        private static Expression<Func<Report, bool>> WherePriority(Priority priority)
-        {
-            return r => r.Priority == priority;
-        }
         private static Expression<Func<Report, bool>> WhereGroup(string term)
         {
             return r => r.AssignedTo.Value == term && r.AssignedTo.Type == "group";
@@ -173,6 +169,10 @@ namespace Lisa.Breakpoint.WebApi.database
         private static Expression<Func<Report, bool>> WhereReporter(string term)
         {
             return r => r.Reporter == term;
+        }
+        private static Expression<Func<Report, bool>> WhereStatus(string term)
+        {
+            return r => r.Status == term.Replace("%20", " ");
         }
         private static Expression<Func<Report, bool>> WhereNoGroups()
         {
@@ -189,6 +189,10 @@ namespace Lisa.Breakpoint.WebApi.database
         private static Expression<Func<Report, bool>> WhereAllMembers()
         {
             return r => r.AssignedTo.Type == "person";
+        }
+        private static Expression<Func<Report, bool>> WherePriority(Priority priority)
+        {
+            return r => r.Priority == priority;
         }
         private static Expression<Func<Report, bool>> WhereReportedAfter(DateTime dateTime)
         {
@@ -235,6 +239,13 @@ namespace Lisa.Breakpoint.WebApi.database
                     if (filter.Value != "all")
                     {
                         outerPredicate = outerPredicate.And(WherePriority((Priority)Enum.Parse(typeof(Priority), filter.Value)));
+                    }
+                }
+                else if (filter.Type == "status")
+                {
+                    if (filter.Value != "all")
+                    {
+                        outerPredicate = outerPredicate.And(WhereStatus(filter.Value));
                     }
                 }
                 else if (filter.Type == "group")
@@ -284,10 +295,6 @@ namespace Lisa.Breakpoint.WebApi.database
 
     public static class PredicateBuilder
     {
-        // to use a PredicateBuilder init a lambda expression thats always true:
-        // Expression<Func<Report, bool>> predicate = r => r.Number != string.Empty;
-        // and call functions on that expression
-
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2)
         {
             return Expression.Lambda<Func<T, bool>>

@@ -16,10 +16,24 @@
             <label for="priorityFilter" class="flabel">Priority: </label>
             <select change.delegate="filterReports()" id="priorityFilter" name="priorityFilter" class="filterItem">
                 <option value="all" selected="selected">All priorities</option>
+                <option disabled>──────────</option>
                 <option value="0">Fix immediately</option>
                 <option value="1">Fix before release</option>
                 <option value="2">Fix for next release</option>
                 <option value="3">Fix whenever</option>
+            </select>
+        </div>
+
+        <div class="sep">
+            <label for="statusFilter" class="flabel">Status: </label>
+            <select change.delegate="filterReports()" id="statusFilter" name="statusFilter" class="filterItem">
+                <option value="all" selected="selected">All statuses</option>
+                <option disabled>──────────</option>
+                <option value="Open">Open</option>
+                <option value="Fixed">Fixed</option>
+                <option value="Won't Fix">Won't Fix</option>
+                <option value="Won't Fix (Approved)">Won't Fix (Approved)</option>
+                <option value="Closed">Closed</option>
             </select>
         </div>
 
