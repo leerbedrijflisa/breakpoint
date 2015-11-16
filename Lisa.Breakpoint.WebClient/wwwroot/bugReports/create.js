@@ -12,7 +12,7 @@ export class Create {
     }
     
     activate(params) {
-        this.data.getAllProjects(params, readCookie("userName")).then(response => {
+        this.data.getProject(params, readCookie("userName")).then(response => {
             this.projMembers = response.content.members;
             this.groups = response.content.groups;
         });

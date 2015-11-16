@@ -29,9 +29,7 @@ namespace Lisa.Breakpoint.WebApi
             IList<Report> reports;
             if (filter != "")
             {
-                Filter f = new Filter();
-                f.Type = filter;
-                f.Value = value;
+                Filter f = new Filter(filter, value);
 
                 reports = _db.GetAllReports(organization, project, userName, f);
             } else { 

@@ -17,12 +17,7 @@ export class project {
         return Promise.all([
             this.http.get('organizations/members/new/'+params.organization+'/'+params.project).then(response => {
                 var orgMembers = response.content;
-                var orgMembersLength = 0;
-                for(var key in orgMembers) {
-                    if(orgMembers.hasOwnProperty(key)){
-                        orgMembersLength++;
-                    }
-                }
+                var orgMembersLength = count(orgMembers);
                 if (orgMembersLength > 0) {
                     this.usersLeft = true;
                     this.orgMembers = orgMembers;
@@ -88,17 +83,11 @@ export class project {
     }
 
     filterMembers(members) {
-        var membersLength = 0;
+        var membersLength = count(members);
         var i,
             loggedInUserRole,
             loggedInUserRoleLevel,
             memberRoleLevel;
-
-        for(var key in members) {
-            if(members.hasOwnProperty(key)){
-                membersLength++;
-            }
-        }
 
         for (i = 0; i < membersLength; i++) {
             if (members[i].userName == readCookie("userName")) {

@@ -20,14 +20,18 @@ export class ReportData {
     }
 
     // Send the Params and the user
-    getAllProjects(params, user) {        
-        return this.http.get('projects/'+ params.organization+'/'+ params.project+'/'+user);
+    getProject(params, user) {        
+        return this.http.get('projects/'+ params.organization+'/'+ params.project+'/'+user+'/true');
+    }
+
+    // Send the Params and the user
+    getGroupFromUser(params, user) {        
+        return this.http.get('users/'+ params.organization+'/'+ params.project+'/'+user);
     }
 
     // Send the full report 
     postReport(report) {
-        this.report = report;
-        return this.http.post('reports/'+this.report.organization+'/'+this.report.project, JSON.stringify(this.report));
+        return this.http.post('reports/'+report.organization+'/'+report.project, JSON.stringify(report));
     }
     // Send the Id and the changed report
     patchReport(id, data) {
