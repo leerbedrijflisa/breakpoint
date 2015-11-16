@@ -84,6 +84,10 @@ namespace Lisa.Breakpoint.WebApi
                     {
                         return new BadRequestResult();
                     }
+                    else if (members.UserName == userName && members.Role == "manager")
+                    {
+                        break;
+                    }
                 }
             }
             

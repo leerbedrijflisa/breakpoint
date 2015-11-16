@@ -15,17 +15,20 @@ export class dashboard {
         this.params = params;
         this.disabled = true;
         this.showAssignedTo = [];
-        //You need this because "this.disabled" give a unhandled promise rejection.
+
+        //You need this because "this.disabled" in the foreach and if statement gives an unhandled promise rejection
         var thiss = this;
+
         this.data.getAllProjects(params, readCookie("userName")).then(response => {
             this.project = response.content;
             this.members = response.content.members;
-            //Foreach and if to check wich user is a manager.
-            this.members.forEach(function(member, i) {
+            
+            //Foreach and if to check if the logged in user is a manager
+            this.members.forEach(function(member) {
                 if (member.userName == readCookie("userName") && member.role == "manager") {
                     thiss.disabled = null;
                     return;
-                } 
+                }
             });
         });
         return this.data.getAllReports(params, readCookie("userName")).then( response => {
@@ -34,7 +37,7 @@ export class dashboard {
     }
 
     showAssigned(reports) {
-        var reportsLength= 0;
+        var reportsLength = 0;
         var i;
         for(var key in reports) {
             if(reports.hasOwnProperty(key)){
