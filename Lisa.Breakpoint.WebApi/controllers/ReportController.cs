@@ -71,6 +71,13 @@ namespace Lisa.Breakpoint.WebApi
         [HttpPatch("{id}/{userName}")]
         public IActionResult Patch(int id, string userName, [FromBody] Report report)
         {
+
+            if (!statusCheck.Contains(report.Status))
+            {
+                System.Diagnostics.Debug.WriteLine("JE MOEDER HEET HENK!!");
+                return new BadRequestResult();
+            }
+
             Report checkReport = _db.GetReport(id);
 
             Project checkProject = _db.GetProject(checkReport.Organization, checkReport.Project, userName);
@@ -110,6 +117,8 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         private readonly RavenDB _db;
+
+        private readonly IList<string> statusCheck = new string[] { "Open", "Fixed", "Won't Fix", "Won't Fix (Approved)", "Closed" };
 
     }
 }
