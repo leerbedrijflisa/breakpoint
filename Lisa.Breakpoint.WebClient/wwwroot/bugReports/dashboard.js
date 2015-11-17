@@ -13,8 +13,12 @@ export class dashboard {
 
     activate(params) {
         this.params = params;
+        this.disabled = true;
         this.showAssignedTo = [];
         this.loggedUser = readCookie("userName");
+
+        //You need this because "this.disabled" in the foreach and if statement gives an unhandled promise rejection
+        var thiss = this;
 
         return Promise.all([
             this.data.getGroupFromUser(params, this.loggedUser).then(response => {
@@ -22,22 +26,29 @@ export class dashboard {
                 this.firstFilter = "member&group";
                 this.firstValues = this.loggedUser+"&"+this.loggedUserRole;
 
-                this.data.getFilteredReports(params, readCookie("userName"), this.firstFilter, this.firstValues).then( response => {
+                this.data.getFilteredReports(params, this.loggedUser, this.firstFilter, this.firstValues).then( response => {
                     this.reports = this.showAssigned(response.content);
                     this.versions = this.getTestVersions(this.reports);
                     this.reportsCount = count(this.reports);
                 })
             }),
-            this.data.getProject(params, readCookie("userName")).then(response => {
+            this.data.getProject(params, this.loggedUser).then(response => {
                 this.members = response.content.members;
-                this.browsers = response.content.browsers;
                 this.groups = response.content.groups;
+                //Foreach and if to check if the logged in user is a manager
+                this.members.forEach(function(member) {
+                    if (member.userName == thiss.loggedUser && member.role == "manager") {
+                        thiss.disabled = null;
+                        return;
+                    }
+                });
             })
         ]);
     }
 
+
     showAssigned(reports) {
-        var reportsLength= count(reports);
+        var reportsLength = count(reports);
         var i;
         for (i = 0; i < reportsLength; i++) {
             if (reports[i].assignedTo.type == "") {

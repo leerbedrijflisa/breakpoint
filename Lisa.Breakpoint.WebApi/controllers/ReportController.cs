@@ -76,9 +76,35 @@ namespace Lisa.Breakpoint.WebApi
             return new CreatedResult(location, report);
         }
 
-        [HttpPatch("{id}")]
-        public IActionResult Patch(int id, [FromBody] Report report)
+        [HttpPatch("{id}/{userName}")]
+        public IActionResult Patch(int id, string userName, [FromBody] Report report)
         {
+
+            if (!statusCheck.Contains(report.Status))
+            {
+                return new BadRequestResult();
+            }
+
+            Report checkReport = _db.GetReport(id);
+
+            Project checkProject = _db.GetProject(checkReport.Organization, checkReport.Project, userName);
+            
+            //If the status is Won't fix (approved) than it will check if the user is a manager, if that is not the case then return badrequestresult.
+            if (report.Status == statusCheck[3])
+            {
+                foreach (var members in checkProject.Members)
+                {
+                    if (members.UserName == userName && members.Role != "manager")
+                    {
+                        return new BadRequestResult();
+                    }
+                    else if (members.UserName == userName && members.Role == "manager")
+                    {
+                        break;
+                    }
+                }
+            }
+            
             Report patchedReport = _db.PatchReport(id, report);
 
             return new HttpOkObjectResult(patchedReport);
@@ -98,5 +124,8 @@ namespace Lisa.Breakpoint.WebApi
         }
 
         private readonly RavenDB _db;
+
+        private readonly IList<string> statusCheck = new string[] { "Open", "Fixed", "Won't Fix", "Won't Fix (Approved)", "Closed" };
+
     }
 }
