@@ -98,7 +98,7 @@
                         <option value="Fixed">Fixed</option>
                         <option value="Won't Fix">Won't Fix</option>
                         <option value="Won't Fix (Approved)" disabled="${$parent.disabled}">Won't Fix (Approved)</option>
-                        <option value="Closed">Closed</option>
+                        <option if.bind="$parent.isDeveloper" value="Closed">Closed</option>
                     </select>
                     <button type="submit">Edit Status</button>
             </form>

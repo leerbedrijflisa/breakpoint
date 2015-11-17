@@ -1,5 +1,4 @@
-﻿using System;
-using Raven.Client;
+﻿using Raven.Client;
 
 namespace Lisa.Breakpoint.WebApi.database
 {

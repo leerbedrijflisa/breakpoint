@@ -15,6 +15,7 @@ export class dashboard {
         this.params = params;
         this.disabled = true;
         this.showAssignedTo = [];
+        this.isDeveloper = true;
         this.loggedUser = readCookie("userName");
 
         //You need this because "this.disabled" in the foreach and if statement gives an unhandled promise rejection
@@ -46,6 +47,17 @@ export class dashboard {
         ]);
     }
 
+    getRole(members) {
+        for(var key in members) {
+            if (members[key].userName == readCookie("userName") && members[key].role == "developer") {
+                this.isDeveloper =  false;
+            }
+            else {
+                this.isDeveloper =  true;
+            }
+        }
+        return members;
+    }
 
     showAssigned(reports) {
         var reportsLength = count(reports);
