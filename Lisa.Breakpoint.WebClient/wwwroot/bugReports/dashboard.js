@@ -73,11 +73,9 @@ export class dashboard {
             }
         }
 
-        var uniqueVersions = versions.filter(function(item, pos) {
+        return versions.filter(function(item, pos) {
             return versions.indexOf(item) == pos;
         })
-
-        return uniqueVersions;
     }
 
     filterReports() {
@@ -104,11 +102,10 @@ export class dashboard {
         filter = filter.slice(0, -1);
         value  = value.slice(0, -1);
 
-        this.data.getFilteredReports(this.params, readCookie("userName"), filter, value)
-            .then(response => {
-                this.reports = response.content;
-                this.reportsCount = count(this.reports);
-            });
+        return this.data.getFilteredReports(this.params, readCookie("userName"), filter, value).then(response => {
+            this.reports = response.content;
+            this.reportsCount = count(this.reports);
+        });
     }
 
     patchStatus(id, index) {
