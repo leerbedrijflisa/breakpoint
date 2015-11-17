@@ -34,7 +34,7 @@ export class dashboard {
                 })
             }),
             this.data.getProject(params, this.loggedUser).then(response => {
-                this.members = response.content.members;
+                this.members = this.getRole(response.content.members);
                 this.groups = response.content.groups;
                 //Foreach and if to check if the logged in user is a manager
                 this.members.forEach(function(member) {
