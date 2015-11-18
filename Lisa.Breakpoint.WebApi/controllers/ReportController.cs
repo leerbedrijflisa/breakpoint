@@ -67,7 +67,7 @@ namespace Lisa.Breakpoint.WebApi
 
             if (report.Platform == "" || report.Platform == null)
             {
-                report.Platform = "n.a.";
+                report.Platform = "not specified";
             }
 
             _db.PostReport(report);
