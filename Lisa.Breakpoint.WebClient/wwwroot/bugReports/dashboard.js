@@ -13,17 +13,20 @@ export class dashboard {
 
     activate(params) {
         this.params = params;
-        this.disabled = true;
+        this.closedDisabled = null;
+        this.wontfixDisabled = true;
         this.showAssignedTo = [];
-        this.isDeveloper = true;
         this.loggedUser = readCookie("userName");
-
-        //You need this because "this.disabled" in the foreach and if statement gives an unhandled promise rejection
-        var thiss = this;
 
         return Promise.all([
             this.data.getGroupFromUser(params, this.loggedUser).then(response => {
                 this.loggedUserRole = response.content;
+                if (this.loggedUserRole == "manager") {
+                    this.wontfixDisabled = null;
+                }
+                if (this.loggedUserRole == "developer") {
+                    this.closedDisabled = true;
+                }
                 this.firstFilter = "member&group";
                 this.firstValues = this.loggedUser+"&"+this.loggedUserRole;
 
@@ -34,31 +37,11 @@ export class dashboard {
                 })
             }),
             this.data.getProject(params, this.loggedUser).then(response => {
-                this.members = this.getRole(response.content.members);
+                this.members = response.content.members;
                 this.groups = response.content.groups;
-                //Foreach and if to check if the logged in user is a manager
-                this.members.forEach(function(member) {
-                    if (member.userName == thiss.loggedUser && member.role == "manager") {
-                        thiss.disabled = null;
-                        return;
-                    }
-                });
             })
         ]);
     }
-
-    getRole(members) {
-        for(var key in members) {
-            if (members[key].userName == readCookie("userName") && members[key].role == "developer") {
-                this.isDeveloper =  false;
-            }
-            else {
-                this.isDeveloper =  true;
-            }
-        }
-        return members;
-    }
-
     showAssigned(reports) {
         var reportsLength = count(reports);
         var i;
