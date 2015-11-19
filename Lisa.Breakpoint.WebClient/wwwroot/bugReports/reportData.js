@@ -38,4 +38,8 @@ export class ReportData {
         return this.http.patch('reports/' + id + "/" + readCookie("userName"), data);
     }
 
+    getPlatforms() {
+        return this.http.get('platforms');
+    }
+
 }

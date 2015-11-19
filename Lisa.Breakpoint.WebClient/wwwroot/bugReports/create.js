@@ -16,6 +16,12 @@ export class Create {
             this.projMembers = response.content.members;
             this.groups = response.content.groups;
         });
+
+        this.data.getPlatforms().then(response => {
+            this.platforms = response.content;
+            this.null = null;
+        });
+
         this.report = {
             title: "",
             project: params.project,

@@ -33,7 +33,10 @@
         </select>
         <br />
         <label>Platform: </label>
-        <input value.bind="report.platform" name="platform" type="text" />
+        <input value.bind="report.platform" list="platforms" name="platform" type="text"/>
+        <datalist id="platforms">
+            <option repeat.for="platform of platforms" value="${platform}">
+        </datalist>
 
         <br /><br />
 
