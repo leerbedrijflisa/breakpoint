@@ -80,9 +80,46 @@ namespace Lisa.Breakpoint.WebApi.database
                 report.Number = reportId.Split('/').Last();
                 report.Reported = DateTime.Now;
 
-                session.SaveChanges();
+                dynamic platforms = session.Load<object>("singles/platforms");
+                string[] platformsList;
+                if (platforms == null)
+                {
+                    platformsList = new[] { report.Platform };
+                    session.Store(new { value = platformsList }, "singles/platforms");
+                }
+                else
+                {
+                    var platformsPatchList = new[] { report.Platform };
+                    platformsList = platforms.value;
 
+                    platformsList = platformsPatchList.Where(p => !platformsList.Contains(p)).ToArray();
+
+                    var patchRequests = new List<PatchRequest>();
+
+                    Array.ForEach(platformsList, p => patchRequests.AddRange(new[] { new PatchRequest()
+                        {
+                            Name = "value",
+                            Type = PatchCommandType.Add,
+                            Value = p
+                        }
+                    }));
+
+                    documentStore.DatabaseCommands.Patch("singles/platforms", patchRequests.ToArray());
+                }
+
+                session.SaveChanges();
+                
                 return report;
+            }
+        }
+
+        public string[] GetPlatforms()
+        {
+            using (IDocumentSession session = documentStore.Initialize().OpenSession())
+            {
+                dynamic platforms = session.Load<object>("singles/platforms");
+
+                return platforms != null ? platforms.value : new string[] { };
             }
         }
 
