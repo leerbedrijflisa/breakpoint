@@ -6,6 +6,7 @@ using Raven.Client.Linq;
 using Raven.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -38,14 +39,18 @@ namespace Lisa.Breakpoint.WebApi.database
                     if (!multipleFilters)
                     {
                         rList = rList.ApplyFilters(filter);
+                        Debug.WriteLine("One filter");
                     }
                     else if (multipleFilters)
                     {
+                        Debug.WriteLine("Multiple filters");
+
                         int filterCount = types.Count();
                         Filter[] tempFilters = new Filter[filterCount];
                         for (int i = 0; i < types.Length; i++)
                         {
                             tempFilters[i] = new Filter(types[i], values[i]);
+                            Debug.WriteLine(tempFilters[i].Type + " ---> " + tempFilters[i].Value);
                         }
                         rList = rList.ApplyFilters(tempFilters);
                     }

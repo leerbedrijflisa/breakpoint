@@ -23,7 +23,7 @@ ul:not(.menu) {
 }
 
 .filters {
-    width: 250px;
+    width: 300px;
     border-radius: 5px;
     border: 1px solid #a1a1a1;
     padding: 10px;
@@ -39,10 +39,13 @@ ul:not(.menu) {
 }
 
 .filters .filterItem {
-    width: 150px;
     float: right;
 }
 
 .filters .filterItem.smaller {
     width: 146px;
+}
+
+input[type=checkbox] {
+    float: right !important;
 }

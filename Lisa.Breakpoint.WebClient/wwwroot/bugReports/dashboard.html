@@ -26,7 +26,7 @@
 
         <div class="sep">
             <label for="statusFilter" class="flabel">Status: </label>
-            <select change.delegate="filterReports()" id="statusFilter" name="statusFilter" class="filterItem">
+            <!--<select change.delegate="filterReports()" id="statusFilter" name="statusFilter" class="filterItem">
                 <option value="all" selected="selected">All statuses</option>
                 <option disabled>──────────</option>
                 <option value="Open">Open</option>
@@ -34,7 +34,23 @@
                 <option value="Won't Fix">Won't Fix</option>
                 <option value="Won't Fix (Approved)">Won't Fix (Approved)</option>
                 <option value="Closed">Closed</option>
-            </select>
+            </select>-->
+            <br />
+            <label for="statusFilter">Open</label>
+            <input change.delegate="filterReports()" class="statusFilter" type="checkbox" name="statusFilter" value="Open" /><br />
+
+            <label for="statusFilter">Fixed</label>
+            <input change.delegate="filterReports()" class="statusFilter" type="checkbox" name="statusFilter" value="Fixed" /><br />
+
+            <label for="statusFilter">Won't Fix</label>
+            <input change.delegate="filterReports()" class="statusFilter" type="checkbox" name="statusFilter" value="Won't Fix" /><br />
+
+            <label for="statusFilter">Won't Fix (Approved)</label>
+            <input change.delegate="filterReports()" class="statusFilter" type="checkbox" name="statusFilter" value="Won't Fix (Approved)" /><br />
+
+            <label for="statusFilter">Closed</label>
+            <input change.delegate="filterReports()" class="statusFilter" type="checkbox" name="statusFilter" value="Closed" /><br /><br />
+
         </div>
 
         <div class="sep">

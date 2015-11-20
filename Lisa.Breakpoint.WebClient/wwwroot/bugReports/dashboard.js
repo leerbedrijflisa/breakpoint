@@ -90,8 +90,21 @@ export class dashboard {
 
     filterReports() {
         var filters = document.getElementsByClassName('filterItem');
+        var statusFilterArray = [];
         var filter = "";
         var value = "";
+
+        var statusFilter = document.getElementsByClassName('statusFilter');
+
+        for (var i = 0; i < statusFilter.length; i++) {
+
+            if (statusFilter[i].checked == true) {
+                statusFilterArray.push(statusFilter[i].value);
+            }
+
+        }
+
+        console.log(statusFilterArray);
 
         for (var i = filters.length - 1; i >= 0; i--)
         {
@@ -107,6 +120,7 @@ export class dashboard {
                 filter += filters[i].id+"&";
                 value += getSelectValue(filterType)+"&";
             }
+
         }
 
         filter = filter.slice(0, -1);
