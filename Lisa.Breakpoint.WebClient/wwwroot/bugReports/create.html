@@ -1,4 +1,5 @@
 ﻿<template>
+    <link rel="stylesheet" href="css/Create.css" />
     <h3>Report a bug:</h3>
     <form submit.delegate="submit()">
         <label for="title">Title: </label>
@@ -33,7 +34,9 @@
         </select>
         <br />
         <label>Platform: </label>
-        <input value.bind="report.platform" name="platform" type="text" />
+        <div id="platform">
+            <input class="platform" onkeypress="if (event.keyCode == 13) { addPlatform(); return false; }" name="platform" type="text" />
+        </div>
 
         <br /><br />
 

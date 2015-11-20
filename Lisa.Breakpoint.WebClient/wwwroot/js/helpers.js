@@ -74,3 +74,23 @@ function count(object) {
 function toSlug(value) {
     return value.replace(/\s+/g, '-').toLowerCase()
 }
+
+function addPlatform() {
+    var number = document.getElementsByClassName("platform").length;
+    if (document.getElementsByClassName("platform")[number - 1].value != "") {
+
+        //Gets the div where the Platform is located
+        var container = document.getElementById("platform");
+
+        //creates an input field in the div that is defined in container and sets the properties
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "platform";
+        input.classList.add("platform");
+        input.setAttribute('onkeypress', 'if (event.keyCode == 13) { addPlatform(); return false; }');
+        //adds an br and the element with all the properties
+        container.appendChild(document.createElement("br"));
+        container.appendChild(input);
+        input.focus();
+    }
+}

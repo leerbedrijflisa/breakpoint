@@ -104,7 +104,7 @@
             </form>
             <p><span class="label">priority:</span> ${report.priorityString}</p>
             <p if.bind="$parent.showAssignedTo[$index]"><span>assigned to a </span> <span class="label">${report.assignedTo.type}</span>: ${report.assignedTo.value}</p>
-            <p><span class="label">Platform:</span> ${report.platform} </p>
+            <p><span class="label">Platform: </span><span repeat.for="platform of report.platforms">${platform} </span></p>
         </li>
     </ul>
 </template>
