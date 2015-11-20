@@ -12,39 +12,39 @@ namespace Lisa.Breakpoint.WebApi.database
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
-                dynamic platforms = session.Load<object>("singles/platforms");
-
-                return platforms != null ? platforms.value : new string[] { };
+                dynamic platformsDbObject = session.Load<object>("singles/platforms");
+                
+                return platformsDbObject.value != null ? platformsDbObject.value : new string[] { };
             }
         }
 
-        public void PatchPlatforms(string[] platforms)
+        public void PostPlatforms(IEnumerable<string> platforms)
         {
             using (IDocumentSession session = documentStore.Initialize().OpenSession())
             {
                 dynamic platformsDbObject = session.Load<object>("singles/platforms");
 
-				if (platformsDbObject == null)
+                // Test if the document already exists in the database
+				if (platformsDbObject.value == null)
                 {
-                    var platformsList = platforms;
-                    session.Store(new { value = platformsList }, "singles/platforms");
+                    session.Store(new { value = platforms.ToArray() }, "singles/platforms");
                 }
 				else
                 {
                     string[] platformsList = platformsDbObject.value;
 
-                    platformsList = platforms.Where(p => !platformsList.Contains(p)).ToArray();
+                    var patchValuesList = platforms.Where(p => !platformsList.Contains(p)).ToArray();
 
                     var patchRequests = new List<PatchRequest>();
 
-                    Array.ForEach(platformsList, p => patchRequests.AddRange(new[] { new PatchRequest()
+                    Array.ForEach(patchValuesList, value => patchRequests.Add(new PatchRequest()
                         {
                             Name = "value",
                             Type = PatchCommandType.Add,
-                            Value = p
-                        }
-                    }));
-
+                            Value = value
+                    }
+                    ));
+                    
                     documentStore.DatabaseCommands.Patch("singles/platforms", patchRequests.ToArray());
                 }
 
