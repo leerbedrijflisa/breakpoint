@@ -18,7 +18,7 @@ export class Create {
         });
 
         this.data.getPlatforms().then(response => {
-            this.platforms = response.content;
+            this.platforms = response.content.sort();
         });
 
         this.report = {
