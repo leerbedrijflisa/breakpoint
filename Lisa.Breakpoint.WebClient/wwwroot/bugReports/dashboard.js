@@ -17,15 +17,13 @@ export class dashboard {
         this.wontfixDisabled = true;
         this.showAssignedTo = [];
         this.loggedUser = readCookie("userName");
+        var thiss = this;
 
         return Promise.all([
             this.data.getGroupFromUser(params, this.loggedUser).then(response => {
                 this.loggedUserRole = response.content;
                 if (this.loggedUserRole == "manager") {
                     this.wontfixDisabled = null;
-                }
-                if (this.loggedUserRole == "developer") {
-                    this.closedDisabled = true;
                 }
                 this.firstFilter = "member&group";
                 this.firstValues = this.loggedUser+"&"+this.loggedUserRole;
@@ -34,8 +32,20 @@ export class dashboard {
                     this.reports = this.showAssigned(response.content);
                     this.versions = this.getTestVersions(this.reports);
                     this.reportsCount = count(this.reports);
-                })
-            }),
+                    this.reports.forEach(function(report)  {
+                        if (thiss.loggedUserRole == "developer") {
+                            report.closedDisabled = true;
+                        }
+                        if (report.reporter == this.loggedUser && this.loggedUserRole == "developer") {
+
+                            report.closedDisabled = null;
+                        }
+                        else {
+                            report.closedDisabled = true;
+                        }
+                    });
+                    })
+                }),
             this.data.getProject(params, this.loggedUser).then(response => {
                 this.members = response.content.members;
                 this.groups = response.content.groups;
