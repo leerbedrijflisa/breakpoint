@@ -26,8 +26,6 @@ function deleteCookie(key) {
     setCookie(key, "", -1);
 }
 
-
-
 // returns an object containing the values of a multiple select box
 function getSelectValues(select) {
     var result = [];
@@ -58,7 +56,6 @@ function getSelectValue(id) {
     return sel.options[sel.selectedIndex].value;
 }
 
-
 function count(object) {
     var count = 0;
     for (var o in object) {
@@ -70,7 +67,33 @@ function count(object) {
     return count;
 }
 
-
 function toSlug(value) {
     return value.replace(/\s+/g, '-').toLowerCase()
+}
+
+function addPlatform() {
+    var number = document.getElementsByClassName("platform").length;
+    var platformdatalists = document.getElementsByClassName("platform-list");
+    if (document.getElementsByClassName("platform")[number - 1].value != "") {
+
+        //Gets the div where the Platform is located
+        var container = document.getElementById("platform");
+
+        //creates an input field in the div that is defined in container and sets the properties
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "platform";
+        input.classList.add("platform");
+        input.setAttribute("list", "platforms-" + platformdatalists.length);
+        input.setAttribute('onkeypress', 'if (event.keyCode == 13) { addPlatform(); return false; }');
+
+        // Creates a datalist with options to place below the input field
+        var datalist = platformdatalists[0];
+        datalist.id = "platforms-"+ platformdatalists.length;
+        //adds an br and the element with all the properties
+        container.appendChild(document.createElement("br"));
+        container.appendChild(input);
+        container.appendChild(datalist);
+        input.focus();
+    }
 }

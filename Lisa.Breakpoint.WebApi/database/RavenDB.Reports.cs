@@ -80,7 +80,7 @@ namespace Lisa.Breakpoint.WebApi.database
                 report.Number = reportId.Split('/').Last();
                 report.Reported = DateTime.Now;
 
-                PostPlatforms(new[] { report.Platform });
+                PostPlatforms(report.Platforms);
 
                 session.SaveChanges();
                 

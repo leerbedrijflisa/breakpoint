@@ -31,7 +31,7 @@ export class Create {
             reporter: readCookie("userName"),
             status: "Open",
             priority: 0,
-            platform: "",
+            platforms: [],
             version: "",
             assignedTo: {
                 type: "",
@@ -40,7 +40,17 @@ export class Create {
         };
     }
 
+    getPlatforms() {
+        var platform = new Array();
+        var meep = document.getElementsByClassName("platform");
+        for (var i = 0; i < meep.length; i++) {
+            platform.push(meep[i].value);
+        }
+        return platform;
+    }
+
     submit() {
+        this.report.platforms = this.getPlatforms();
         this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));;
         this.data.postReport(this.report).then(response => {
             this.router.navigateToRoute("reports", { organization: this.report.organization, project: this.report.project });

@@ -14,7 +14,7 @@ namespace Lisa.Breakpoint.WebApi.database
             {
                 dynamic platformsDbObject = session.Load<object>("singles/platforms");
                 
-                return platformsDbObject.value != null ? platformsDbObject.value : new string[] { };
+                return platformsDbObject != null && platformsDbObject.value != null ? platformsDbObject.value : new string[] { };
             }
         }
 
@@ -25,11 +25,7 @@ namespace Lisa.Breakpoint.WebApi.database
                 dynamic platformsDbObject = session.Load<object>("singles/platforms");
 
                 // Test if the document already exists in the database
-				if (platformsDbObject.value == null)
-                {
-                    session.Store(new { value = platforms.ToArray() }, "singles/platforms");
-                }
-				else
+				if (platformsDbObject != null && platformsDbObject.value != null)
                 {
                     string[] platformsList = platformsDbObject.value;
 
@@ -38,14 +34,18 @@ namespace Lisa.Breakpoint.WebApi.database
                     var patchRequests = new List<PatchRequest>();
 
                     Array.ForEach(patchValuesList, value => patchRequests.Add(new PatchRequest()
-                        {
-                            Name = "value",
-                            Type = PatchCommandType.Add,
-                            Value = value
+                    {
+                        Name = "value",
+                        Type = PatchCommandType.Add,
+                        Value = value
                     }
                     ));
-                    
+
                     documentStore.DatabaseCommands.Patch("singles/platforms", patchRequests.ToArray());
+                }
+				else
+                {
+                    session.Store(new { value = platforms.ToArray() }, "singles/platforms");
                 }
 
                 session.SaveChanges();

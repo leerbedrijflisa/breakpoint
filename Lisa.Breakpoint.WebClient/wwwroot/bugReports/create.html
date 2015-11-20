@@ -1,4 +1,5 @@
 ﻿<template>
+    <link rel="stylesheet" href="css/Create.css" />
     <h3>Report a bug:</h3>
     <form submit.delegate="submit()">
         <label for="title">Title: </label>
@@ -33,13 +34,13 @@
         </select>
         <br />
         <label>Platform: </label>
-        <input value.bind="report.platform" list="platforms" name="platform" type="text"/>
-        <datalist id="platforms">
-            <option repeat.for="platform of platforms" value="${platform}">
-        </datalist>
-
+        <div id="platform">
+            <input class="platform" list="platforms-0" onkeypress="if (event.keyCode == 13) { addPlatform(); return false; }" name="platform" type="text" />
+            <datalist class ="platform-list" id="platforms-0">
+                <option repeat.for="platform of platforms" value="${platform}">
+            </datalist>
+        </div>
         <br /><br />
-
         <label for="version">Test version: </label>
         <input type="text" value.bind="report.version"/>
 
