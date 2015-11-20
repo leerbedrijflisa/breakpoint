@@ -19,7 +19,6 @@ export class Create {
 
         this.data.getPlatforms().then(response => {
             this.platforms = response.content;
-            this.null = null;
         });
 
         this.report = {
