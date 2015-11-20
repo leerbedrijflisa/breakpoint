@@ -86,10 +86,13 @@ function addPlatform(sourceElement) {
         input.setAttribute("list", "platforms-list");
         input.setAttribute('onkeypress', 'if (event.keyCode == 13) { addPlatform(this); return false; }');
 
-        // Creates a datalist with options to place below the input field
-        var option = document.createElement("option");
-        option.value = sourceElement.value;
-        platformdatalist.appendChild(option);
+        // Adds the last entered platform to the datalist
+        if (sourceElement.value != "")
+        {
+            var option = document.createElement("option");
+            option.value = sourceElement.value;
+            platformdatalist.appendChild(option);
+        }
 
         // Adds a br and the element with all the properties
         container.appendChild(document.createElement("br"));

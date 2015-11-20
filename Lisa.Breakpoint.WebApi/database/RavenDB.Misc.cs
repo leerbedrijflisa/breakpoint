@@ -29,7 +29,7 @@ namespace Lisa.Breakpoint.WebApi.database
                 {
                     string[] platformsList = platformsDbObject.value;
 
-                    var patchValuesList = platforms.Where(p => !platformsList.Contains(p)).ToArray();
+                    var patchValuesList = platforms.Where(p => !platformsList.Contains(p) && p != "").ToArray();
 
                     var patchRequests = new List<PatchRequest>();
 
