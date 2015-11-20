@@ -71,29 +71,29 @@ function toSlug(value) {
     return value.replace(/\s+/g, '-').toLowerCase()
 }
 
-function addPlatform() {
+function addPlatform(sourceElement) {
     var number = document.getElementsByClassName("platform").length;
-    var platformdatalists = document.getElementsByClassName("platform-list");
     if (document.getElementsByClassName("platform")[number - 1].value != "") {
-
-        //Gets the div where the Platform is located
+        // Gets the div where the Platform input field is located
         var container = document.getElementById("platform");
+        var platformdatalist = document.getElementById("platforms-list");
 
-        //creates an input field in the div that is defined in container and sets the properties
+        // Creates an input field in the div that is defined in container and sets the properties
         var input = document.createElement("input");
         input.type = "text";
         input.name = "platform";
         input.classList.add("platform");
-        input.setAttribute("list", "platforms-" + platformdatalists.length);
-        input.setAttribute('onkeypress', 'if (event.keyCode == 13) { addPlatform(); return false; }');
+        input.setAttribute("list", "platforms-list");
+        input.setAttribute('onkeypress', 'if (event.keyCode == 13) { addPlatform(this); return false; }');
 
         // Creates a datalist with options to place below the input field
-        var datalist = platformdatalists[0];
-        datalist.id = "platforms-"+ platformdatalists.length;
-        //adds an br and the element with all the properties
+        var option = document.createElement("option");
+        option.value = sourceElement.value;
+        platformdatalist.appendChild(option);
+
+        // Adds a br and the element with all the properties
         container.appendChild(document.createElement("br"));
         container.appendChild(input);
-        container.appendChild(datalist);
         input.focus();
     }
 }

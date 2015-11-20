@@ -35,8 +35,8 @@
         <br />
         <label>Platform: </label>
         <div id="platform">
-            <input class="platform" list="platforms-0" onkeypress="if (event.keyCode == 13) { addPlatform(); return false; }" name="platform" type="text" />
-            <datalist class ="platform-list" id="platforms-0">
+            <input class="platform" list="platforms-list" onkeypress="if (event.keyCode == 13) { addPlatform(this); return false; }" name="platform" type="text" />
+            <datalist id="platforms-list">
                 <option repeat.for="platform of platforms" value="${platform}">
             </datalist>
         </div>
