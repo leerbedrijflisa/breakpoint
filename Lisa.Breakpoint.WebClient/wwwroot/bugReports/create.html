@@ -35,7 +35,7 @@
         <br />
         <label>Platform: </label>
         <div id="platform">
-            <input class="platform" onkeypress="if (event.keyCode == 13) { addPlatform(); return false; }" name="platform" type="text" />
+            <input class="platform" id="inputfield0" onkeypress="if (event.keyCode == 13) { addPlatform(); return false; }" onkeyup="checkDouble('inputfield0')" name="platform" type="text" />
         </div>
 
         <br /><br />

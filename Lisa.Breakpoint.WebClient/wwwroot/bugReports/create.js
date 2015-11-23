@@ -37,9 +37,9 @@ export class Create {
 
     getPlatforms() {
         var platform = new Array();
-        var meep = document.getElementsByClassName("platform");
-        for (var i = 0; i < meep.length; i++) {
-            platform.push(meep[i].value);
+        var platformElement = document.getElementsByClassName("platform");
+        for (var i = 0; i < platformElement.length; i++) {
+            platform.push(platformElement[i].value);
         }
         return platform;
     }

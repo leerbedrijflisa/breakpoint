@@ -76,8 +76,11 @@ function toSlug(value) {
 }
 
 function addPlatform() {
-    var number = document.getElementsByClassName("platform").length;
-    if (document.getElementsByClassName("platform")[number - 1].value != "") {
+    var number = document.getElementsByClassName("platform").length - 1;
+    if (document.getElementsByClassName("platform")[number].value != "") {
+        //gets the ID of the last element with the classname platform and adds 7418912
+        var unparsed = document.getElementsByClassName("platform")[number].id.replace("inputfield", "");
+        var lastnumber = parseInt(unparsed) + 1;
 
         //Gets the div where the Platform is located
         var container = document.getElementById("platform");
@@ -86,14 +89,17 @@ function addPlatform() {
         var input = document.createElement("input");
         input.type = "text";
         input.name = "platform";
-        input.id = "inputfield" + number;
+        input.id = "inputfield" + lastnumber;
         input.classList.add("platform");
         input.setAttribute('onkeypress', 'if (event.keyCode == 13) { addPlatform(); return false; }');
+        input.setAttribute('onkeyup', 'checkDouble("' + input.id + '")');
 
         //create a delete button
         var button = document.createElement("button");
-        button.id = "deletebutton" + number;
-        button.setAttribute('onclick', 'deleteInputField(' + number + ')');
+        button.id = "deletebutton" + lastnumber;
+        button.innerHTML = "Delete";
+        button.classList.add("deletebuttoncreate");
+        button.setAttribute('onclick', 'deleteInputField(' + lastnumber + ')');
 
         //adds an br and the element with all the properties
         container.appendChild(document.createElement("br"));
@@ -104,8 +110,38 @@ function addPlatform() {
 }
 
 function deleteInputField(id) {
+    console.log(id);
     var inputfield = document.getElementById("inputfield" + id);
     inputfield.previousSibling.remove();
     inputfield.remove();
     document.getElementById("deletebutton" + id).remove();
+}
+
+function checkDouble(id) {
+    var platforms = new Array();
+    var htmlIds = new Array();
+    var platformElement = document.getElementsByClassName("platform");
+    for (var i = 0; i < platformElement.length; i++) {
+        if (platformElement[i].id != id) {
+            platforms.push(platformElement[i].value);
+            htmlIds.push(platformElement[i].id);
+        }
+    }
+    var element = document.getElementById(id);
+    for (var i = 0; i < platforms.length; i++) {
+        if (platforms[i] == element.value) {
+            document.getElementById(htmlIds[i]).classList.add('platformdouble');
+            element.classList.add('platformdouble');
+            break;
+        }
+        else if (document.getElementById(id).className.match(/\bplatformdouble\b/)) {
+            element.classList.remove('platformdouble');
+        }
+        // remove last character
+        else if (platforms[i] == element.value.substring(0, element.length - 1)  ) {
+            document.getElementById(htmlIds[i]).classList.remove('platformdouble');
+            element.classList.remove('platformdouble');
+            break;
+        }
+    }
 }
