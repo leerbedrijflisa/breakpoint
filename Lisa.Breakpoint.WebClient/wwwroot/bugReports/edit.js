@@ -27,7 +27,6 @@ export class dashboard {
         this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));;
         this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
 
-
         this.data.patchReport(this.report.number, this.report).then( response => {
             this.router.navigateToRoute("reports", { organization: this.params.organization, project: this.params.project });
         });
