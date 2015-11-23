@@ -23,13 +23,13 @@ export class dashboard {
         });
     }
 
-    submit() {
+    submit(params) {
         this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));;
         this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
 
 
-        this.data.patchReport(params.id, this.report).then( response => {
-            this.router.navigateToRoute("reports", { organization: params.organization, project: params.project });
+        this.data.patchReport(this.report.number, this.report).then( response => {
+            this.router.navigateToRoute("reports", { organization: this.params.organization, project: this.params.project });
         });
     }
 }
