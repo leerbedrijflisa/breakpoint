@@ -86,11 +86,26 @@ function addPlatform() {
         var input = document.createElement("input");
         input.type = "text";
         input.name = "platform";
+        input.id = "inputfield" + number;
         input.classList.add("platform");
         input.setAttribute('onkeypress', 'if (event.keyCode == 13) { addPlatform(); return false; }');
+
+        //create a delete button
+        var button = document.createElement("button");
+        button.id = "deletebutton" + number;
+        button.setAttribute('onclick', 'deleteInputField(' + number + ')');
+
         //adds an br and the element with all the properties
         container.appendChild(document.createElement("br"));
         container.appendChild(input);
+        container.appendChild(button);
         input.focus();
     }
+}
+
+function deleteInputField(id) {
+    var inputfield = document.getElementById("inputfield" + id);
+    inputfield.previousSibling.remove();
+    inputfield.remove();
+    document.getElementById("deletebutton" + id).remove();
 }
