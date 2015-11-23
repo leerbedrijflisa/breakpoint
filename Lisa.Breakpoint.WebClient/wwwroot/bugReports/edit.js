@@ -28,7 +28,7 @@ export class report {
         this.report.assignedTo.type = getAssignedToType(document.getElementById("assignedTo"));;
         this.report.browsers = getSelectValues(document.getElementById("browserSelect"));
 
-        this.http.patch('reports/'+this.params.id, this.report).then( response => {
+        this.http.patch('reports/'+this.params.id+'/'+readCookie("userName"), this.report).then( response => {
             this.router.navigateToRoute("reports", { organization: this.params.organization, project: this.params.project });
         });
     }
