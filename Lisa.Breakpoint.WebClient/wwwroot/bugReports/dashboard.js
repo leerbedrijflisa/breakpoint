@@ -119,6 +119,7 @@ export class dashboard {
             case "Fixed":
                 var data = {
                     status: this.reports[index].status,
+                    reporter: this.reports[index].reporter,
                     assignedTo: {
                         type: "group",
                         value: "tester"
@@ -128,6 +129,7 @@ export class dashboard {
             case "Closed":
                 var data = {
                     status: this.reports[index].status,
+                    reporter: this.reports[index].reporter,
                     assignedTo: {
                         type: "",
                         value: ""
@@ -136,7 +138,8 @@ export class dashboard {
                 break;
             default:
                 var data = {
-                    status: this.reports[index].status
+                    status: this.reports[index].status,
+                    reporter: this.reports[index].reporter,
                 };
                 break;
         }

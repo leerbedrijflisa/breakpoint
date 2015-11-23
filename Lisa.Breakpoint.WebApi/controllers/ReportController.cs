@@ -94,13 +94,13 @@ namespace Lisa.Breakpoint.WebApi
             {
                 foreach (var members in checkProject.Members)
                 {
+                    if (members.UserName == userName && members.Role != "manager")
+                    {
+                        return new BadRequestResult();
+                    }
                     if (members.UserName == userName && members.Role == "manager")
                     {
                         break;
-                    }
-                    else
-                    {
-                        return new BadRequestResult();
                     }
                 }
             }
@@ -116,7 +116,7 @@ namespace Lisa.Breakpoint.WebApi
                     {
                         break;
                     }
-                    else
+                    else if (members.UserName != userName && members.Role == "developer")
                     {
                         return new BadRequestResult();
                     }
