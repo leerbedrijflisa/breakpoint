@@ -94,17 +94,35 @@ namespace Lisa.Breakpoint.WebApi
             {
                 foreach (var members in checkProject.Members)
                 {
-                    if (members.UserName == userName && members.Role != "manager")
-                    {
-                        return new BadRequestResult();
-                    }
-                    else if (members.UserName == userName && members.Role == "manager")
+                    if (members.UserName == userName && members.Role == "manager")
                     {
                         break;
                     }
+                    else
+                    {
+                        return new BadRequestResult();
+                    }
                 }
             }
-            
+            if (report.Status == statusCheck[4])
+            {
+                foreach (var members in checkProject.Members)
+                {
+                    if (members.UserName == userName && members.Role == "developer" && report.Reporter == userName)
+                    {
+                        break;
+                    }
+                    else if (members.UserName == userName && members.Role == "manager" || members.Role == "tester")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        return new BadRequestResult();
+                    }
+                }
+            }
+
             Report patchedReport = _db.PatchReport(id, report);
 
             return new HttpOkObjectResult(patchedReport);
