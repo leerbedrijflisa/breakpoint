@@ -36,7 +36,7 @@ export class dashboard {
                         if (thiss.loggedUserRole == "developer") {
                             report.closedDisabled = true;
                         }
-                        if (report.reporter == this.loggedUser && this.loggedUserRole == "developer") {
+                        if (report.reporter == thiss.loggedUser && thiss.loggedUserRole == "developer") {
 
                             report.closedDisabled = null;
                         }
