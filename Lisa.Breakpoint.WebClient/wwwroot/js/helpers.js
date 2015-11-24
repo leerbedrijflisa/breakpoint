@@ -78,14 +78,14 @@ function toSlug(value) {
 function addPlatform() {
     var number = document.getElementsByClassName("platform").length - 1;
     if (document.getElementsByClassName("platform")[number].value != "") {
-        //gets the ID of the last element with the classname platform and adds 1
+        //Gets the ID of the last element with the classname platform and adds 1
         var unparsed = document.getElementsByClassName("platform")[number].id.replace("inputfield", "");
         var lastnumber = parseInt(unparsed) + 1;
 
         //Gets the div where the Platform is located
         var container = document.getElementById("platform");
 
-        //creates an input field in the div that is defined in container and sets the properties
+        //Creates an input field in the div that is defined in container and sets the properties
         var input = document.createElement("input");
         input.type = "text";
         input.name = "platform";
@@ -94,14 +94,14 @@ function addPlatform() {
         input.setAttribute('onkeypress', 'if (event.keyCode == 13) { addPlatform(); return false; }');
         input.setAttribute('onkeyup', 'checkDouble()');
 
-        //create a delete button
+        //Create a delete button to delete the input field created above
         var button = document.createElement("button");
         button.id = "deletebutton" + lastnumber;
         button.innerHTML = "Delete";
         button.classList.add("deletebuttoncreate");
         button.setAttribute('onclick', 'deleteInputField(' + lastnumber + ')');
 
-        //adds an br and the element with all the properties
+        //Adds an br and the elements with all the properties also sets the focus on the input field
         container.appendChild(document.createElement("br"));
         container.appendChild(input);
         container.appendChild(button);
@@ -110,22 +110,28 @@ function addPlatform() {
 }
 
 function deleteInputField(id) {
+    //Deletes the inputfield, delete button and br we used to make the input field
     var inputfield = document.getElementById("inputfield" + id);
     inputfield.previousSibling.remove();
     inputfield.remove();
     document.getElementById("deletebutton" + id).remove();
+    //does the function to check if you had a double value which you just deleted
     this.checkDouble();
 }
 
 function checkDouble() {
+    //Gets the elements with the class Platform
     var platformElement = document.getElementsByClassName("platform");
+
+    //Removes all the classes that makes it so that the text is red
     for (var i = 0; i < platformElement.length; i++) {
         platformElement[i].classList.remove("platformdouble");
     }
+
+    //Checks every input after itself to see if something has the same value
     for (var i = 0; i < platformElement.length; i++) {
         var element = platformElement[i];
         for (var int = i + 1; int < platformElement.length; int++) {
-            console.log("platform " + platformElement[int].value + " en element " + element.value);
             if (element.value == platformElement[int].value) {
                 document.getElementById(platformElement[int].id).classList.add("platformdouble");
                 element.classList.add("platformdouble");
